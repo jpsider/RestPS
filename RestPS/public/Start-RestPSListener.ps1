@@ -23,12 +23,12 @@ function Start-RestPSListener
     )    
     # No pre-task
     $Status = $true
-    $listener = New-Object System.Net.HttpListener
-    $listener.Prefixes.Add("http://+:$Port/") 
-    $listener.Start()
-    Write-Output "Starting HTTP Listener on Port: $Port"
     if ($pscmdlet.ShouldProcess("Starting HTTP Listener."))
     { 
+        $listener = New-Object System.Net.HttpListener
+        $listener.Prefixes.Add("http://+:$Port/") 
+        $listener.Start()
+        Write-Output "Starting HTTP Listener on Port: $Port"
         # Run until you send a GET request to /end
         Do
         {

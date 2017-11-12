@@ -1,0 +1,11 @@
+site_name: RestPS
+repo_url: https://github.com/jpsider/RestPS
+theme: readthedocs
+pages:
+- Home: index.md
+- RestPS Basics:
+  - What is RestPS: about.md
+  - Quick Start: Quick-Start-Installation-and-Example.md
+- Basic Commands:
+- Examples:
+- Acknowledgements: acknowledgements.md

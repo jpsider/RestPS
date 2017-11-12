@@ -1,4 +1,4 @@
-function Start-Listener
+function Start-RestPSListener
 {
     <#
 	.DESCRIPTION

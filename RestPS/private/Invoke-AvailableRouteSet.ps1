@@ -8,21 +8,21 @@ $Routes = @(
     @{
         'RequestType'    = 'GET'
         'RequestURL'     = '/process'
-        'RequestCommand' = '.\GET\Invoke-GetProcess.ps1'
+        'RequestCommand' = "$PSScriptRoot\GET\Invoke-GetProcess.ps1"
     }
     @{
         'RequestType'    = 'PUT'
         'RequestURL'     = '/Service'
-        'RequestCommand' = '.\PUT\Invoke-GetProcess.ps1'
+        'RequestCommand' = "$PSScriptRoot\PUT\Invoke-GetProcess.ps1"
     }
     @{
         'RequestType'    = 'POST'
         'RequestURL'     = '/data'
-        'RequestCommand' = '.\POST\Invoke-GetProcess.ps1'
+        'RequestCommand' = "$PSScriptRoot\POST\Invoke-GetProcess.ps1"
     }
     @{
         'RequestType'    = 'DELETE'
         'RequestURL'     = '/data'
-        'RequestCommand' = '.\DELETE\Invoke-GetProcess.ps1'
+        'RequestCommand' = "$PSScriptRoot\DELETE\Invoke-GetProcess.ps1"
     }            
 )

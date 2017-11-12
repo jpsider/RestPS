@@ -1,15 +1,16 @@
 function Invoke-RequestRouter
 {
     [CmdletBinding()]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingInvokeExpression", '')]
     [OutputType([boolean])]
     [OutputType([Hashtable])]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingInvokeExpression")]
     param(
         [Parameter(Mandatory = $true)][String]$RequestType,
         [Parameter(Mandatory = $true)][String]$RequestURL
     )
     # Import Routes each pass, to include new routes.
-    . $Root\Invoke-AvailableRoutes.ps1
+    Write-Output "Attempting process Request type: $RequestType on URL: $RequestURL"
+    . "$PSScriptRoot\Invoke-AvailableRouteSet.ps1"
     $Route = ($Routes | Where-Object {$_.RequestType -eq $RequestType -and $_.RequestURL -eq $RequestURL})
 
     if ($null -ne $Route)

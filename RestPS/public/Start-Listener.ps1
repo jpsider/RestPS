@@ -21,71 +21,61 @@ function Start-Listener
     param(
         [Parameter()][String]$Port = 8080
     )    
+    # No pre-task
     $Status = $true
-    $Root = Split-Path -Parent $PSCommandPath
     $listener = New-Object System.Net.HttpListener
     $listener.Prefixes.Add("http://+:$Port/") 
     $listener.Start()
     Write-Output "Starting HTTP Listener on Port: $Port"
-    begin 
-    {
-        # No pre-task
-        Write-Output "Base Dir is $Root"
-    }
-    process
-    {
-        if ($pscmdlet.ShouldProcess("Starting HTTP Listener."))
-        { 
-            # Run until you send a GET request to /end
-            Do
-            {
-                # Capture requests as they come in (not Asyncronous)
-                $context = $listener.GetContext()     
-            
-                # Request Data Handler
-                $Request = $Context.Request
-                $RequestType = $Request.HttpMethod
-                $RequestURL = $Request.RawUrl
-            
-                # Setup a place to deliver a response
-                $response = $context.Response
-                $result = $null
-            
-                # Break from loop if GET request sent to /end
-                if ($RequestURL -match '/shutdown$')
-                {
-                    Write-Output "Received Request to shutdown Endpoint."
-                    $result = "Shutting down ReST Endpoint."
-                    $Status = $false
-                }
-                else
-                {
-                    # Attempt to process the Request.
-                    Write-Output 'Processing Request URL:' $RequestURL
-                    $result = Invoke-RequestRouter -RequestType $RequestType -RequestURL $RequestURL
-                }
-                # Convert the returned data to JSON and set the HTTP content type to JSON
-                $message = $result | ConvertTo-Json
-                $response.ContentType = 'application/json'
-
-                # Convert the data to UTF8 bytes
-                [byte[]]$buffer = [System.Text.Encoding]::UTF8.GetBytes($message)
-                # Set length of response
-                $response.ContentLength64 = $buffer.length
-                # Write response out and close
-                $output = $response.OutputStream
-                $output.Write($buffer, 0, $buffer.length)
-                $output.Close()
-            } while ($Status -eq $true)
-
-            #Terminate the listener
-            Write-Output "Stopping HTTP Listener on port: $Port ..."
-            $listener.Stop()
-        } 
-        else
+    if ($pscmdlet.ShouldProcess("Starting HTTP Listener."))
+    { 
+        # Run until you send a GET request to /end
+        Do
         {
-            # -WhatIf was used.
-            return $false
-        }
-    }          
+            # Capture requests as they come in (not Asyncronous)
+            $context = $listener.GetContext()     
+        
+            # Request Data Handler
+            $Request = $Context.Request
+            $RequestType = $Request.HttpMethod
+            $RequestURL = $Request.RawUrl
+        
+            # Setup a place to deliver a response
+            $response = $context.Response
+            $result = $null
+        
+            # Break from loop if GET request sent to /end
+            if ($RequestURL -match '/shutdown$')
+            {
+                Write-Output "Received Request to shutdown Endpoint."
+                $result = "Shutting down ReST Endpoint."
+                $Status = $false
+            }
+            else
+            {
+                # Attempt to process the Request.
+                Write-Output "Processing RequestType: $RequestType URL: $RequestURL"
+                $result = Invoke-RequestRouter -RequestType $RequestType -RequestURL $RequestURL
+            }
+            # Convert the returned data to JSON and set the HTTP content type to JSON
+            $message = $result | ConvertTo-Json
+            $response.ContentType = 'application/json'
+            # Convert the data to UTF8 bytes
+            [byte[]]$buffer = [System.Text.Encoding]::UTF8.GetBytes($message)
+            # Set length of response
+            $response.ContentLength64 = $buffer.length
+            # Write response out and close
+            $output = $response.OutputStream
+            $output.Write($buffer, 0, $buffer.length)
+            $output.Close()
+        } while ($Status -eq $true)
+        #Terminate the listener
+        Write-Output "Stopping HTTP Listener on port: $Port ..."
+        $listener.Stop()
+    } 
+    else
+    {
+        # -WhatIf was used.
+        return $false
+    }         
 }

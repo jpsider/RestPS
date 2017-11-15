@@ -10,22 +10,22 @@ function Invoke-AvailableRouteSet
         @{
             'RequestType'    = 'GET'
             'RequestURL'     = '/process'
-            'RequestCommand' = "$PSScriptRoot\..\endpoints\GET\Invoke-GetProcess.ps1"
+            'RequestCommand' = "\endpoints\GET\Invoke-GetProcess.ps1"
         }
         @{
             'RequestType'    = 'PUT'
             'RequestURL'     = '/Service'
-            'RequestCommand' = "$PSScriptRoot\..\endpoints\PUT\Invoke-GetProcess.ps1"
+            'RequestCommand' = "\endpoints\PUT\Invoke-GetProcess.ps1"
         }
         @{
             'RequestType'    = 'POST'
             'RequestURL'     = '/data'
-            'RequestCommand' = "$PSScriptRoot\..\endpoints\POST\Invoke-GetProcess.ps1"
+            'RequestCommand' = "\endpoints\POST\Invoke-GetProcess.ps1"
         }
         @{
             'RequestType'    = 'DELETE'
             'RequestURL'     = '/data'
-            'RequestCommand' = "$PSScriptRoot\..\endpoints\DELETE\Invoke-GetProcess.ps1"
+            'RequestCommand' = "\endpoints\DELETE\Invoke-GetProcess.ps1"
         }            
     )
 }

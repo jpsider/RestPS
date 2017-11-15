@@ -9,9 +9,10 @@ $Routes = @(
 Describe "Invoke-RequestRouter function for $moduleName" {
     It "Should return True" {
         Mock -CommandName 'Invoke-Expression' -MockWith {
-            return '@{ProcessName=calc.exe}'
+            return 'True @{ProcessName=calc.exe}'
         }
         Mock -CommandName 'Write-Output' -MockWith {}
+        Mock -CommandName 'Set-Location' -MockWith {}
         Invoke-RequestRouter -RequestType "GET" -RequestURL "/proc" | Should Be $true
         Assert-MockCalled -CommandName 'Write-Output' -Times 2 -Exactly
     }
@@ -20,6 +21,7 @@ Describe "Invoke-RequestRouter function for $moduleName" {
             return $null
         }
         Mock -CommandName 'Write-Output' -MockWith {}
+        Mock -CommandName 'Set-Location' -MockWith {}
         Invoke-RequestRouter -RequestType "GET" -RequestURL "/proc" | Should be "Invalid Command"
         Assert-MockCalled -CommandName 'Write-Output' -Times 4 -Exactly
     }

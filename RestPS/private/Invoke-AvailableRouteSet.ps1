@@ -28,5 +28,4 @@ function Invoke-AvailableRouteSet
             'RequestCommand' = "$PSScriptRoot\..\endpoints\DELETE\Invoke-GetProcess.ps1"
         }            
     )
-    return $true
 }

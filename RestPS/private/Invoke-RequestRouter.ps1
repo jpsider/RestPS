@@ -10,7 +10,6 @@ function Invoke-RequestRouter
     )
     # Import Routes each pass, to include new routes.
     Write-Output "Attempting process Request type: $RequestType on URL: $RequestURL"
-    . "$PSScriptRoot\Invoke-AvailableRouteSet.ps1"
     Invoke-AvailableRouteSet
     $Route = ($Routes | Where-Object {$_.RequestType -eq $RequestType -and $_.RequestURL -eq $RequestURL})
 
@@ -18,6 +17,7 @@ function Invoke-RequestRouter
     {
         # Process Request
         $Command = $Route.RequestCommand
+        set-location $PSScriptRoot
         Write-Output "Attempting process Request type: $RequestType on URL: $RequestURL"
         $CommandReturn = Invoke-Expression -Command $Command -ErrorAction SilentlyContinue
         if ($null -eq $CommandReturn)

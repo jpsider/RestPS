@@ -11,6 +11,7 @@ function Invoke-RequestRouter
     # Import Routes each pass, to include new routes.
     Write-Output "Attempting process Request type: $RequestType on URL: $RequestURL"
     . "$PSScriptRoot\Invoke-AvailableRouteSet.ps1"
+    Invoke-AvailableRouteSet
     $Route = ($Routes | Where-Object {$_.RequestType -eq $RequestType -and $_.RequestURL -eq $RequestURL})
 
     if ($null -ne $Route)
@@ -22,12 +23,12 @@ function Invoke-RequestRouter
         if ($null -eq $CommandReturn)
         {
             # Not a valid response
-            $result = "Invalid Command"
+            $script:result = "Invalid Command"
         }
         else
         {
             # Valid response
-            $result = $CommandReturn
+            $script:result = $CommandReturn
         }
     }
     else
@@ -35,7 +36,7 @@ function Invoke-RequestRouter
         # No matching Routes
         $ErrorMessage = "No Matching Routes"
         Write-Output $ErrorMessage
-        $result = $ErrorMessage
+        $script:result = $ErrorMessage
     }
-    $result
+    $script:result
 }

@@ -20,6 +20,7 @@ function Start-RestPSListener
     [OutputType([Hashtable])]
     [OutputType([String])]
     param(
+        [Parameter()][String]$RoutesFilePath = "null",
         [Parameter()][String]$Port = 8080
     )    
     # No pre-task
@@ -53,7 +54,10 @@ function Start-RestPSListener
             {
                 # Attempt to process the Request.
                 Write-Output "Processing RequestType: $RequestType URL: $RequestURL"
-                $script:result = Invoke-RequestRouter -RequestType $RequestType -RequestURL $RequestURL
+                if($RoutesFilePath -eq "null"){
+                    $RoutesFilePath = "Invoke-AvailableRouteSet"
+                }
+                $script:result = Invoke-RequestRouter -RequestType $RequestType -RequestURL $RequestURL -RoutesFilePath $RoutesFilePath
             }
             # Convert the returned data to JSON and set the HTTP content type to JSON
             Write-Output "The result is $script:result"

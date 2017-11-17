@@ -6,11 +6,13 @@ function Invoke-RequestRouter
     [OutputType([Hashtable])]
     param(
         [Parameter(Mandatory = $true)][String]$RequestType,
-        [Parameter(Mandatory = $true)][String]$RequestURL
+        [Parameter(Mandatory = $true)][String]$RequestURL,
+        [Parameter()][String]$RoutesFilePath
     )
     # Import Routes each pass, to include new routes.
     Write-Output "Attempting process Request type: $RequestType on URL: $RequestURL"
-    Invoke-AvailableRouteSet
+    #Import the Endpoint Routes
+    . $RoutesFilePath
     $Route = ($Routes | Where-Object {$_.RequestType -eq $RequestType -and $_.RequestURL -eq $RequestURL})
 
     if ($null -ne $Route)

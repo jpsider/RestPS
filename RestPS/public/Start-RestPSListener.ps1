@@ -4,11 +4,17 @@ function Start-RestPSListener
 	.DESCRIPTION
 		Start a HTTP listener on a specified port.
 	.EXAMPLE
+        Start-Listener
+    .EXAMPLE
         Start-Listener -Port 8081
     .EXAMPLE
-        Start-Listener
+        Start-Listener -Port 8081 -RoutesFilePath C:\temp\customRoutes.ps1
+    .EXAMPLE
+        Start-Listener -RoutesFilePath C:\temp\customRoutes.ps1
     .PARAMETER Port
         A Port can be specified, but is not required, Default is 8080.
+    .PARAMETER RoutesFilePath
+        A Custom Routes file can be specified, but is not required, default is included in the module.
 	.NOTES
 		No notes at this time.
     #>    
@@ -20,6 +26,7 @@ function Start-RestPSListener
     [OutputType([Hashtable])]
     [OutputType([String])]
     param(
+        [Parameter()][String]$RoutesFilePath = "null",
         [Parameter()][String]$Port = 8080
     )    
     # No pre-task
@@ -53,7 +60,11 @@ function Start-RestPSListener
             {
                 # Attempt to process the Request.
                 Write-Output "Processing RequestType: $RequestType URL: $RequestURL"
-                $script:result = Invoke-RequestRouter -RequestType $RequestType -RequestURL $RequestURL
+                if ($RoutesFilePath -eq "null")
+                {
+                    $RoutesFilePath = "Invoke-AvailableRouteSet"
+                }
+                $script:result = Invoke-RequestRouter -RequestType $RequestType -RequestURL $RequestURL -RoutesFilePath $RoutesFilePath
             }
             # Convert the returned data to JSON and set the HTTP content type to JSON
             Write-Output "The result is $script:result"

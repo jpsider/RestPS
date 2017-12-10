@@ -43,14 +43,15 @@ function Start-RestPSListener
 
             # Request Handler Data
             $RequestType = $Request.HttpMethod
-            $RequestURL = $Request.RawUrl
-        
+            $RawRequestURL = $Request.RawUrl
+            $RequestURL, $RequestArgs = $RawRequestURL.split("?")
+
             # Setup a placeholder to deliver a response
             $script:response = $context.Response
             $result = $null
         
             # Break from loop if GET request sent to /shutdown
-            if ($RequestURL -match '/shutdown$')
+            if ($RequestURL -match '/EndPoint/Shutdown$')
             {
                 Write-Output "Received Request to shutdown Endpoint."
                 $script:result = "Shutting down ReST Endpoint."
@@ -59,12 +60,12 @@ function Start-RestPSListener
             else
             {
                 # Attempt to process the Request.
-                Write-Output "Processing RequestType: $RequestType URL: $RequestURL"
+                Write-Output "Processing RequestType: $RequestType URL: $RequestURL Args: $RequestArgs"
                 if ($RoutesFilePath -eq "null")
                 {
                     $RoutesFilePath = "Invoke-AvailableRouteSet"
                 }
-                $script:result = Invoke-RequestRouter -RequestType $RequestType -RequestURL $RequestURL -RoutesFilePath $RoutesFilePath
+                $script:result = Invoke-RequestRouter -RequestType $RequestType -RequestURL $RequestURL -RoutesFilePath $RoutesFilePath -RequestArgs $RequestArgs
             }
             # Convert the returned data to JSON and set the HTTP content type to JSON
             Write-Output "The result is $script:result"

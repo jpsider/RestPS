@@ -2,6 +2,10 @@
 
 PowerShell Framework for creating and running Simple ReSTful APIs
 
+## Build Status  
+
+![Build status](https://ci.appveyor.com/api/projects/status/github/jpsider/RestPS?branch=master&svg=true) 
+
 ## GitPitch PitchMe presentation
 
 * [gitpitch.com/jpsider/RestPS](https://gitpitch.com/jpsider/RestPS)

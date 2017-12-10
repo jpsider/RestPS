@@ -3,12 +3,12 @@ Describe "Start-RestPSListener function for $moduleName" {
     It "Should return False if -WhatIf is used." {
         Start-RestPSListener -WhatIf | Should be $false
     }
-    It "Should return 'Listener Stopped' if the url is /shutdown" {
+    It "Should return 'Listener Stopped' if the url is /EndPoint/Shutdown" {
         Mock -CommandName 'Invoke-StartListener' -MockWith {}
         Mock -CommandName 'Invoke-GetContext' -MockWith {
             $script:Request = @{
                 'HttpMethod' = "Get"
-                'RawUrl'     = "/shutdown"
+                'RawUrl'     = "/EndPoint/Shutdown"
             }
             $script:Context = @{
                 Response = @{

@@ -2,19 +2,23 @@ function Start-RestPSListener
 {
     <#
 	.DESCRIPTION
-		Start a HTTP listener on a specified port.
-	.EXAMPLE
-        Start-Listener
-    .EXAMPLE
-        Start-Listener -Port 8081
-    .EXAMPLE
-        Start-Listener -Port 8081 -RoutesFilePath C:\temp\customRoutes.ps1
-    .EXAMPLE
-        Start-Listener -RoutesFilePath C:\temp\customRoutes.ps1
+        Start a HTTP listener on a specified port.
     .PARAMETER Port
         A Port can be specified, but is not required, Default is 8080.
+    .PARAMETER SSLThumbprint
+        A SSLThumbprint can be specified, but is not required.
+    .PARAMETER AppGuid
+        A AppGuid can be specified, but is not required.
     .PARAMETER RoutesFilePath
         A Custom Routes file can be specified, but is not required, default is included in the module.
+	.EXAMPLE
+        Start-RestPSListener
+    .EXAMPLE
+        Start-RestPSListener -Port 8081
+    .EXAMPLE
+        Start-RestPSListener -Port 8081 -RoutesFilePath C:\temp\customRoutes.ps1
+    .EXAMPLE
+        Start-RestPSListener -RoutesFilePath C:\temp\customRoutes.ps1
 	.NOTES
 		No notes at this time.
     #>    

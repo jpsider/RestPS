@@ -27,35 +27,35 @@ function Start-RestPSListener
     [OutputType([String])]
     param(
         [Parameter()][String]$RoutesFilePath = "null",
-        [Parameter()][String]$Port = 8080
+        [Parameter()][String]$Port = 8080,
+        [Parameter()][String]$SSLThumbprint,
+        [Parameter()][String]$AppGuid = ((New-Guid).Guid)
     )    
     # No pre-task
     $script:Status = $true
     if ($pscmdlet.ShouldProcess("Starting HTTP Listener."))
     { 
         $script:listener = New-Object System.Net.HttpListener
-        Invoke-StartListener -Port $Port
+        Invoke-StartListener -Port $Port -SSLThumbPrint $SSLThumbprint -AppGuid $AppGuid
         # Run until you send a GET request to /end
         Do
         {
             # Capture requests as they come in (not Asyncronous)
             $script:Request = Invoke-GetContext
+            $script:result = $null
 
             # Request Handler Data
             $RequestType = $Request.HttpMethod
             $RawRequestURL = $Request.RawUrl
             $RequestURL, $RequestArgs = $RawRequestURL.split("?")
 
-            # Setup a placeholder to deliver a response
-            $script:response = $context.Response
-            $result = $null
-        
             # Break from loop if GET request sent to /shutdown
             if ($RequestURL -match '/EndPoint/Shutdown$')
             {
                 Write-Output "Received Request to shutdown Endpoint."
                 $script:result = "Shutting down ReST Endpoint."
                 $script:Status = $false
+                $script:HttpCode = 200
             }
             else
             {
@@ -67,15 +67,18 @@ function Start-RestPSListener
                 }
                 $script:result = Invoke-RequestRouter -RequestType $RequestType -RequestURL $RequestURL -RoutesFilePath $RoutesFilePath -RequestArgs $RequestArgs
             }
+
+            # Setup a placeholder to deliver a response
+            $script:Response = $script:context.Response
             # Convert the returned data to JSON and set the HTTP content type to JSON
-            Write-Output "The result is $script:result"
-            $script:response.ContentType = 'application/json'
+            $script:Response.ContentType = 'application/json'
+            $script:Response.StatusCode = 200
             # Stream the output back to requestor.
             Invoke-StreamOutput
         } while ($script:Status -eq $true)
         #Terminate the listener
         Invoke-StopListener -Port $Port
-        return "Listener Stopped"
+        Write-Output "Listener Stopped"
     } 
     else
     {

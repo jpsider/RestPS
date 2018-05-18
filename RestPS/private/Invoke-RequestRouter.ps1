@@ -11,8 +11,6 @@ function Invoke-RequestRouter
         [Parameter()][String]$RoutesFilePath
     )
     # Import Routes each pass, to include new routes.
-    Write-Output "Processing Request type: $RequestType on URL: $RequestURL Args: $RequestArgs"
-    #Import the Endpoint Routes
     . $RoutesFilePath
     $Route = ($Routes | Where-Object {$_.RequestType -eq $RequestType -and $_.RequestURL -eq $RequestURL})
 
@@ -22,7 +20,6 @@ function Invoke-RequestRouter
         $RequestCommand = $Route.RequestCommand
         $Command = $RequestCommand + " " + $RequestArgs
         set-location $PSScriptRoot
-        Write-Output "Attempting process Request type: $RequestType on URL: $RequestURL"
         $CommandReturn = Invoke-Expression -Command "$Command" -ErrorAction SilentlyContinue
         if ($null -eq $CommandReturn)
         {
@@ -38,9 +35,7 @@ function Invoke-RequestRouter
     else
     {
         # No matching Routes
-        $ErrorMessage = "No Matching Routes"
-        Write-Output $ErrorMessage
-        $script:result = $ErrorMessage
+        $script:result = "No Matching Routes"       
     }
     $script:result
 }

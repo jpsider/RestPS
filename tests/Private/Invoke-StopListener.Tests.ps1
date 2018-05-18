@@ -1,13 +1,10 @@
 $script:ModuleName = 'RestPS'
 Describe "Invoke-StopListener function for $moduleName" {
-    function Invoke-MockStopListener
-    {
-        return $true
+    $listener = [System.Net.HttpListener]::new()
+    function Write-Output {}
+    Mock -CommandName 'Write-Output' -MockWith {}
+    It "Should return null." {
+        Invoke-StopListener | Should be $null
+        Assert-MockCalled -CommandName 'Write-Output' -Times 1 -Exactly
     }
-    Set-Alias Invoke-StopListener Invoke-MockStopListener -Scope Global
-    It "Should return True." {
-        Invoke-StopListener | Should be $true
-    }
-    Remove-Item Alias:\Invoke-StopListener
-    Remove-Item Function:\Invoke-MockStopListener
 }

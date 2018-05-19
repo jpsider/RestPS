@@ -20,13 +20,13 @@ Describe "Invoke-RequestRouter function for $moduleName" {
             return $null
         }
         Mock -CommandName 'Set-Location' -MockWith {}
-        Invoke-RequestRouter -RequestType "GET" -RequestURL "/proc" -RoutesFilePath $RoutesFilePath | Should be "Invalid Command"
+        Invoke-RequestRouter -RequestType "GET" -RequestURL "/proc" -RoutesFilePath $RoutesFilePath | Should be "400 Invalid Command"
     }
     It "Should return No Matching Routes, if the URL is invalid." {
         Mock -CommandName 'Invoke-Expression' -MockWith {
             return $null
         }
         Mock -CommandName 'Write-Output' -MockWith {}
-        Invoke-RequestRouter -RequestType "GET" -RequestURL "/FakeURL" -RoutesFilePath $RoutesFilePath | Should be "No Matching Routes"
+        Invoke-RequestRouter -RequestType "GET" -RequestURL "/FakeURL" -RoutesFilePath $RoutesFilePath | Should be "404 No Matching Routes"
     }
 }

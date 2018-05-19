@@ -1,5 +1,13 @@
 function Invoke-AvailableRouteSet
 {
+    <#
+	.DESCRIPTION
+		This function defines the available Routes (Rest Methods and Commands/Scripts).
+	.EXAMPLE
+        Invoke-AvailableRouteSet
+	.NOTES
+        This will return null.
+    #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingInvokeExpression", '')]
     $script:Routes = @(
         @{

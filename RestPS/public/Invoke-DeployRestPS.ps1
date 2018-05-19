@@ -26,15 +26,16 @@ function Invoke-DeployRestPS
         {
             Write-Output "Creating RestPS Directories."
             New-Item -Path "$LocalDir" -ItemType Directory
-            New-Item -Path "$LocalDir\Endpoints" -ItemType Directory
-            New-Item -Path "$LocalDir\Endpoints\Logs" -ItemType Directory
-            New-Item -Path "$LocalDir\Endpoints\GET" -ItemType Directory
-            New-Item -Path "$LocalDir\Endpoints\POST" -ItemType Directory
-            New-Item -Path "$LocalDir\Endpoints\PUT" -ItemType Directory
-            New-Item -Path "$LocalDir\Endpoints\DELETE" -ItemType Directory
+            New-Item -Path "$LocalDir\bin" -ItemType Directory
+            New-Item -Path "$LocalDir\endpoints" -ItemType Directory
+            New-Item -Path "$LocalDir\endpoints\Logs" -ItemType Directory
+            New-Item -Path "$LocalDir\endpoints\GET" -ItemType Directory
+            New-Item -Path "$LocalDir\endpoints\POST" -ItemType Directory
+            New-Item -Path "$LocalDir\endpoints\PUT" -ItemType Directory
+            New-Item -Path "$LocalDir\endpoints\DELETE" -ItemType Directory
         }
         # Move Example files to the Local Directory
-        $Source = (Split-Path -Path (Get-Module -ListAvailable RestPS).path)
+        $Source = (Split-Path -Path (Get-Module -ListAvailable RestPS).path)[0]
         $RoutesFileSource = $Source + "\endpoints\Invoke-AvailableRouteSet.ps1"
         Copy-Item -Path "$RoutesFileSource" -Destination $LocalDir\Endpoints -Confirm:$false -Force
         $EndpointVerbs = @("GET", "POST", "PUT", "DELETE")
@@ -43,6 +44,14 @@ function Invoke-DeployRestPS
             $EndpointSource = $Source + "\endpoints\$Verb\Invoke-GetProcess.ps1"
             Write-Output "Copying $EndpointSource to Desination $LocalDir\Endpoints\$Verb"
             Copy-Item -Path "$EndpointSource" -Destination $LocalDir\Endpoints\$Verb -Confirm:$false -Force
+        }
+        $BinFiles = Get-ChildItem -Path ($Source + "\bin") -File
+        foreach ($file in $BinFiles)
+        {
+            $filePath = $file.FullName
+            $filename = $file.Name
+            Write-Output "Copying File $fileName to $localDir\bin"
+            Copy-Item -Path "$filePath" -Destination $LocalDir\bin -Confirm:$false -Force
         }
     }
     catch

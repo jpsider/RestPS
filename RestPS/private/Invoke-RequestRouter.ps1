@@ -1,5 +1,25 @@
 function Invoke-RequestRouter
 {
+    <#
+	.DESCRIPTION
+		This function will attempt to run a Client specified command defined in the Endpoint Routes.
+    .PARAMETER RequestType
+        A RequestType is required.
+    .PARAMETER RequestURL
+        A RequestURL is is required
+    .PARAMETER RequestArgs
+        A RequestArgs is Optional.
+    .PARAMETER RoutesFilePath
+        A RoutesFilePath is Optional.
+	.EXAMPLE
+        Invoke-RequestRouter -RequestType GET -RequestURL /process
+	.EXAMPLE
+        Invoke-RequestRouter -RequestType GET -RequestURL /process -RoutesFilePath c:\RestPS\Invoke-AvailableRouteSet.ps1
+	.EXAMPLE
+        Invoke-RequestRouter -RequestType GET -RequestURL /process -RoutesFilePath c:\RestPS\Invoke-AvailableRouteSet.ps1 -RequestArgs foo=Bar&cash=Money
+	.NOTES
+        This will return output from the Endpoint Command/script.
+    #>
     [CmdletBinding()]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingInvokeExpression", '')]
     [OutputType([boolean])]
@@ -24,7 +44,7 @@ function Invoke-RequestRouter
         if ($null -eq $CommandReturn)
         {
             # Not a valid response
-            $script:result = "Invalid Command"
+            $script:result = "400 Invalid Command"
         }
         else
         {
@@ -35,7 +55,7 @@ function Invoke-RequestRouter
     else
     {
         # No matching Routes
-        $script:result = "No Matching Routes"       
+        $script:result = "404 No Matching Routes"       
     }
     $script:result
 }

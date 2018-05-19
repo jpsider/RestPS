@@ -22,15 +22,19 @@ Describe "Invoke-StartListener function for $moduleName" {
         Assert-MockCalled -CommandName 'Write-Output' -Times 2 -Exactly
     }
     It "Should Throw when something fails." {
-        $listener = $null
-        $listener = [System.Net.HttpListener]::new()
-        $listener.stop()
-        $listener.Prefixes.Remove("https://+:8080/")
-        $listener.Prefixes.Remove("http://+:8080/")
-        Mock -CommandName 'Write-Output' -MockWith {
+        function Get-ChildItem {}
+        Mock -CommandName 'Get-ChildItem' -MockWith {
             Throw "There was an error"
         }
         {Invoke-StartListener -Port 8081} | Should -Throw
         Assert-MockCalled -CommandName 'Write-Output' -Times 2 -Exactly
+    }
+    It "Should Throw when The SSL cert cannot be found." {
+        function Get-ChildItem {}
+        Mock -CommandName 'Get-ChildItem' -MockWith {
+            $null
+        }
+        Mock -CommandName 'Write-Output' -MockWith {}
+        {Invoke-StartListener -Port 8081 -SSLThumbprint NoCert -AppGuid $guid} | Should -Throw
     }
 }

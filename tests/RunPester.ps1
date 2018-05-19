@@ -17,7 +17,7 @@ foreach ($Directory in $Directories)
         . .\RestPS\$Directory\$FileName
     }
     # Execute Pester for the Directory.
-    $results = Invoke-pester .\tests\$Directory\*.ps1 -CodeCoverage .\RestPS\$Directory\*.ps1 -PassThru
+    $results = Invoke-pester .\tests\$Directory\*.ps1 -CodeCoverage .\RestPS\$Directory\*.ps1 -PassThru -ExcludeTag SkipThis
 
     $MissedCommands = $results.CodeCoverage.NumberOfCommandsMissed
     $FailedCount = $results.FailedCount

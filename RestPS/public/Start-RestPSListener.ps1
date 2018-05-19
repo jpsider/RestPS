@@ -7,8 +7,15 @@ function Start-RestPSListener
         A Port can be specified, but is not required, Default is 8080.
     .PARAMETER SSLThumbprint
         A SSLThumbprint can be specified, but is not required.
+    .PARAMETER RestPSLocalRoot
+        A RestPSLocalRoot be specified, but is not required. Default is c:\RestPS
     .PARAMETER AppGuid
         A AppGuid can be specified, but is not required.
+    .PARAMETER VerificationType
+        A VerificationType is optional - Accepted values are:
+            -"VerifyRootCA": Verifies the Root CA of the Server and Client Cert Match.
+            -"VerifySubject": Verifies the Root CA, and the Client is on a User provide ACL.
+            -"VerifyUserAuth": Provides an option for Advanced Authentication, plus the RootCA,Subject Checks.
     .PARAMETER RoutesFilePath
         A Custom Routes file can be specified, but is not required, default is included in the module.
 	.EXAMPLE

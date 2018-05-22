@@ -76,6 +76,9 @@ function Start-RestPSListener
                 $script:ProcessRequest = $true
             }
 
+            # Determine if a Body was sent with the Client request
+            $script:Body = Invoke-GetBody
+
             # Request Handler Data
             $RequestType = $script:Request.HttpMethod
             $RawRequestURL = $script:Request.RawUrl

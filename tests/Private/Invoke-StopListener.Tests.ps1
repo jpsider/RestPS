@@ -1,6 +1,7 @@
 $script:ModuleName = 'RestPS'
 Describe "Invoke-StopListener function for $moduleName" {
     $listener = [System.Net.HttpListener]::new()
+    $listener = $listener
     function Write-Output {}
     Mock -CommandName 'Write-Output' -MockWith {}
     It "Should return null." {

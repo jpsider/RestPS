@@ -6,6 +6,7 @@ $Routes = @(
         'RequestCommand' = 'get-process | select-object ProcessName'
     }
 )
+$Routes = $Routes
 $RoutesFilePath = "Invoke-AvailableRouteSet"
 Describe "Invoke-RequestRouter function for $moduleName" {
     It "Should return True" {
@@ -16,6 +17,14 @@ Describe "Invoke-RequestRouter function for $moduleName" {
         Invoke-RequestRouter -RequestType "GET" -RequestURL "/proc" -RoutesFilePath $RoutesFilePath | Should Be $true
     }
     It "Should return Invalid Command, if invoke expression fails." {
+        $Routes = @(
+            @{
+                'RequestType'    = 'GET'
+                'RequestURL'     = '/proc'
+                'RequestCommand' = 'C:\RestPS\endpoints\GET\Invoke-GetProcess.ps1'
+            }
+        )
+        $Routes = $Routes
         Mock -CommandName 'Invoke-Expression' -MockWith {
             return $null
         }

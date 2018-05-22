@@ -38,9 +38,19 @@ function Invoke-RequestRouter
     {
         # Process Request
         $RequestCommand = $Route.RequestCommand
-        $Command = $RequestCommand + " " + $RequestArgs
         set-location $PSScriptRoot
-        $CommandReturn = Invoke-Expression -Command "$Command" -ErrorAction SilentlyContinue
+        if ($RequestCommand -like "*.ps1")
+        {
+            # Execute Endpoint Script
+            $CommandReturn = . $RequestCommand -RequestArgs $RequestArgs -Body $script:Body
+        }
+        else
+        {
+            # Execute Endpoint Command (No body allowed.)
+            $Command = $RequestCommand + " " + $RequestArgs
+            $CommandReturn = Invoke-Expression -Command "$Command" -ErrorAction SilentlyContinue
+        }        
+        
         if ($null -eq $CommandReturn)
         {
             # Not a valid response

@@ -10,11 +10,11 @@ function Invoke-GetBody
     #>
     if ($script:Request.HasEntityBody)
     {
-        $Reader = New-Object System.IO.StreamReader($script:Request.InputStream)
+        $script:RawBody = $script:Request.InputStream
+        $Reader = New-Object System.IO.StreamReader @($script:RawBody, [System.Text.Encoding]::UTF8)
         $script:Body = $Reader.ReadToEnd()
         $Reader.close()
         $script:Body
-
     }
     else
     {

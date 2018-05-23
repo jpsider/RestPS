@@ -30,7 +30,7 @@
     Copyright         = '(c) 2017 Justin Sider. All rights reserved.'
 
     # Description of the functionality provided by this module
-    Description       = 'PowerShell Framework for creating and running Simple ReSTful APIs'
+    Description       = 'PowerShell Framework for creating and running Simple & Secure ReSTful APIs'
 
     # Minimum version of the Windows PowerShell engine required by this module
     PowerShellVersion = '5.0'

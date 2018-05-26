@@ -1,8 +1,12 @@
-$SingleProcess = $args[0]
+Param(
+    $RequestArgs,
+    $Body
+)
 
-if ($SingleProcess -ne "")
+
+if ($RequestArgs -ne "")
 {
-    $Message = Get-Process -Name $SingleProcess -ErrorAction SilentlyContinue | Select-Object ProcessName -ErrorAction SilentlyContinue
+    $Message = Get-Process -Name $RequestArgs -ErrorAction SilentlyContinue | Select-Object ProcessName,ID,MainWindowTitle -ErrorAction SilentlyContinue
 }
 else
 {

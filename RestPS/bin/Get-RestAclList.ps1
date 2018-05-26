@@ -5,6 +5,6 @@ Function Get-RestAclList
     # Getting a list of names from Active Directory
     # Getting a list of names from a real Certificate Authority (ensuring they are not on the CRL)
     # Getting a list of names from a remote endpoint of a different Web Application
-    $AclList = @("RestClient", "PowerShellClient", "Client", "DemoClient", "Client.PowerShellDemo.io")
+    $AclList = @("RestClient", "PowerShellClient", "Client", "DemoClient", "DemoClient.PowerShellDemo.io")
     $AclList
 }

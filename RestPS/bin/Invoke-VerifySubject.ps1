@@ -15,11 +15,11 @@ function Invoke-VerifySubject
             if ($null -ne $RestACL)
             {
                 $RawSubject = $script:ClientCert.Subject
-                $1, $Subject = $RawSubject.split("=")
-                Write-Output "Subject name is" $Subject
-                if ($null -ne $Subject)
+                $1, $script:Subject = $RawSubject.split("=")
+                Write-Output "Subject name is" $script:Subject
+                if ($null -ne $script:Subject)
                 {
-                    if ($RestACL.contains($Subject))
+                    if ($RestACL.contains($script:Subject))
                     {
                         Write-Output "Client access is Verified."
                         $script:VerifyStatus = $true

@@ -1,10 +1,11 @@
 Function Get-RestAclList
 {
-    # This Function represents a way to Gather a List to Compare a Client Friendly Name to.
-    # This is meant to be update to suit your specific needs. Such as:
-    # Getting a list of names from Active Directory
-    # Getting a list of names from a real Certificate Authority (ensuring they are not on the CRL)
-    # Getting a list of names from a remote endpoint of a different Web Application
-    $AclList = @("RestClient", "PowerShellClient", "Client", "DemoClient", "DemoClient.PowerShellDemo.io")
+    # This Function represents a way to Gather a List to Compare a Client Subject/CN Name.
+    #   This is meant to be updated to suit your specific needs. Such as:
+    #   Getting a list of names from Active Directory
+    #   Getting a list of names from a real Certificate Authority 
+    #     (or ensuring they are not on the Certificate revokation list)
+    #   Getting a list of names from a remote endpoint of a different Web Application
+    $AclList = @("RestServer", "Client", "DemoClient.PowerShellDemo.io")
     $AclList
 }

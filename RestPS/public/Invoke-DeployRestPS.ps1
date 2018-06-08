@@ -35,7 +35,7 @@ function Invoke-DeployRestPS
             New-Item -Path "$LocalDir\endpoints\DELETE" -ItemType Directory
         }
         # Move Example files to the Local Directory
-        $Source = (Split-Path -Path (Get-Module -ListAvailable RestPS).path)[0]
+        $Source = (Split-Path -Path (Get-Module -ListAvailable RestPS | Sort-Object -Property Version -Descending | Select-Object -First 1).path)
         $RoutesFileSource = $Source + "\endpoints\Invoke-AvailableRouteSet.ps1"
         Copy-Item -Path "$RoutesFileSource" -Destination $LocalDir\Endpoints -Confirm:$false -Force
         $EndpointVerbs = @("GET", "POST", "PUT", "DELETE")

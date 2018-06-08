@@ -2,7 +2,7 @@
     .DESCRIPTION
         This script will return the specified data to the Client.
     .EXAMPLE
-        Invoke-GetProcess.ps1 -Body $Body
+        Invoke-GetProcess.ps1 -RequestArgs $RequestArgs -Body $Body
     .NOTES
     	This will return data
 #>

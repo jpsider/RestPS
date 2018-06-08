@@ -8,8 +8,7 @@
 #>
 
 param(
-    $RequestArgs,
-    $Body
+    $RequestArgs
 )
 
 if ($RequestArgs -like "*&*")

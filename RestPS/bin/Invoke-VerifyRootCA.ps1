@@ -1,6 +1,6 @@
 function Invoke-VerifyRootCA
 {
-    # Determine if a Client Cert exist in the Request.    
+    # Determine if a Client Cert exist in the Request.
     if ($null -ne $script:ClientCert)
     {
         # Determine if the SSLThumbprint for the Rest Endpoint was available.
@@ -27,14 +27,12 @@ function Invoke-VerifyRootCA
                             Write-Output "Certificate Authorities do not match."
                             $script:VerifyStatus = $false
                         }
-
                     }
                     else
                     {
                         Write-Output "Unable to Determine Client Certificate Authority Identifier."
                         $script:VerifyStatus = $false
                     }
-
                 }
                 else
                 {
@@ -47,14 +45,12 @@ function Invoke-VerifyRootCA
                 Write-Output "Unable to find Local Rest Certificate Certificate."
                 $script:VerifyStatus = $false
             }
-
         }
         else
         {
             Write-Output "No Certificate Thumbprint Identified."
             $script:VerifyStatus = $false
         }
-
     }
     else
     {

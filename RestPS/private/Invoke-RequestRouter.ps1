@@ -6,7 +6,7 @@ function Invoke-RequestRouter
     .PARAMETER RequestType
         A RequestType is required.
     .PARAMETER RequestURL
-        A RequestURL is is required
+        A RequestURL is is required.
     .PARAMETER RequestArgs
         A RequestArgs is Optional.
     .PARAMETER RoutesFilePath
@@ -49,8 +49,8 @@ function Invoke-RequestRouter
             # Execute Endpoint Command (No body allowed.)
             $Command = $RequestCommand + " " + $RequestArgs
             $CommandReturn = Invoke-Expression -Command "$Command" -ErrorAction SilentlyContinue
-        }        
-        
+        }
+
         if ($null -eq $CommandReturn)
         {
             # Not a valid response
@@ -65,7 +65,7 @@ function Invoke-RequestRouter
     else
     {
         # No matching Routes
-        $script:result = "404 No Matching Routes"       
+        $script:result = "404 No Matching Routes"
     }
     $script:result
 }

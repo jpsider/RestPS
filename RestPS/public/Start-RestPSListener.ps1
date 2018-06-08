@@ -30,7 +30,7 @@ function Start-RestPSListener
         Start-RestPSListener -RoutesFilePath C:\temp\customRoutes.ps1 -VerificationType VerifyRootCA -SSLThumbprint $Thumb -AppGuid $Guid
 	.NOTES
 		No notes at this time.
-    #>    
+    #>
     [CmdletBinding(
         SupportsShouldProcess = $true,
         ConfirmImpact = "Low"
@@ -46,12 +46,12 @@ function Start-RestPSListener
         [Parameter()][String]$AppGuid = ((New-Guid).Guid),
         [ValidateSet("VerifyRootCA", "VerifySubject", "VerifyUserAuth")]
         [Parameter()][String]$VerificationType
-    )    
+    )
     # Set a few Flags
     $script:Status = $true
-    $script:ValidateClient = $true            
+    $script:ValidateClient = $true
     if ($pscmdlet.ShouldProcess("Starting HTTP Listener."))
-    { 
+    {
         $script:listener = New-Object System.Net.HttpListener
         Invoke-StartListener -Port $Port -SSLThumbPrint $SSLThumbprint -AppGuid $AppGuid
         # Run until you send a GET request to /shutdown
@@ -122,10 +122,10 @@ function Start-RestPSListener
         #Terminate the listener
         Invoke-StopListener -Port $Port
         Write-Output "Listener Stopped"
-    } 
+    }
     else
     {
         # -WhatIf was used.
         return $false
-    }         
+    }
 }

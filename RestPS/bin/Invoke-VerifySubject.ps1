@@ -1,6 +1,6 @@
 function Invoke-VerifySubject
 {
-    # Determine if a Client Cert exist in the Request.    
+    # Determine if a Client Cert exist in the Request.
     if ($null -ne $script:ClientCert)
     {
         # First, Validate that the RootCA matches.

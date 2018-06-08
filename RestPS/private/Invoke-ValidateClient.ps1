@@ -27,21 +27,21 @@ function Invoke-ValidateClient
     {
         "VerifyRootCA"
         {
-            # Source the File 
+            # Source the File
             . $RestPSLocalRoot\bin\Invoke-VerifyRootCA.ps1
             $script:VerifyStatus = Invoke-VerifyRootCA
         }
 
         "VerifySubject"
         {
-            # Source the File 
+            # Source the File
             . $RestPSLocalRoot\bin\Invoke-VerifySubject.ps1
             $script:VerifyStatus = Invoke-VerifySubject
         }
 
         "VerifyUserAuth"
         {
-            # Source the File (Future)
+            # Source the File
             . $RestPSLocalRoot\bin\Invoke-VerifyUserAuth.ps1
             $script:VerifyStatus = Invoke-VerifyUserAuth
         }
@@ -51,7 +51,6 @@ function Invoke-ValidateClient
             Write-Output "No Client Validation Selected."
             $script:VerifyStatus = $true
         }
-
     }
     $script:VerifyStatus
 }

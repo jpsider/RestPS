@@ -12,8 +12,8 @@ function Invoke-SSLIgnore
     {
         # No code.
     }
-    process 
-    {    
+    process
+    {
         if (-not ([System.Management.Automation.PSTypeName]'ServerCertificateValidationCallback').Type)
         {
             $certCallback = @"
@@ -38,7 +38,7 @@ public class ServerCertificateValidationCallback {
 }
 "@
             Add-Type $certCallback
-        }      
+        }
         [ServerCertificateValidationCallback]::Ignore();
         return $true
     }

@@ -17,7 +17,7 @@ function Invoke-AvailableRouteSet
         }
         @{
             'RequestType'    = 'GET'
-            'RequestURL'     = '/status'
+            'RequestURL'     = '/endpoint/status'
             'RequestCommand' = 'return 1'
         }
         @{

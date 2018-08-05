@@ -28,7 +28,7 @@ Describe "Invoke-RequestRouter function for $moduleName" {
             @{
                 'RequestType'    = 'GET'
                 'RequestURL'     = '/proc'
-                'RequestCommand' = 'C:\RestPS\endpoints\GET\Invoke-GetProcess.ps1'
+                'RequestCommand' = 'return 400 Invalid Command'
             }
         )
         $Routes = $Routes

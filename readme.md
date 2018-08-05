@@ -32,5 +32,4 @@ For more information
 
 * [github.com/jpsider/RestPS](https://github.com/jpsider/RestPS)
 
-
 This project was generated using [Kevin Marquette](http://kevinmarquette.github.io)'s [Full Module Plaster Template](https://github.com/KevinMarquette/PlasterTemplates/tree/master/FullModuleTemplate).

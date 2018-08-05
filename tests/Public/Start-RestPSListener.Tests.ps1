@@ -34,7 +34,7 @@ Describe "Start-RestPSListener function for $moduleName" {
         Mock -CommandName 'Invoke-GetBody' -MockWith {}
         Mock -CommandName 'Write-Output' -MockWith {}
         Start-RestPSListener | Should be $null
-        Assert-MockCalled -CommandName 'Write-Output' -Times 4 -Exactly
+        Assert-MockCalled -CommandName 'Write-Output' -Times 3 -Exactly
         Assert-MockCalled -CommandName 'Invoke-GetContext' -Times 1 -Exactly
         Assert-MockCalled -CommandName 'Invoke-GetBody' -Times 1 -Exactly
         Assert-MockCalled -CommandName 'Invoke-StartListener' -Times 1 -Exactly
@@ -65,7 +65,7 @@ Describe "Start-RestPSListener function for $moduleName" {
         Mock -CommandName 'Write-Output' -MockWith {}
         Mock -CommandName 'Invoke-GetBody' -MockWith {}
         Start-RestPSListener -RoutesFilePath "FakePath" | Should be $null
-        Assert-MockCalled -CommandName 'Write-Output' -Times 8 -Exactly
+        Assert-MockCalled -CommandName 'Write-Output' -Times 6 -Exactly
         Assert-MockCalled -CommandName 'Invoke-GetContext' -Times 2 -Exactly
         Assert-MockCalled -CommandName 'Invoke-GetBody' -Times 2 -Exactly
         Assert-MockCalled -CommandName 'Invoke-StartListener' -Times 2 -Exactly
@@ -97,7 +97,7 @@ Describe "Start-RestPSListener function for $moduleName" {
         Mock -CommandName 'Invoke-GetBody' -MockWith {}
         Mock -CommandName 'Write-Output' -MockWith {}
         Start-RestPSListener -RoutesFilePath "null" | Should be $null
-        Assert-MockCalled -CommandName 'Write-Output' -Times 12 -Exactly
+        Assert-MockCalled -CommandName 'Write-Output' -Times 9 -Exactly
         Assert-MockCalled -CommandName 'Invoke-GetContext' -Times 3 -Exactly
         Assert-MockCalled -CommandName 'Invoke-GetBody' -Times 3 -Exactly
         Assert-MockCalled -CommandName 'Invoke-StartListener' -Times 3 -Exactly
@@ -135,7 +135,7 @@ Describe "Start-RestPSListener function for $moduleName" {
         Mock -CommandName 'Invoke-GetBody' -MockWith {}
         Mock -CommandName 'Write-Output' -MockWith {}
         Start-RestPSListener -RoutesFilePath C:\temp\customRoutes.ps1 -VerificationType VerifyRootCA -SSLThumbprint $Thumb -AppGuid $Guid  | Should be $null
-        Assert-MockCalled -CommandName 'Write-Output' -Times 16 -Exactly
+        Assert-MockCalled -CommandName 'Write-Output' -Times 12 -Exactly
         Assert-MockCalled -CommandName 'Invoke-GetContext' -Times 4 -Exactly
         Assert-MockCalled -CommandName 'Invoke-GetBody' -Times 4 -Exactly
         Assert-MockCalled -CommandName 'Invoke-StartListener' -Times 4 -Exactly

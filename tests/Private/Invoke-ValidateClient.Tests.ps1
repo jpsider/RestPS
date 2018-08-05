@@ -15,7 +15,7 @@ Describe "Invoke-ValidateClient function for $moduleName" {
         Mock -CommandName 'Invoke-VerifyRootCA' -MockWith {
             $true
         }
-        Invoke-ValidateClient -VerificationType VerifyRootCA -RestPSLocalRoot "c:\RestPS" | Should be $true
+        Invoke-ValidateClient -VerificationType VerifyRootCA -RestPSLocalRoot "$RestPSLocalRoot" | Should be $true
         Assert-MockCalled -CommandName 'Write-Output' -Times 0 -Exactly
         Assert-MockCalled -CommandName 'Invoke-VerifyRootCA' -Times 1 -Exactly
     }
@@ -24,7 +24,7 @@ Describe "Invoke-ValidateClient function for $moduleName" {
         Mock -CommandName 'Invoke-VerifySubject' -MockWith {
             $true
         }
-        Invoke-ValidateClient -VerificationType VerifySubject -RestPSLocalRoot "c:\RestPS" | Should be $true
+        Invoke-ValidateClient -VerificationType VerifySubject -RestPSLocalRoot "$RestPSLocalRoot" | Should be $true
         Assert-MockCalled -CommandName 'Write-Output' -Times 0 -Exactly
         Assert-MockCalled -CommandName 'Invoke-VerifySubject' -Times 1 -Exactly
     }
@@ -33,7 +33,7 @@ Describe "Invoke-ValidateClient function for $moduleName" {
         Mock -CommandName 'Invoke-VerifyUserAuth' -MockWith {
             $true
         }
-        Invoke-ValidateClient -VerificationType VerifyUserAuth -RestPSLocalRoot "c:\RestPS" | Should be $true
+        Invoke-ValidateClient -VerificationType VerifyUserAuth -RestPSLocalRoot "$RestPSLocalRoot" | Should be $true
         Assert-MockCalled -CommandName 'Write-Output' -Times 0 -Exactly
         Assert-MockCalled -CommandName 'Invoke-VerifyUserAuth' -Times 1 -Exactly
     }
@@ -42,7 +42,7 @@ Describe "Invoke-ValidateClient function for $moduleName" {
         Mock -CommandName 'Invoke-VerifyRootCA' -MockWith {
             $false
         }
-        Invoke-ValidateClient -VerificationType VerifyRootCA -RestPSLocalRoot "c:\RestPS" | Should be $false
+        Invoke-ValidateClient -VerificationType VerifyRootCA -RestPSLocalRoot "$RestPSLocalRoot" | Should be $false
         Assert-MockCalled -CommandName 'Write-Output' -Times 0 -Exactly
         Assert-MockCalled -CommandName 'Invoke-VerifyRootCA' -Times 2 -Exactly
     }
@@ -51,7 +51,7 @@ Describe "Invoke-ValidateClient function for $moduleName" {
         Mock -CommandName 'Invoke-VerifySubject' -MockWith {
             $false
         }
-        Invoke-ValidateClient -VerificationType VerifySubject -RestPSLocalRoot "c:\RestPS" | Should be $false
+        Invoke-ValidateClient -VerificationType VerifySubject -RestPSLocalRoot "$RestPSLocalRoot" | Should be $false
         Assert-MockCalled -CommandName 'Write-Output' -Times 0 -Exactly
         Assert-MockCalled -CommandName 'Invoke-VerifySubject' -Times 2 -Exactly
     }
@@ -60,7 +60,7 @@ Describe "Invoke-ValidateClient function for $moduleName" {
         Mock -CommandName 'Invoke-VerifyUserAuth' -MockWith {
             $false
         }
-        Invoke-ValidateClient -VerificationType VerifyUserAuth -RestPSLocalRoot "c:\RestPS" | Should be $false
+        Invoke-ValidateClient -VerificationType VerifyUserAuth -RestPSLocalRoot "$RestPSLocalRoot" | Should be $false
         Assert-MockCalled -CommandName 'Write-Output' -Times 0 -Exactly
         Assert-MockCalled -CommandName 'Invoke-VerifyUserAuth' -Times 2 -Exactly
     }

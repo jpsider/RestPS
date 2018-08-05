@@ -6,6 +6,7 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 
 Describe "Invoke-StartListener function for $moduleName" {
     function Write-Output {}
+	function Get-ChildItem {}
     $guid = New-Guid
     It "Should return null when using Https." {
         $listener = [System.Net.HttpListener]::new()
@@ -13,6 +14,10 @@ Describe "Invoke-StartListener function for $moduleName" {
         $listener.Prefixes.Remove("https://+:8080/")
         $listener.Prefixes.Remove("http://+:8080/")
         Mock -CommandName 'Write-Output' -MockWith {}
+		Mock -CommandName 'Get-ChildItem' -MockWith {
+            $ReturnData = @{Thumbprint = "EA2452F896F9EDA2F287A7894AB9922FFAF3A704"}
+            return $ReturnData
+        }
         Invoke-StartListener -SSLThumbprint EA2452F896F9EDA2F287A7894AB9922FFAF3A704 -Port 8080 -AppGuid $guid | Should not be $null
         Assert-MockCalled -CommandName 'Write-Output' -Times 1 -Exactly
     }

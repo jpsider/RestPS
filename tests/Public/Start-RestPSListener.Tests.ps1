@@ -10,6 +10,9 @@ Describe "Start-RestPSListener function for $moduleName" {
     function Invoke-StreamOutput {}
     function Write-Output {}
     function Invoke-GetBody {}
+	function Invoke-AvailableRouteSet {}
+	function Invoke-RequestRouter {}
+	function Invoke-StopListener {}
     It "Should return False if -WhatIf is used." {
         Start-RestPSListener -WhatIf | Should be $false
     }

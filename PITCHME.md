@@ -19,4 +19,3 @@ For more information
 
 * [RestPS.readthedocs.io](http://RestPS.readthedocs.io)
 * [github.com/jpsider/RestPS](https://github.com/jpsider/RestPS)
-* [jpsider.github.io](https://jpsider.github.io)

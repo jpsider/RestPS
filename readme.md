@@ -57,11 +57,11 @@ This example will use the default parameters and example files included with the
 
 Using all of the included files and default directories perform the following command:
 
-    PS C:\> $RestPSparams = @{
+    $RestPSparams = @{
                 RoutesFilePath = 'C:\RestPS\endpoints\Invoke-AvailableRouteSet.ps1'
                 Port = '8080'
             }
-    PS C:\> Start-RestPSListener @RestPSparams
+    Start-RestPSListener @RestPSparams
 
 This is a blocking command, you will need to shutdown the endpoint in order to return to the PowerShell prompt.
 
@@ -70,12 +70,12 @@ This is a blocking command, you will need to shutdown the endpoint in order to r
 Open a new Console window to act as the client.
 Use `Invoke-RestMethod` to access the data the Endpoint is providing.
 
-    PS C:\> $RestMethodParams = @{
+    $RestMethodParams = @{
                 Uri = 'http://localhost:8080/process?name=powershell'
                 Method = 'Get'
                 UseBasicParsing = $true
             }
-    PS C:\> Invoke-RestMethod @RestMethodParams
+    Invoke-RestMethod @RestMethodParams
 
 The return from the command should look similar to the following table:
 
@@ -88,12 +88,12 @@ The return from the command should look similar to the following table:
 
 ### Shutdown a RestPS Endpoint
 
-    PS C:\> $RestMethodParams = @{
+    $RestMethodParams = @{
                 Uri = 'http://localhost:8080/endpoint/shutdown'
                 Method = 'Get'
                 UseBasicParsing = $true
             }
-    PS C:\> Invoke-RestMethod @RestMethodParams
+    Invoke-RestMethod @RestMethodParams
 
 ## Securing RestPS Endpoints
 
@@ -114,18 +114,18 @@ If you are familiar with SSL certificates, AWESOME!, otherwise view my [blog pos
 Once you have a Server and Client certificate signed by the same Root Certificate Authority, open two PowerShell consoles, one for the Client, and one for the Server.
 You can rename the console title with the following command:
 
-    PS C:\> $Host.UI.RawUI.WindowTitle = 'ClientConsole'
-    PS C:\> $Host.UI.RawUI.WindowTitle = 'ServerConsole'
+    $Host.UI.RawUI.WindowTitle = 'ClientConsole'
+    $Host.UI.RawUI.WindowTitle = 'ServerConsole'
 
 In the ServerConsole, capture the Server certificate as a variable, this will be used to identify the thumbprint. Next, we can setup the RestPS parameters and start the Endpoint:
 
-    PS C:\> $ServerParams = @{
+    $ServerParams = @{
         RoutesFilePath = 'C:\RestPS\endpoints\Invoke-AvailableRouteSet.ps1'
         Port = 8080
         SSLThumbprint = $ServerCert.Thumbprint
         VerificationType = 'VerifyRootCA'
     }
-    PS C:\> Start-RestPSListener @ServerParams
+    Start-RestPSListener @ServerParams
 
 In the console you should see the title has changed, and the following message was posted:
 
@@ -137,13 +137,13 @@ If you attempt to connect to this endpoint from the client console without using
 
 This can be avoided by using the Client Certificate in the `Invoke-RestMethod` command:
 
-    PS C:\> $HttpsParams = @{
+    $HttpsParams = @{
       Uri = 'https://localhost:8080/process?name=powershell'
       Method = 'Get'
       Certificate = $ClientCert
       UseBasicParsing = $true
     }
-    PS C:\> Invoke-RestMethod @HttpsParams
+    Invoke-RestMethod @HttpsParams
 
         ProcessName    Id MainWindowTitle
         -----------    -- ---------------
@@ -153,13 +153,13 @@ This can be avoided by using the Client Certificate in the `Invoke-RestMethod` c
 
 You can now shutdown the Endpoint, a Client certificate is still required!
 
-    PS C:\> $HttpsParams = @{
+    $HttpsParams = @{
       Uri = 'https://localhost:8080/endpoint/shutdown'
       Method = 'Get'
       Certificate = $ClientCert
       UseBasicParsing = $true
     }
-    PS C:\> Invoke-RestMethod @HttpsParams
+    Invoke-RestMethod @HttpsParams
 
 #### Client Verification
 
@@ -171,13 +171,13 @@ Think of this as an Access Control List(ACL). RestPS includes and example functi
 
 Example Parameters for the 'VerifySubject' VerificationType
 
-    PS C:\> $ServerParams = @{
+    $ServerParams = @{
         RoutesFilePath = 'C:\RestPS\endpoints\Invoke-AvailableRouteSet.ps1'
         Port = 8080
         SSLThumbprint = $ServerCert.Thumbprint
         VerificationType = 'VerifySubject'
     }
-    PS C:\> Start-RestPSListener @ServerParams
+    Start-RestPSListener @ServerParams
 
 #### Client Authentication
 
@@ -191,13 +191,13 @@ An example function, `Get-RestUserAuth`, is included with RestPS and uses a plai
 
 Example Parameters for the 'VerifyUserAuth' VerificationType
 
-    PS C:\> $ServerParams = @{
+    $ServerParams = @{
         RoutesFilePath = 'C:\RestPS\endpoints\Invoke-AvailableRouteSet.ps1'
         Port = 8080
         SSLThumbprint = $ServerCert.Thumbprint
         VerificationType = 'VerifyUserAuth'
     }
-    PS C:\> Start-RestPSListener @ServerParams
+    Start-RestPSListener @ServerParams
 
 ### Final Notes on Security
 

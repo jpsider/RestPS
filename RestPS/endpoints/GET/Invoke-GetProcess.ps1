@@ -11,26 +11,29 @@ param(
     $RequestArgs
 )
 
-if ($RequestArgs -like "*&*")
-{
-    $ArgumentPairs = $RequestArgs.split("&")
-
-    $Property0, $Value0 = $ArgumentPairs[0].split("=")
-    $Property1, $Value1 = $ArgumentPairs[1].split("=")
-    if ($Property0 -eq "Name")
-    {
-        $Message = Get-Process -Name $Value0 | Where-Object {$_.($Property1) -like "*$Value1*"} | Select-Object ProcessName, Id, MainWindowTitle
+if ($RequestArgs -like '*&*') {
+    # Split the Argument Pairs by the '&' character
+    $ArgumentPairs = $RequestArgs.split('&')
+    $RequestObj = New-Object System.Object
+    foreach ($ArgumentPair in $ArgumentPairs) {
+        # Split the Pair data by the '=' character
+        $Property, $Value = $ArgumentPair.split('=')
+        $RequestObj | Add-Member -MemberType NoteProperty -Name $Property -value $Value
     }
-    else
-    {
-        $Message = Get-Process -Name $Value1 | Where-Object {$_.($Property0) -like "*$Value0*"} | Select-Object ProcessName, Id, MainWindowTitle
+
+    # Edit the Area below to utilize the Values of the new Request Object
+    $ProcessName = $RequestObj.Name
+    $WindowTitle = $RequestObj.MainWindowTitle
+    if ($RequestObj.Name) {
+        $Message = Get-Process -Name $ProcessName | Where-Object {$_.Name -like "*$ProcessName*"} | Select-Object ProcessName, Id, MainWindowTitle
+    }
+    else {
+        $Message = Get-Process -Name $WindowTitle | Where-Object {$_.WindowTitle -like "*$WindowTitle*"} | Select-Object ProcessName, Id, MainWindowTitle
     }
 }
-else
-{
-    $Property, $Value = $RequestArgs.split("=")
-    $Message = Get-Process -Name $Value | Select-Object ProcessName, Id, MainWindowTitle
+else {
+    $Property, $ProcessName = $RequestArgs.split("=")
+    $Message = Get-Process -Name $ProcessName | Select-Object ProcessName, Id, MainWindowTitle
 }
-
 
 return $Message

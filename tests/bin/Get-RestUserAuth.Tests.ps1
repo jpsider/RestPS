@@ -6,6 +6,6 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 
 Describe "Routes Variable function for $moduleName" {
     It "Should Return true." {
-        Invoke-VerifyUserAuth | Should not be $null
+        Get-RestUserAuth | Should not be $null
     }
 }

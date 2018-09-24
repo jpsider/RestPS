@@ -1,5 +1,4 @@
-function Invoke-AvailableRouteSet
-{
+function Invoke-AvailableRouteSet {
     <#
 	.DESCRIPTION
 		This function defines the available Routes (Rest Methods and Commands/Scripts).
@@ -19,6 +18,11 @@ function Invoke-AvailableRouteSet
             'RequestType'    = 'GET'
             'RequestURL'     = '/endpoint/status'
             'RequestCommand' = 'return 1'
+        }
+        @{
+            'RequestType'    = 'GET'
+            'RequestURL'     = '/endpoint/routes'
+            'RequestCommand' = "return $script:Routes"
         }
         @{
             'RequestType'    = 'GET'

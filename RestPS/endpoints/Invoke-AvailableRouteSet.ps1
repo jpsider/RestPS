@@ -7,7 +7,6 @@ function Invoke-AvailableRouteSet {
 	.NOTES
         This will return null.
     #>
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingInvokeExpression", '')]
     $script:Routes = @(
         @{
             'RequestType'    = 'GET'

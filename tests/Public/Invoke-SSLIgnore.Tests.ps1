@@ -4,7 +4,7 @@ $here = (Split-Path -Parent $MyInvocation.MyCommand.Path) -replace 'tests', "$sc
 $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 . "$here\$sut"
 
-Describe "Invoke-SSLIgnore function for $moduleName" {
+Describe "Invoke-SSLIgnore function for $script:ModuleName" {
     It "Should Return true." {
         Invoke-SSLIgnore | Should be $true
     }

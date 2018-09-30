@@ -13,9 +13,9 @@ $Routes = @(
 )
 $Routes = $Routes
 $RoutesFilePath = "Invoke-AvailableRouteSet"
-Describe "Invoke-RequestRouter function for $moduleName" {
-	Function Invoke-AvailableRouteSet {}
-	Function Invoke-Expression {}
+Describe "Invoke-RequestRouter function for $script:ModuleName" {
+    Function Invoke-AvailableRouteSet {}
+    Function Invoke-Expression {}
     It "Should return True" {
         Mock -CommandName 'Invoke-Expression' -MockWith {
             return 'True @{ProcessName=calc.exe}'

@@ -8,9 +8,9 @@ function Write-Output {}
 function Invoke-VerifyRootCA {}
 function Get-RestAclList {}
 $tempDir = (pwd).Path
-$RestPSLocalRoot = $tempDir + "/RestPS" 
+$RestPSLocalRoot = $tempDir + "\RestPS" 
 
-Describe "Routes Variable function for $moduleName" {
+Describe "Routes Variable function for $script:ModuleName" {
     It "Should Return false if no client certificate is found." {
         $script:ClientCert = $null
         Mock -CommandName 'Write-Output' -MockWith {}

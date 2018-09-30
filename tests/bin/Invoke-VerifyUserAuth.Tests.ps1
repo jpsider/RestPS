@@ -8,7 +8,7 @@ function Write-Output {}
 function Invoke-VerifySubject {}
 function Get-RestUserAuth {}
 $tempDir = (pwd).Path
-$RestPSLocalRoot = $tempDir + "/RestPS" 
+$RestPSLocalRoot = $tempDir + "\RestPS" 
 
 Describe "Routes Variable function for $script:ModuleName" {
     $script:ClientCert = $null

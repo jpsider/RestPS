@@ -4,7 +4,7 @@ Set-Location "C:\OPEN_PROJECTS\ProjectPembroke\RestPS\"
 
 $FoundError = $false
 
-$Directories = ("private", "public")
+$Directories = ("private", "public", "bin")
 foreach ($Directory in $Directories)
 {
     $AnalyzerResults = Invoke-ScriptAnalyzer -Path .\RestPS\$Directory -IncludeDefaultRules

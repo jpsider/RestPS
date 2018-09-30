@@ -4,15 +4,15 @@ $here = (Split-Path -Parent $MyInvocation.MyCommand.Path) -replace 'tests', "$sc
 $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 . "$here\$sut"
 
-Describe "Start-RestPSListener function for $moduleName" {
+Describe "Start-RestPSListener function for $script:ModuleName" {
     function Invoke-StartListener {}
     function Invoke-GetContext {}
     function Invoke-StreamOutput {}
     function Write-Output {}
     function Invoke-GetBody {}
-	function Invoke-AvailableRouteSet {}
-	function Invoke-RequestRouter {}
-	function Invoke-StopListener {}
+    function Invoke-AvailableRouteSet {}
+    function Invoke-RequestRouter {}
+    function Invoke-StopListener {}
     It "Should return False if -WhatIf is used." {
         Start-RestPSListener -WhatIf | Should be $false
     }

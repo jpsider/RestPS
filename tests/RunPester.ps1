@@ -4,7 +4,7 @@ Set-Location C:\OPEN_PROJECTS\ProjectPembroke\RestPS
 
 $foundError = $false
 
-$Directories = ("private", "public")
+$Directories = ("private", "public", "bin")
 foreach ($Directory in $Directories)
 {
     # Import the functions.

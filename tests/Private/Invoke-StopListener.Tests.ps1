@@ -4,7 +4,7 @@ $here = (Split-Path -Parent $MyInvocation.MyCommand.Path) -replace 'tests', "$sc
 $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 . "$here\$sut"
 
-Describe "Invoke-StopListener function for $script:ModuleName" {
+Describe "Invoke-StopListener function for $script:ModuleName" -Tags Build {
     $listener = [System.Net.HttpListener]::new()
     $listener = $listener
     function Write-Output {}

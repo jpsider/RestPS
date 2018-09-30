@@ -10,7 +10,7 @@ function Get-RestUserAuth {}
 $tempDir = (pwd).Path
 $RestPSLocalRoot = $tempDir + "\RestPS" 
 
-Describe "Routes Variable function for $script:ModuleName" {
+Describe "Routes Variable function for $script:ModuleName" -Tags Build {
     $script:ClientCert = $null
     It "Should Return false if a client cert is not found." {
         Mock -CommandName 'Write-Output' -MockWith {}

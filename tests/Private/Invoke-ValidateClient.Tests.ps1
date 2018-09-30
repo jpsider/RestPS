@@ -4,7 +4,7 @@ $here = (Split-Path -Parent $MyInvocation.MyCommand.Path) -replace 'tests', "$sc
 $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 . "$here\$sut"
 
-Describe "Invoke-ValidateClient function for $script:ModuleName" {
+Describe "Invoke-ValidateClient function for $script:ModuleName" -Tags Build {
     $RestPSLocalRoot = "$here\..\"
     function Write-Output {}
     function Invoke-VerifyRootCA {}

@@ -4,7 +4,7 @@ $here = (Split-Path -Parent $MyInvocation.MyCommand.Path) -replace 'tests', "$sc
 $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 . "$here\$sut"
 
-Describe "Start-RestPSListener function for $script:ModuleName" {
+Describe "Start-RestPSListener function for $script:ModuleName" -Tags Build {
     function Invoke-StartListener {}
     function Invoke-GetContext {}
     function Invoke-StreamOutput {}

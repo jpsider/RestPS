@@ -4,7 +4,7 @@ $here = (Split-Path -Parent $MyInvocation.MyCommand.Path) -replace 'tests', "$sc
 $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 . "$here\$sut"
 
-Describe "Invoke-StartListener function for $script:ModuleName" {
+Describe "Invoke-StartListener function for $script:ModuleName" -Tags Build {
     function Write-Output {}
     function Get-ChildItem {}
     $guid = New-Guid

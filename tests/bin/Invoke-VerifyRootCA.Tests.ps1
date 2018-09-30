@@ -7,7 +7,7 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 function Get-ChildItem {}
 function Write-Output {}
 
-Describe "Invoke-VerifyRootCA Variable function for $script:ModuleName" {
+Describe "Invoke-VerifyRootCA Variable function for $script:ModuleName" -Tags Build {
     It "Should Return false if no client certificate is found." {
         $script:ClientCert = $null
         Mock -CommandName 'Write-Output' -MockWith {}

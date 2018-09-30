@@ -13,7 +13,7 @@ $Routes = @(
 )
 $Routes = $Routes
 $RoutesFilePath = "Invoke-AvailableRouteSet"
-Describe "Invoke-RequestRouter function for $script:ModuleName" {
+Describe "Invoke-RequestRouter function for $script:ModuleName" -Tags Build {
     Function Invoke-AvailableRouteSet {}
     Function Invoke-Expression {}
     It "Should return True" {

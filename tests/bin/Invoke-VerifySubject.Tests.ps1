@@ -10,7 +10,7 @@ function Get-RestAclList {}
 $tempDir = (pwd).Path
 $RestPSLocalRoot = $tempDir + "\RestPS" 
 
-Describe "Routes Variable function for $script:ModuleName" {
+Describe "Routes Variable function for $script:ModuleName" -Tags Build {
     It "Should Return false if no client certificate is found." {
         $script:ClientCert = $null
         Mock -CommandName 'Write-Output' -MockWith {}

@@ -45,4 +45,22 @@ Describe "Invoke-RequestRouter function for $script:ModuleName" -Tags Build {
         Mock -CommandName 'Write-Output' -MockWith {}
         Invoke-RequestRouter -RequestType "GET" -RequestURL "/FakeURL" -RoutesFilePath $RoutesFilePath | Should be "404 No Matching Routes"
     }
+    It "Should not be null, when routes are returned." {
+        $tempDir = (Get-Location).Path
+        $RestPSLocalRoot = $tempDir + "\RestPS" 
+
+        $Routes = @(
+            @{
+                'RequestType'    = 'GET'
+                'RequestURL'     = '/endpoint/routes'
+                'RequestCommand' = "$RestPSLocalRoot\EndPoints\GET\Invoke-GetRoutes.ps1"
+            }
+        )
+        $Routes = $Routes
+        Mock -CommandName 'Invoke-Expression' -MockWith {
+            return $null
+        }
+        Mock -CommandName 'Set-Location' -MockWith {}
+        Invoke-RequestRouter -RequestType "GET" -RequestURL "/endpoint/routes" -RoutesFilePath $RoutesFilePath | Should not be $null
+    }
 }

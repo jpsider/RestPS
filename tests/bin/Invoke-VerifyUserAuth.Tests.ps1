@@ -49,18 +49,24 @@ Describe "Routes Variable function for $script:ModuleName" -Tags Build {
 
     #### Need a way to fake out the $script:Request
     #It "Should Return false if " {
-    #    $script:ClientCert = @{Thumbprint = "123456789"}
-    #    $RawReturn = @{
-    #        Subject    = "cn=client"
-    #        Thumbprint = "123456789"
-    #        Headers    = @{
-    #            Authorization = @{
-    #                value = '2.5.29.35'
+    #
+    #    class MockHeaders
+    #    {
+    #        [string]GetValues($parameter)
+    #        {
+    #            $data = @{
+    #                Headers = @{
+    #                    Authorization = "basic ABCD1234"
+    #                }
     #            }
+    #            $ReturnJson = $data | ConvertTo-Json -Depth 3
+    #            $FinalData = $ReturnJson | convertfrom-json
+    #            return $FinalData
     #        }
-    #    }               
-    #    $ReturnJson = $RawReturn | ConvertTo-Json
-    #    $script:Request = $ReturnJson | convertfrom-json
+    #    }
+    #    $script:Request = New-Object MockHeaders
+    #    $script:ClientCert = @{Thumbprint = "123456789"}
+    #
     #    $script:Subject = "Client"
     #    Mock -CommandName 'Write-Output' -MockWith {}
     #    Mock -CommandName 'Invoke-VerifySubject' -MockWith {

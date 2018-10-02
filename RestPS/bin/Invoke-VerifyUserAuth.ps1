@@ -19,7 +19,8 @@ function Invoke-VerifyUserAuth
                 $SystemAuthString = ($RestUserAuth | Where-Object { $_.UserName -eq "$UserToCheck" }).SystemAuthString
 
                 # Get the AuthString from Client Headers
-                $ClientHeadersAuth = $script:Request.Headers.GetValues("Authorization")
+                $ClientHeaders = $script:Request.Headers
+                $ClientHeadersAuth = $ClientHeaders.GetValues("Authorization")
                 $AuthType, $AuthString = $ClientHeadersAuth.split(" ")
                 Write-Output "Auth type is: $AuthType, AuthString is: $AuthString"
 

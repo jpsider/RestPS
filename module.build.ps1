@@ -87,7 +87,7 @@ Task BuildPSM1 -Inputs (Get-Item "$source\*\*.ps1") -Outputs $ModulePath {
     }
     
     Write-Output "  Creating module [$ModulePath]"
-    Set-Content -Path  $ModulePath -Value $stringbuilder.ToString() 
+    Set-Content -Path $ModulePath -Value $stringbuilder.ToString() 
 }
 
 Task NextPSGalleryVersion -if (-Not ( Test-Path "$output\version.xml" ) ) -Before BuildPSD1 {
@@ -100,17 +100,16 @@ Task BuildPSD1 -inputs (Get-ChildItem $Source -Recurse -File) -Outputs $Manifest
    
     Write-Output "  Update [$ManifestPath]"
     Copy-Item "$source\$ModuleName.psd1" -Destination $ManifestPath
-    Write-Output "Wheres the ball drop?  -  1"
+
     $bumpVersionType = 'Patch'
-    Write-Output "Wheres the ball drop?  -  2"
+
     $functions = Get-ChildItem "$ModuleName\Public\*.ps1" | Where-Object { $_.name -notmatch 'Tests'} | Select-Object -ExpandProperty basename      
-    Write-Output "Wheres the ball drop?  -  3"
+
     $oldFunctions = (Get-Metadata -Path $manifestPath -PropertyName 'FunctionsToExport')
-    Write-Output "Wheres the ball drop?  -  4"
+
     $functions | Where {$_ -notin $oldFunctions } | % {$bumpVersionType = 'Minor'}
     $oldFunctions | Where {$_ -notin $Functions } | % {$bumpVersionType = 'Major'}
-    Write-Output "Wheres the ball drop?  -  4"
-    Write-Output "$ManifestPath - $functions"
+
     Set-ModuleFunctions -Name $ManifestPath -FunctionsToExport $functions
 
     # Bump the module version

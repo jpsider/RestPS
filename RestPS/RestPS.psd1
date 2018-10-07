@@ -54,7 +54,8 @@
     #RequiredModules   = @(
     #    @{ 'ModuleName' = 'PowerLumber'; 'RequiredVersion' = '3.0.2'}
     #)
-
+    RequiredModules   = @()
+    
     # Assemblies that must be loaded prior to importing this module
     # RequiredAssemblies = @()
 

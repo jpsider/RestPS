@@ -124,11 +124,6 @@ Task BuildPSD1 -inputs (Get-ChildItem $Source -Recurse -File) -Outputs $Manifest
     Write-Output "  Using version: $version"
     
     Update-Metadata -Path $ManifestPath -PropertyName ModuleVersion -Value $version
-
-    # UnComment Required Modules
-    $ManifestContent = Get-Content -Path $ManifestPath
-    $ManifestContent = $ManifestContent -Replace ("#RequiredModules","RequiredModules")
-    Set-Content -Path $ManifestPath -Value $ManifestContent
 }
 
 Task UpdateSource {
@@ -138,7 +133,7 @@ Task UpdateSource {
 Task ImportModule {
     if ( -Not ( Test-Path $ManifestPath ) )
     {
-        Write-Output "  Modue [$ModuleName] is not built, cannot find [$ManifestPath]"
+        Write-Output "  Module [$ModuleName] is not built, cannot find [$ManifestPath]"
         Write-Error "Could not find module manifest [$ManifestPath]. You may need to build the module first"
     }
     else
@@ -155,6 +150,12 @@ Task ImportModule {
 
 Task Publish {
     # Gate deployment
+
+    # UnComment Required Modules
+    $ManifestContent = Get-Content -Path $ManifestPath
+    $ManifestContent = $ManifestContent -Replace ("#RequiredModules","RequiredModules")
+    Set-Content -Path $ManifestPath -Value $ManifestContent
+    
     if (
         $ENV:BHBuildSystem -ne 'Unknown' -and 
         $ENV:BHBranchName -eq "master" -and 
@@ -163,6 +164,8 @@ Task Publish {
     {
         $Params = @{
             Path  = $BuildRoot
+            write-host $BuildRoot
+            Get-ChildItem $BuildRoot
             Force = $true
         }
 

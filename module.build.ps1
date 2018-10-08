@@ -152,6 +152,7 @@ Task Publish {
     # Gate deployment
 
     # UnComment Required Modules
+    Write-Output "Uncomment Required Modules"
     $ManifestContent = Get-Content -Path $ManifestPath
     $ManifestContent = $ManifestContent -Replace ("#RequiredModules","RequiredModules")
     Set-Content -Path $ManifestPath -Value $ManifestContent

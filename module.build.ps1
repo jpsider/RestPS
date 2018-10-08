@@ -164,8 +164,6 @@ Task Publish {
     {
         $Params = @{
             Path  = $BuildRoot
-            write-host $BuildRoot
-            Get-ChildItem $BuildRoot
             Force = $true
         }
 

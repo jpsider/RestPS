@@ -124,6 +124,11 @@ Task BuildPSD1 -inputs (Get-ChildItem $Source -Recurse -File) -Outputs $Manifest
     Write-Output "  Using version: $version"
     
     Update-Metadata -Path $ManifestPath -PropertyName ModuleVersion -Value $version
+
+    # UnComment Required Modules
+    $ManifestContent = Get-Content -Path $ManifestPath
+    $ManifestContent = $ManifestContent -Replace ("#RequiredModules","RequiredModules")
+    Set-Content -Path $ManifestPath -Value $ManifestContent
 }
 
 Task UpdateSource {

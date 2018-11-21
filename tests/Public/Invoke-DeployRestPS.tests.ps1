@@ -41,7 +41,7 @@ Describe "Invoke-DeployRestPS function for $script:ModuleName" -Tags Build {
         Mock -CommandName 'Write-Output' -MockWith {}
         {Invoke-DeployRestPS -LocalDir c:\temp\someDir} | Should -Not -Throw
         Assert-MockCalled -CommandName 'Test-Path' -Times 1 -Exactly
-        Assert-MockCalled -CommandName 'Copy-Item' -Times 6 -Exactly
+        Assert-MockCalled -CommandName 'Copy-Item' -Times 7 -Exactly
         Assert-MockCalled -CommandName 'New-Item' -Times 0 -Exactly
         Assert-MockCalled -CommandName 'Write-Output' -Times 6 -Exactly
     }
@@ -54,7 +54,7 @@ Describe "Invoke-DeployRestPS function for $script:ModuleName" -Tags Build {
         Mock -CommandName 'Write-Output' -MockWith {}
         {Invoke-DeployRestPS -LocalDir c:\temp\someDir} | Should -Not -Throw
         Assert-MockCalled -CommandName 'Test-Path' -Times 2 -Exactly
-        Assert-MockCalled -CommandName 'Copy-Item' -Times 12 -Exactly
+        Assert-MockCalled -CommandName 'Copy-Item' -Times 14 -Exactly
         Assert-MockCalled -CommandName 'New-Item' -Times 8 -Exactly
         Assert-MockCalled -CommandName 'Write-Output' -Times 12 -Exactly
     }
@@ -69,7 +69,7 @@ Describe "Invoke-DeployRestPS function for $script:ModuleName" -Tags Build {
         Mock -CommandName 'Write-Output' -MockWith {}
         {Invoke-DeployRestPS -LocalDir c:\temp\someDir} | Should -Throw
         Assert-MockCalled -CommandName 'Test-Path' -Times 3 -Exactly
-        Assert-MockCalled -CommandName 'Copy-Item' -Times 13 -Exactly
+        Assert-MockCalled -CommandName 'Copy-Item' -Times 15 -Exactly
         Assert-MockCalled -CommandName 'New-Item' -Times 8 -Exactly
         Assert-MockCalled -CommandName 'Write-Output' -Times 13 -Exactly
     }

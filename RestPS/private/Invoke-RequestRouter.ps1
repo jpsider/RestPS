@@ -31,7 +31,7 @@ function Invoke-RequestRouter
         [Parameter()][String]$RoutesFilePath
     )
     # Import Routes each pass, to include new routes.
-    . $RoutesFilePath
+    Import-RouteSet -RoutesFilePath $RoutesFilePath
     $Route = ($Routes | Where-Object {$_.RequestType -eq $RequestType -and $_.RequestURL -eq $RequestURL})
 
     if ($null -ne $Route)

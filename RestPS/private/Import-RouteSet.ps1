@@ -6,7 +6,7 @@ function Import-RouteSet
     .PARAMETER RoutesFilePath
         Provide a valid path to a .json file
     .EXAMPLE
-        Invoke-AvailableRouteSet -RoutesFilePath c:\RestPS\endpoints\routes.json
+        Invoke-AvailableRouteSet -RoutesFilePath $env:systemdrive/RestPS/endpoints/routes.json
 	.NOTES
         This will return null.
     #>
@@ -20,7 +20,6 @@ function Import-RouteSet
     if (Test-Path -Path $RoutesFilePath)
     {
         $script:Routes = Get-Content -Raw $RoutesFilePath | ConvertFrom-Json
-        $script:Routes
     }
     else
     {

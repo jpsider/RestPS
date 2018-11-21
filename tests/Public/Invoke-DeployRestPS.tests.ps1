@@ -13,7 +13,7 @@ Describe "Invoke-DeployRestPS function for $script:ModuleName" -Tags Build {
     function Get-Module {}
     $RawReturn = @(
         @{
-            FullName = 'c:\somePath\Somefile.ps1'
+            FullName = '$env:systemdrive/RestPS/endpoints/routes.json'
             Name     = 'SomeFile.ps1'
         }               
     )

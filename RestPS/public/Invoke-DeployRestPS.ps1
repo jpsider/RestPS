@@ -6,14 +6,14 @@ function Invoke-DeployRestPS
     .PARAMETER LocalDir
         A LocalDir is Optional.
 	.EXAMPLE
-        Invoke-DeployRestPS -LocalDir c:\RestPS
+        Invoke-DeployRestPS -LocalDir $env:SystemDrive/RestPS
 	.NOTES
         This will return a boolean.
     #>
     [CmdletBinding()]
     [OutputType([boolean])]
     param(
-        [string]$LocalDir = "c:\RestPS"
+        [string]$LocalDir = "$env:SystemDrive/RestPS"
     )
     try
     {
@@ -26,32 +26,34 @@ function Invoke-DeployRestPS
         {
             Write-Output "Creating RestPS Directories."
             New-Item -Path "$LocalDir" -ItemType Directory
-            New-Item -Path "$LocalDir\bin" -ItemType Directory
-            New-Item -Path "$LocalDir\endpoints" -ItemType Directory
-            New-Item -Path "$LocalDir\endpoints\Logs" -ItemType Directory
-            New-Item -Path "$LocalDir\endpoints\GET" -ItemType Directory
-            New-Item -Path "$LocalDir\endpoints\POST" -ItemType Directory
-            New-Item -Path "$LocalDir\endpoints\PUT" -ItemType Directory
-            New-Item -Path "$LocalDir\endpoints\DELETE" -ItemType Directory
+            New-Item -Path "$LocalDir/bin" -ItemType Directory
+            New-Item -Path "$LocalDir/endpoints" -ItemType Directory
+            New-Item -Path "$LocalDir/endpoints/Logs" -ItemType Directory
+            New-Item -Path "$LocalDir/endpoints/GET" -ItemType Directory
+            New-Item -Path "$LocalDir/endpoints/POST" -ItemType Directory
+            New-Item -Path "$LocalDir/endpoints/PUT" -ItemType Directory
+            New-Item -Path "$LocalDir/endpoints/DELETE" -ItemType Directory
         }
         # Move Example files to the Local Directory
         $Source = (Split-Path -Path (Get-Module -ListAvailable RestPS | Sort-Object -Property Version -Descending | Select-Object -First 1).path)
-        $RoutesFileSource = $Source + "\endpoints\Invoke-AvailableRouteSet.ps1"
-        Copy-Item -Path "$RoutesFileSource" -Destination $LocalDir\Endpoints -Confirm:$false -Force
+        $RoutesFileSource = $Source + "/endpoints/RestPSRoutes.json"
+        Copy-Item -Path "$RoutesFileSource" -Destination "$LocalDir/endpoints" -Confirm:$false -Force
+        $GetRoutesFileSource = $Source + "/endpoints/GET/Invoke-GetRoutes.ps1"
+        Copy-Item -Path $GetRoutesFileSource -Destination "$LocalDir/endpoints/GET" -Confirm:$false -Force
         $EndpointVerbs = @("GET", "POST", "PUT", "DELETE")
         foreach ($Verb in $EndpointVerbs)
         {
-            $EndpointSource = $Source + "\endpoints\$Verb\Invoke-GetProcess.ps1"
-            Write-Output "Copying $EndpointSource to Desination $LocalDir\Endpoints\$Verb"
-            Copy-Item -Path "$EndpointSource" -Destination $LocalDir\Endpoints\$Verb -Confirm:$false -Force
+            $endpointsource = $Source + "/endpoints/$Verb/Invoke-GetProcess.ps1"
+            Write-Output "Copying $endpointsource to Desination $LocalDir/endpoints/$Verb"
+            Copy-Item -Path "$endpointsource" -Destination "$LocalDir/endpoints/$Verb" -Confirm:$false -Force
         }
-        $BinFiles = Get-ChildItem -Path ($Source + "\bin") -File
+        $BinFiles = Get-ChildItem -Path ($Source + "/bin") -File
         foreach ($file in $BinFiles)
         {
             $filePath = $file.FullName
             $filename = $file.Name
-            Write-Output "Copying File $fileName to $localDir\bin"
-            Copy-Item -Path "$filePath" -Destination $LocalDir\bin -Confirm:$false -Force
+            Write-Output "Copying File $fileName to $localDir/bin"
+            Copy-Item -Path "$filePath" -Destination "$LocalDir/bin" -Confirm:$false -Force
         }
     }
     catch

@@ -23,11 +23,11 @@ function Start-RestPSListener
     .EXAMPLE
         Start-RestPSListener -Port 8081
     .EXAMPLE
-        Start-RestPSListener -Port 8081 -RoutesFilePath C:\temp\customRoutes.ps1
+        Start-RestPSListener -Port 8081 -RoutesFilePath $env:SystemDrive/RestPS/temp/customRoutes.ps1
     .EXAMPLE
-        Start-RestPSListener -RoutesFilePath C:\temp\customRoutes.ps1
+        Start-RestPSListener -RoutesFilePath $env:SystemDrive/RestPS/customRoutes.ps1
     .EXAMPLE
-        Start-RestPSListener -RoutesFilePath C:\temp\customRoutes.ps1 -VerificationType VerifyRootCA -SSLThumbprint $Thumb -AppGuid $Guid
+        Start-RestPSListener -RoutesFilePath $env:SystemDrive/RestPS/customRoutes.ps1 -VerificationType VerifyRootCA -SSLThumbprint $Thumb -AppGuid $Guid
 	.NOTES
 		No notes at this time.
     #>
@@ -39,8 +39,8 @@ function Start-RestPSListener
     [OutputType([Hashtable])]
     [OutputType([String])]
     param(
-        [Parameter()][String]$RoutesFilePath = "null",
-        [Parameter()][String]$RestPSLocalRoot = "c:\RestPS",
+        [Parameter()][String]$RoutesFilePath = "$env:SystemDrive/RestPS/endpoints/RestPSRoutes.json",
+        [Parameter()][String]$RestPSLocalRoot = "$env:SystemDrive/RestPS",
         [Parameter()][String]$Port = 8080,
         [Parameter()][String]$SSLThumbprint,
         [Parameter()][String]$AppGuid = ((New-Guid).Guid),
@@ -99,10 +99,6 @@ function Start-RestPSListener
                 {
                     # Attempt to process the Request.
                     Write-Output "Processing RequestType: $RequestType URL: $RequestURL Args: $RequestArgs"
-                    if ($RoutesFilePath -eq "null")
-                    {
-                        $RoutesFilePath = "Invoke-AvailableRouteSet"
-                    }
                     $script:result = Invoke-RequestRouter -RequestType "$RequestType" -RequestURL "$RequestURL" -RoutesFilePath "$RoutesFilePath" -RequestArgs "$RequestArgs"
                 }
             }

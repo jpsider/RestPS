@@ -14,9 +14,9 @@ function Invoke-RequestRouter
 	.EXAMPLE
         Invoke-RequestRouter -RequestType GET -RequestURL /process
 	.EXAMPLE
-        Invoke-RequestRouter -RequestType GET -RequestURL /process -RoutesFilePath c:\RestPS\Invoke-AvailableRouteSet.ps1
+        Invoke-RequestRouter -RequestType GET -RequestURL /process -RoutesFilePath $env:systemdrive/RestPS/endpoints/routes.json
 	.EXAMPLE
-        Invoke-RequestRouter -RequestType GET -RequestURL /process -RoutesFilePath c:\RestPS\Invoke-AvailableRouteSet.ps1 -RequestArgs foo=Bar&cash=Money
+        Invoke-RequestRouter -RequestType GET -RequestURL /process -RoutesFilePath $env:systemdrive/RestPS/endpoints/routes.json -RequestArgs foo=Bar&cash=Money
 	.NOTES
         This will return output from the Endpoint Command/script.
     #>

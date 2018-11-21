@@ -12,7 +12,7 @@ $Routes = @(
     }
 )
 $Routes = $Routes
-$RoutesFilePath = "Invoke-AvailableRouteSet"
+$RoutesFilePath = "$env:systemdrive/RestPS/endpoints/routes.json"
 Describe "Invoke-RequestRouter function for $script:ModuleName" -Tags Build {
     Function Import-RouteSet {}
     Function Invoke-Expression {}

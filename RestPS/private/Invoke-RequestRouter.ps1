@@ -54,18 +54,22 @@ function Invoke-RequestRouter
         if ($null -eq $CommandReturn)
         {
             # Not a valid response
-            $script:result = "400 Invalid Command"
+            $script:StatusDescription = "Bad Request"
+            $script:StatusCode = 400
         }
         else
         {
             # Valid response
             $script:result = $CommandReturn
+            $script:StatusDescription = "OK"
+            $script:StatusCode = 200
         }
     }
     else
     {
         # No matching Routes
-        $script:result = "404 No Matching Routes"
+        $script:StatusDescription = "Not Found"
+        $script:StatusCode = 404
     }
     $script:result
 }

@@ -8,6 +8,13 @@ function Invoke-StreamOutput
 	.NOTES
         This will returns a stream of data.
     #>
+
+    # Setup a placeholder to deliver a response
+    $script:Response = $script:context.Response
+    # Convert the returned data to JSON and set the HTTP content type to JSON
+    $script:Response.ContentType = 'application/json'
+    $script:Response.StatusCode = $script:StatusCode
+    $script:Response.StatusDescription = $script:StatusDescription
     # Process the Return data to send Json message back.
     $message = $script:result | ConvertTo-Json
     # Convert the data to UTF8 bytes

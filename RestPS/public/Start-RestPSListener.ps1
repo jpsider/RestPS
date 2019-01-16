@@ -50,7 +50,7 @@ function Start-RestPSListener
     # Set a few Flags
     $script:Status = $true
     $script:ValidateClient = $true
-    if ($pscmdlet.ShouldProcess("Starting HTTP Listener."))
+    if ($pscmdlet.ShouldProcess("Starting .Net.HttpListener."))
     {
         $script:listener = New-Object System.Net.HttpListener
         Invoke-StartListener -Port $Port -SSLThumbPrint $SSLThumbprint -AppGuid $AppGuid
@@ -91,9 +91,9 @@ function Start-RestPSListener
                 if ($RequestURL -match '/EndPoint/Shutdown$')
                 {
                     Write-Output "Received Request to shutdown Endpoint."
-                    $script:result = "Shutting down ReST Endpoint."
+                    $script:result = "Shutting down RESTPS Endpoint."
                     $script:Status = $false
-                    $script:HttpCode = 200
+                    $script:StatusCode = 200
                 }
                 else
                 {
@@ -105,13 +105,9 @@ function Start-RestPSListener
             else
             {
                 Write-Output "Not Processing RequestType: $RequestType URL: $RequestURL Args: $RequestArgs"
-                $script:result = "401 Client failed Verification or Authentication"
+                $script:StatusDescription = "Unauthorized"
+                $script:StatusCode = 401
             }
-            # Setup a placeholder to deliver a response
-            $script:Response = $script:context.Response
-            # Convert the returned data to JSON and set the HTTP content type to JSON
-            $script:Response.ContentType = 'application/json'
-            $script:Response.StatusCode = 200
             # Stream the output back to requestor.
             Invoke-StreamOutput
         } while ($script:Status -eq $true)

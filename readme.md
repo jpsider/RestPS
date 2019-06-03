@@ -9,6 +9,8 @@ PowerShell Framework for creating and running Simple ReSTful APIs
 [![Coverage Status](https://coveralls.io/repos/github/jpsider/RestPS/badge.svg?branch=master)](https://coveralls.io/github/jpsider/RestPS?branch=master)
 [![Documentation Status](https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat)](http://restps.readthedocs.io/en/latest/?badge=latest)
 
+![Alt text](https://github.com/jpsider/RestPS/blob/master/z_Images/icon_2.jpg "RestPS Icon") 
+
 ## Docs  
 
 [Help](http://restps.readthedocs.io/en/latest/?badge=latest)

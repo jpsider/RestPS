@@ -1,6 +1,6 @@
 # Need to import all the files first of course.
 
-Set-Location "C:\OPEN_PROJECTS\ProjectPembroke\RestPS\"
+Set-Location $PSScriptRoot\..
 
 $FoundError = $false
 
@@ -11,7 +11,7 @@ foreach ($Directory in $Directories)
     $PSCodeHealthParameters = @{
         Path           = ".\RestPS\$Directory\"
         TestsPath      = ".\tests\$Directory\"
-        HtmlReportPath = ".\Test_Results\PowerRestCLI_$Directory.html"
+        HtmlReportPath = ".\Test_Results\RestPS_$Directory.html"
         PassThru       = $true
     }
     $DirectoryResults = Invoke-PSCodeHealth @PSCodeHealthParameters
@@ -29,7 +29,7 @@ foreach ($Directory in $Directories)
         Write-Output "Failed Tests for Directory: $Directory - ($FailedTests)"
     }
     # Open the Report in the default web browser.
-    Start-Process (".\Test_Results\PowerRestCLI_$Directory.html")
+    Start-Process (".\Test_Results\RestPS_$Directory.html")
 }
 
 if ($FoundError -eq $true)

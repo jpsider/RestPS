@@ -5,6 +5,8 @@ function Invoke-DeployRestPS
 		This function will setup a local Endpoint directory structure.
     .PARAMETER LocalDir
         A LocalDir is Optional.
+    .PARAMETER SourceDir
+        An install directory of the Module, if Get-Module will not find it, is Optional.
 	.EXAMPLE
         Invoke-DeployRestPS -LocalDir $env:SystemDrive/RestPS
 	.NOTES

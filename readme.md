@@ -60,7 +60,7 @@ This example will use the default parameters and example files included with the
 Using all of the included files and default directories perform the following command:
 
     $RestPSparams = @{
-                RoutesFilePath = 'C:\RestPS\endpoints\Invoke-AvailableRouteSet.ps1'
+                RoutesFilePath = 'C:\RestPS\endpoints\RestPSRoutes.json'
                 Port = '8080'
             }
     Start-RestPSListener @RestPSparams
@@ -122,7 +122,7 @@ You can rename the console title with the following command:
 In the ServerConsole, capture the Server certificate as a variable, this will be used to identify the thumbprint. Next, we can setup the RestPS parameters and start the Endpoint:
 
     $ServerParams = @{
-        RoutesFilePath = 'C:\RestPS\endpoints\Invoke-AvailableRouteSet.ps1'
+        RoutesFilePath = 'C:\RestPS\endpoints\RestPSRoutes.json'
         Port = 8080
         SSLThumbprint = $ServerCert.Thumbprint
         VerificationType = 'VerifyRootCA'
@@ -174,7 +174,7 @@ Think of this as an Access Control List(ACL). RestPS includes and example functi
 Example Parameters for the 'VerifySubject' VerificationType
 
     $ServerParams = @{
-        RoutesFilePath = 'C:\RestPS\endpoints\Invoke-AvailableRouteSet.ps1'
+        RoutesFilePath = 'C:\RestPS\endpoints\RestPSRoutes.json'
         Port = 8080
         SSLThumbprint = $ServerCert.Thumbprint
         VerificationType = 'VerifySubject'
@@ -194,7 +194,7 @@ An example function, `Get-RestUserAuth`, is included with RestPS and uses a plai
 Example Parameters for the 'VerifyUserAuth' VerificationType
 
     $ServerParams = @{
-        RoutesFilePath = 'C:\RestPS\endpoints\Invoke-AvailableRouteSet.ps1'
+        RoutesFilePath = 'C:\RestPS\endpoints\RestPSRoutes.json'
         Port = 8080
         SSLThumbprint = $ServerCert.Thumbprint
         VerificationType = 'VerifyUserAuth'

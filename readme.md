@@ -153,7 +153,7 @@ This can be avoided by using the Client Certificate in the `Invoke-RestMethod` c
         powershell  10072 Administrator: powershell.exe - Shortcut
         powershell  12772 RestPS - https:// - Port: 8080
 
-You can now shutdown the Endpoint, a Client certificate is still required!
+You can now shutdown the Endpoint; a Client certificate is still required!
 
     $HttpsParams = @{
       Uri = 'https://localhost:8080/endpoint/shutdown'

@@ -5,6 +5,8 @@ function Invoke-DeployRestPS
 		This function will setup a local Endpoint directory structure.
     .PARAMETER LocalDir
         A LocalDir is Optional.
+    .PARAMETER SourceDir
+        An install directory of the Module, if Get-Module will not find it, is Optional.
 	.EXAMPLE
         Invoke-DeployRestPS -LocalDir $env:SystemDrive/RestPS
 	.NOTES
@@ -13,7 +15,8 @@ function Invoke-DeployRestPS
     [CmdletBinding()]
     [OutputType([boolean])]
     param(
-        [string]$LocalDir = "$env:SystemDrive/RestPS"
+        [string]$LocalDir = "$env:SystemDrive/RestPS",
+        [string]$SourceDir = (Split-Path -Path (Get-Module -ListAvailable RestPS | Sort-Object -Property Version -Descending | Select-Object -First 1).path)
     )
     try
     {
@@ -35,19 +38,18 @@ function Invoke-DeployRestPS
             New-Item -Path "$LocalDir/endpoints/DELETE" -ItemType Directory
         }
         # Move Example files to the Local Directory
-        $Source = (Split-Path -Path (Get-Module -ListAvailable RestPS | Sort-Object -Property Version -Descending | Select-Object -First 1).path)
-        $RoutesFileSource = $Source + "/endpoints/RestPSRoutes.json"
+        $RoutesFileSource = $SourceDir + "/endpoints/RestPSRoutes.json"
         Copy-Item -Path "$RoutesFileSource" -Destination "$LocalDir/endpoints" -Confirm:$false -Force
-        $GetRoutesFileSource = $Source + "/endpoints/GET/Invoke-GetRoutes.ps1"
+        $GetRoutesFileSource = $SourceDir + "/endpoints/GET/Invoke-GetRoutes.ps1"
         Copy-Item -Path $GetRoutesFileSource -Destination "$LocalDir/endpoints/GET" -Confirm:$false -Force
         $EndpointVerbs = @("GET", "POST", "PUT", "DELETE")
         foreach ($Verb in $EndpointVerbs)
         {
-            $endpointsource = $Source + "/endpoints/$Verb/Invoke-GetProcess.ps1"
+            $endpointsource = $SourceDir + "/endpoints/$Verb/Invoke-GetProcess.ps1"
             Write-Output "Copying $endpointsource to Desination $LocalDir/endpoints/$Verb"
             Copy-Item -Path "$endpointsource" -Destination "$LocalDir/endpoints/$Verb" -Confirm:$false -Force
         }
-        $BinFiles = Get-ChildItem -Path ($Source + "/bin") -File
+        $BinFiles = Get-ChildItem -Path ($SourceDir + "/bin") -File
         foreach ($file in $BinFiles)
         {
             $filePath = $file.FullName

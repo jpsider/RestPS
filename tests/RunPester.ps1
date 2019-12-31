@@ -1,6 +1,6 @@
 # Need to import all the files first of course.
 
-Set-Location C:\OPEN_PROJECTS\ProjectPembroke\RestPS
+Set-Location $PSScriptRoot\..
 
 $foundError = $false
 

@@ -10,6 +10,7 @@ Describe "Invoke-ValidateClient function for $script:ModuleName" -Tags Build {
     function Invoke-VerifyRootCA {}
     function Invoke-VerifySubject {}
     function Invoke-VerifyUserAuth {}
+    function Invoke-VerifyBasicAuth {}
     It "Should return True if the Client is Validated." {
         Mock -CommandName 'Write-Output' -MockWith {}
         Mock -CommandName 'Invoke-VerifyRootCA' -MockWith {
@@ -37,6 +38,15 @@ Describe "Invoke-ValidateClient function for $script:ModuleName" -Tags Build {
         Assert-MockCalled -CommandName 'Write-Output' -Times 0 -Exactly
         Assert-MockCalled -CommandName 'Invoke-VerifyUserAuth' -Times 1 -Exactly
     }
+    It "Should return True if the Client is Validated via basic auth." {
+        Mock -CommandName 'Write-Output' -MockWith {}
+        Mock -CommandName 'Invoke-VerifyBasicAuth' -MockWith {
+            $true
+        }
+        Invoke-ValidateClient -VerificationType VerifyBasicAuth -RestPSLocalRoot "$RestPSLocalRoot" | Should be $true
+        Assert-MockCalled -CommandName 'Write-Output' -Times 0 -Exactly
+        Assert-MockCalled -CommandName 'Invoke-VerifyBasicAuth' -Times 1 -Exactly
+    }
     It "Should return false if the Client is Validated." {
         Mock -CommandName 'Write-Output' -MockWith {}
         Mock -CommandName 'Invoke-VerifyRootCA' -MockWith {
@@ -63,6 +73,15 @@ Describe "Invoke-ValidateClient function for $script:ModuleName" -Tags Build {
         Invoke-ValidateClient -VerificationType VerifyUserAuth -RestPSLocalRoot "$RestPSLocalRoot" | Should be $false
         Assert-MockCalled -CommandName 'Write-Output' -Times 0 -Exactly
         Assert-MockCalled -CommandName 'Invoke-VerifyUserAuth' -Times 2 -Exactly
+    }
+    It "Should return false if the Client is not Validated via basic auth" {
+        Mock -CommandName 'Write-Output' -MockWith {}
+        Mock -CommandName 'Invoke-VerifyBasicAuth' -MockWith {
+            $false
+        }
+        Invoke-ValidateClient -VerificationType VerifyBasicAuth -RestPSLocalRoot "$RestPSLocalRoot" | Should be $false
+        Assert-MockCalled -CommandName 'Write-Output' -Times 0 -Exactly
+        Assert-MockCalled -CommandName 'Invoke-VerifyBasicAuth' -Times 2 -Exactly
     }
     It "Should return True, if no Verification Type is specified." {
         Mock -CommandName 'Write-Output' -MockWith {}

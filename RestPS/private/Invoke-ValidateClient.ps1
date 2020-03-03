@@ -19,7 +19,7 @@ function Invoke-ValidateClient
     [CmdletBinding()]
     [OutputType([boolean])]
     param(
-        [ValidateSet("VerifyRootCA", "VerifySubject", "VerifyUserAuth")]
+        [ValidateSet("VerifyRootCA", "VerifySubject", "VerifyUserAuth","VerifyBasicAuth")]
         [Parameter()][String]$VerificationType,
         [Parameter()][String]$RestPSLocalRoot = "c:\RestPS"
     )
@@ -44,6 +44,13 @@ function Invoke-ValidateClient
             # Source the File
             . $RestPSLocalRoot\bin\Invoke-VerifyUserAuth.ps1
             $script:VerifyStatus = Invoke-VerifyUserAuth
+        }
+
+        "VerifyBasicAuth"
+        {
+            # Source the File
+            . $RestPSLocalRoot\bin\Invoke-VerifyBasicAuth.ps1
+            $script:VerifyStatus = Invoke-VerifyBasicAuth
         }
 
         default

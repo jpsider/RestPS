@@ -23,7 +23,7 @@ function Invoke-DeployRestPS
         # Setup the local File directories
         if (Test-Path -Path "$LocalDir")
         {
-            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-DeployRestPS: Directory: $localDir, exists." 
+            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-DeployRestPS: Directory: $localDir, exists."
         }
         else
         {

@@ -28,6 +28,10 @@ function Start-RestPSListener
     .EXAMPLE
         Start-RestPSListener -Port 8081
     .EXAMPLE
+        Start-RestPSListener -Port 8081 -Logfile "c:\RestPS\RestPS.log" -LogLevel TRACE
+    .EXAMPLE
+        Start-RestPSListener -Port 8081 -Logfile "c:\RestPS\RestPS.log" -LogLevel INFO
+    .EXAMPLE
         Start-RestPSListener -Port 8081 -RoutesFilePath $env:SystemDrive/RestPS/temp/customRoutes.ps1
     .EXAMPLE
         Start-RestPSListener -RoutesFilePath $env:SystemDrive/RestPS/customRoutes.ps1

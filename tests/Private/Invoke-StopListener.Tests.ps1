@@ -7,10 +7,10 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 Describe "Invoke-StopListener function for $script:ModuleName" -Tags Build {
     $listener = [System.Net.HttpListener]::new()
     $listener = $listener
-    function Write-Output {}
-    Mock -CommandName 'Write-Output' -MockWith {}
+    function Write-Log {}
+    Mock -CommandName 'Write-Log' -MockWith {}
     It "Should return null." {
         Invoke-StopListener | Should be $null
-        Assert-MockCalled -CommandName 'Write-Output' -Times 1 -Exactly
+        Assert-MockCalled -CommandName 'Write-Log' -Times 1 -Exactly
     }
 }

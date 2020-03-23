@@ -28,6 +28,9 @@ function Invoke-ValidateClient
         "VerifyRootCA"
         {
             # Source the File
+            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-ValidateClient: Gathering Client Cert Info"
+            Get-ClientCertInfo
+            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-ValidateClient: Validating Client CN: $script:SubjectName"
             . $RestPSLocalRoot\bin\Invoke-VerifyRootCA.ps1
             $script:VerifyStatus = Invoke-VerifyRootCA
         }
@@ -35,6 +38,9 @@ function Invoke-ValidateClient
         "VerifySubject"
         {
             # Source the File
+            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-ValidateClient: Gathering Client Cert Info"
+            Get-ClientCertInfo
+            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-ValidateClient: Validating Client CN: $script:SubjectName"
             . $RestPSLocalRoot\bin\Invoke-VerifySubject.ps1
             $script:VerifyStatus = Invoke-VerifySubject
         }
@@ -42,6 +48,9 @@ function Invoke-ValidateClient
         "VerifyUserAuth"
         {
             # Source the File
+            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-ValidateClient: Gathering Client Cert Info"
+            Get-ClientCertInfo
+            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-ValidateClient: Validating Client CN: $script:SubjectName"
             . $RestPSLocalRoot\bin\Invoke-VerifyUserAuth.ps1
             $script:VerifyStatus = Invoke-VerifyUserAuth
         }
@@ -49,13 +58,14 @@ function Invoke-ValidateClient
         "VerifyBasicAuth"
         {
             # Source the File
+            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-ValidateClient: Validating Basic Auth"
             . $RestPSLocalRoot\bin\Invoke-VerifyBasicAuth.ps1
             $script:VerifyStatus = Invoke-VerifyBasicAuth
         }
 
         default
         {
-            Write-Output "No Client Validation Selected."
+            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-ValidateClient: No Client Validation Selected."
             $script:VerifyStatus = $true
         }
     }

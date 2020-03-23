@@ -51,7 +51,9 @@
     # ProcessorArchitecture = ''
 
     # Modules that must be imported/installed into the global environment prior to importing this module
-    #RequiredModules = @( @{"ModuleName"="PowerLumber";"ModuleVersion"="3.0.2"} )
+    RequiredModules   = @(
+        @{"ModuleName" = "PowerLumber"; "ModuleVersion" = "4.0.0" }
+    )
 
     # Assemblies that must be loaded prior to importing this module
     # RequiredAssemblies = @()

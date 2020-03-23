@@ -23,11 +23,11 @@ function Invoke-DeployRestPS
         # Setup the local File directories
         if (Test-Path -Path "$LocalDir")
         {
-            Write-Output "Directory: $LocalDir, exists."
+            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-DeployRestPS: Directory: $localDir, exists." 
         }
         else
         {
-            Write-Output "Creating RestPS Directories."
+            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-DeployRestPS: Creating RestPS Directories."
             New-Item -Path "$LocalDir" -ItemType Directory
             New-Item -Path "$LocalDir/bin" -ItemType Directory
             New-Item -Path "$LocalDir/endpoints" -ItemType Directory
@@ -46,7 +46,7 @@ function Invoke-DeployRestPS
         foreach ($Verb in $EndpointVerbs)
         {
             $endpointsource = $SourceDir + "/endpoints/$Verb/Invoke-GetProcess.ps1"
-            Write-Output "Copying $endpointsource to Desination $LocalDir/endpoints/$Verb"
+            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-DeployRestPS: Copying $endpointsource to Desination $LocalDir/endpoints/$Verb"
             Copy-Item -Path "$endpointsource" -Destination "$LocalDir/endpoints/$Verb" -Confirm:$false -Force
         }
         $BinFiles = Get-ChildItem -Path ($SourceDir + "/bin") -File
@@ -54,7 +54,7 @@ function Invoke-DeployRestPS
         {
             $filePath = $file.FullName
             $filename = $file.Name
-            Write-Output "Copying File $fileName to $localDir/bin"
+            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-DeployRestPS: Copying File $fileName to $localDir/bin"
             Copy-Item -Path "$filePath" -Destination "$LocalDir/bin" -Confirm:$false -Force
         }
     }

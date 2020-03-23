@@ -4,7 +4,7 @@ $here = (Split-Path -Parent $MyInvocation.MyCommand.Path) -replace 'tests', "$sc
 $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 . "$here\$sut"
 
-function Write-Output {}
+function Write-Log {}
 function Invoke-VerifyRootCA {}
 function Get-RestAclList {}
 $tempDir = (pwd).Path
@@ -13,23 +13,23 @@ $RestPSLocalRoot = $tempDir + "\RestPS"
 Describe "Routes Variable function for $script:ModuleName" -Tags Build {
     It "Should Return false if no client certificate is found." {
         $script:ClientCert = $null
-        Mock -CommandName 'Write-Output' -MockWith {}
+        Mock -CommandName 'Write-Log' -MockWith {}
         Invoke-VerifySubject | Should be $false
-        Assert-MockCalled -CommandName 'Write-Output' -Times 1 -Exactly
+        Assert-MockCalled -CommandName 'Write-Log' -Times 1 -Exactly
     }
     It "Should Return False when Invoke-VerifyRootCA fails." {
         $script:ClientCert = @{Thumbprint = "123456789"}
-        Mock -CommandName 'Write-Output' -MockWith {}
+        Mock -CommandName 'Write-Log' -MockWith {}
         Mock -CommandName 'Invoke-VerifyRootCA' -MockWith {
             $false
         }
         Invoke-VerifySubject | Should be $false
-        Assert-MockCalled -CommandName 'Write-Output' -Times 2 -Exactly
+        Assert-MockCalled -CommandName 'Write-Log' -Times 2 -Exactly
         Assert-MockCalled -CommandName 'Invoke-VerifyRootCA' -Times 1 -Exactly
     }
     It "Should Return False when The ACL list is empty." {
         $script:ClientCert = @{Thumbprint = "123456789"}
-        Mock -CommandName 'Write-Output' -MockWith {}
+        Mock -CommandName 'Write-Log' -MockWith {}
         Mock -CommandName 'Invoke-VerifyRootCA' -MockWith {
             $true
         }
@@ -37,7 +37,7 @@ Describe "Routes Variable function for $script:ModuleName" -Tags Build {
             $null
         }
         Invoke-VerifySubject | Should be $false
-        Assert-MockCalled -CommandName 'Write-Output' -Times 4 -Exactly
+        Assert-MockCalled -CommandName 'Write-Log' -Times 4 -Exactly
         Assert-MockCalled -CommandName 'Invoke-VerifyRootCA' -Times 2 -Exactly
         Assert-MockCalled -CommandName 'Get-RestAclList' -Times 1 -Exactly
     }
@@ -53,7 +53,7 @@ Describe "Routes Variable function for $script:ModuleName" -Tags Build {
         }               
         $ReturnJson = $RawReturn | ConvertTo-Json
         $script:ClientCert = $ReturnJson | convertfrom-json
-        Mock -CommandName 'Write-Output' -MockWith {}
+        Mock -CommandName 'Write-Log' -MockWith {}
         Mock -CommandName 'Invoke-VerifyRootCA' -MockWith {
             $true
         }
@@ -62,7 +62,7 @@ Describe "Routes Variable function for $script:ModuleName" -Tags Build {
             return $AclList
         }
         Invoke-VerifySubject | Should not be $null
-        Assert-MockCalled -CommandName 'Write-Output' -Times 7 -Exactly
+        Assert-MockCalled -CommandName 'Write-Log' -Times 7 -Exactly
         Assert-MockCalled -CommandName 'Invoke-VerifyRootCA' -Times 3 -Exactly
         Assert-MockCalled -CommandName 'Get-RestAclList' -Times 2 -Exactly
     }
@@ -78,7 +78,7 @@ Describe "Routes Variable function for $script:ModuleName" -Tags Build {
         }               
         $ReturnJson = $RawReturn | ConvertTo-Json
         $script:ClientCert = $ReturnJson | convertfrom-json
-        Mock -CommandName 'Write-Output' -MockWith {}
+        Mock -CommandName 'Write-Log' -MockWith {}
         Mock -CommandName 'Invoke-VerifyRootCA' -MockWith {
             $true
         }
@@ -87,7 +87,7 @@ Describe "Routes Variable function for $script:ModuleName" -Tags Build {
             return $AclList
         }
         Invoke-VerifySubject | Should not be $null
-        Assert-MockCalled -CommandName 'Write-Output' -Times 10 -Exactly
+        Assert-MockCalled -CommandName 'Write-Log' -Times 10 -Exactly
         Assert-MockCalled -CommandName 'Invoke-VerifyRootCA' -Times 4 -Exactly
         Assert-MockCalled -CommandName 'Get-RestAclList' -Times 3 -Exactly
     }
@@ -103,7 +103,7 @@ Describe "Routes Variable function for $script:ModuleName" -Tags Build {
         }               
         $ReturnJson = $RawReturn | ConvertTo-Json
         $script:ClientCert = $ReturnJson | convertfrom-json
-        Mock -CommandName 'Write-Output' -MockWith {}
+        Mock -CommandName 'Write-Log' -MockWith {}
         Mock -CommandName 'Invoke-VerifyRootCA' -MockWith {
             $true
         }
@@ -112,7 +112,7 @@ Describe "Routes Variable function for $script:ModuleName" -Tags Build {
             return $AclList
         }
         Invoke-VerifySubject | Should be $true
-        Assert-MockCalled -CommandName 'Write-Output' -Times 13 -Exactly
+        Assert-MockCalled -CommandName 'Write-Log' -Times 13 -Exactly
         Assert-MockCalled -CommandName 'Invoke-VerifyRootCA' -Times 5 -Exactly
         Assert-MockCalled -CommandName 'Get-RestAclList' -Times 4 -Exactly
     }

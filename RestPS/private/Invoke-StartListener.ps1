@@ -40,6 +40,7 @@ function Invoke-StartListener
     else
     {
         # No SSL Thumbprint present
+        Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Invoke-StartListener: No SSL Thumbprint present"
         $Prefix = "http://"
     }
     try
@@ -47,7 +48,7 @@ function Invoke-StartListener
         $listener.Prefixes.Add("$Prefix+:$Port/")
         $listener.Start()
         $Host.UI.RawUI.WindowTitle = "RestPS - $Prefix - Port: $Port"
-        Write-Output "Starting: $Prefix Listener on Port: $Port"
+        Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-StartListener: Starting: $Prefix Listener on Port: $Port"
     }
     catch
     {

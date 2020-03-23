@@ -22,42 +22,42 @@ function Invoke-VerifyUserAuth
                 $ClientHeaders = $script:Request.Headers
                 $ClientHeadersAuth = $ClientHeaders.GetValues("Authorization")
                 $AuthType, $AuthString = $ClientHeadersAuth.split(" ")
-                Write-Output "Auth type is: $AuthType, AuthString is: $AuthString"
+                Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyUserAuth: Auth type is: $AuthType, AuthString is: $AuthString"
 
                 if ($null -ne $AuthString)
                 {
                     if ($SystemAuthString -eq $AuthString)
                     {
-                        Write-Output "Client Authorization type: $AuthType is Verified."
+                        Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyUserAuth: Client Authorization type: $AuthType is Verified."
                         $script:VerifyStatus = $true
                     }
                     else
                     {
-                        Write-Output "Client did not pass Authorization type: $AuthType."
+                        Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyUserAuth: Client did not pass Authorization type: $AuthType."
                         $script:VerifyStatus = $false
                     }
                 }
                 else
                 {
-                    Write-Output "No Authorization String found."
+                    Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyUserAuth: No Authorization String found."
                     $script:VerifyStatus = $false
                 }
             }
             else
             {
-                Write-Output "No Authorization data available."
+                Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyUserAuth: No Authorization data available."
                 $script:VerifyStatus = $false
             }
         }
         else
         {
-            Write-Output "Client Failed to Verify Identity."
+            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyUserAuth: Client Failed to Verify Identity."
             $script:VerifyStatus = $false
         }
     }
     else
     {
-        Write-Output "No Client Certificate provided."
+        Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyUserAuth: No Client Certificate provided."
         $script:VerifyStatus = $false
     }
     $script:VerifyStatus

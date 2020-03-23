@@ -12,36 +12,36 @@ function Invoke-VerifyRootCA {
                     if ($null -ne $ClientCAIdentifier) {
                         $CompareResult = Compare-Object -ReferenceObject $LocalCAIdentifier -DifferenceObject $ClientCAIdentifier
                         if ($null -eq $CompareResult) {
-                            Write-Output "Certificate Authorities Match. Client is Valid."
+                            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyRootCA: Certificate Authorities Match. Client is Valid."
                             $script:VerifyStatus = $true
                         }
                         else {
-                            Write-Output "Certificate Authorities do not match."
+                            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyRootCA: Certificate Authorities do not match."
                             $script:VerifyStatus = $false
                         }
                     }
                     else {
-                        Write-Output "Unable to Determine Client Certificate Authority Identifier."
+                        Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyRootCA: Unable to Determine Client Certificate Authority Identifier."
                         $script:VerifyStatus = $false
                     }
                 }
                 else {
-                    Write-Output "Unable to Determine Local Rest Certificate Authority Identifier."
+                    Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyRootCA: Unable to Determine Local Rest Certificate Authority Identifier."
                     $script:VerifyStatus = $false
                 }
             }
             else {
-                Write-Output "Unable to find Local Rest Certificate."
+                Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyRootCA: Unable to find Local Rest Certificate."
                 $script:VerifyStatus = $false
             }
         }
         else {
-            Write-Output "No Certificate Thumbprint Identified."
+            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyRootCA: No Certificate Thumbprint Identified."
             $script:VerifyStatus = $false
         }
     }
     else {
-        Write-Output "No Client Certificate Received."
+        Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyRootCA: No Client Certificate Received."
         $script:VerifyStatus = $false
     }
     $script:VerifyStatus

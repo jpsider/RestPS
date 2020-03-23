@@ -14,30 +14,30 @@ function Invoke-VerifyBasicAuth
         $ClientHeaders = $script:Request.Headers
         $ClientHeadersAuth = $ClientHeaders.GetValues("Authorization")
         $AuthType, $AuthString = $ClientHeadersAuth.split(" ")
-        Write-Output "Auth type is: $AuthType, AuthString is: $AuthString"
+        Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyBasicAuth: Auth type is: $AuthType, AuthString is: $AuthString"
 
         if ($null -ne $AuthString)
         {
             if ($SystemAuthString -eq $AuthString)
             {
-                Write-Output "Client Authorization type: $AuthType is Verified."
+                Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyBasicAuth: Client Authorization type: $AuthType is Verified."
                 $script:VerifyStatus = $true
             }
             else
             {
-                Write-Output "Client did not pass Authorization type: $AuthType."
+                Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyBasicAuth: Client did not pass Authorization type: $AuthType."
                 $script:VerifyStatus = $false
             }
         }
         else
         {
-            Write-Output "No Authorization String found."
+            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyBasicAuth: No Authorization String found."
             $script:VerifyStatus = $false
         }
     }
     else
     {
-        Write-Output "No Authorization data available."
+        Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyBasicAuth: No Authorization data available."
         $script:VerifyStatus = $false
     }
     $script:VerifyStatus

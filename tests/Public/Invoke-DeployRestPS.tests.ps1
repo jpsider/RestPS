@@ -5,7 +5,7 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 . "$here\$sut"
 
 Describe "Invoke-DeployRestPS function for $script:ModuleName" -Tags Build {
-    function Write-Output {}
+    function Write-Log {}
     function New-Item {}
     function Copy-Item {}
     function Test-Path {}
@@ -38,12 +38,12 @@ Describe "Invoke-DeployRestPS function for $script:ModuleName" -Tags Build {
         }
         Mock -CommandName 'Copy-Item' -MockWith {}
         Mock -CommandName 'New-Item' -MockWith {}
-        Mock -CommandName 'Write-Output' -MockWith {}
+        Mock -CommandName 'Write-Log' -MockWith {}
         {Invoke-DeployRestPS -LocalDir c:\temp\someDir} | Should -Not -Throw
         Assert-MockCalled -CommandName 'Test-Path' -Times 1 -Exactly
         Assert-MockCalled -CommandName 'Copy-Item' -Times 7 -Exactly
         Assert-MockCalled -CommandName 'New-Item' -Times 0 -Exactly
-        Assert-MockCalled -CommandName 'Write-Output' -Times 6 -Exactly
+        Assert-MockCalled -CommandName 'Write-Log' -Times 6 -Exactly
     }
     It "Should not Throw if the Local Dir does not exist." {
         Mock -CommandName 'Test-Path' -MockWith {
@@ -51,12 +51,12 @@ Describe "Invoke-DeployRestPS function for $script:ModuleName" -Tags Build {
         }
         Mock -CommandName 'Copy-Item' -MockWith {}
         Mock -CommandName 'New-Item' -MockWith {}
-        Mock -CommandName 'Write-Output' -MockWith {}
+        Mock -CommandName 'Write-Log' -MockWith {}
         {Invoke-DeployRestPS -LocalDir c:\temp\someDir} | Should -Not -Throw
         Assert-MockCalled -CommandName 'Test-Path' -Times 2 -Exactly
         Assert-MockCalled -CommandName 'Copy-Item' -Times 14 -Exactly
         Assert-MockCalled -CommandName 'New-Item' -Times 8 -Exactly
-        Assert-MockCalled -CommandName 'Write-Output' -Times 12 -Exactly
+        Assert-MockCalled -CommandName 'Write-Log' -Times 12 -Exactly
     }
     It "Should Throw if the CopyItem fails." {
         Mock -CommandName 'Test-Path' -MockWith {
@@ -66,11 +66,11 @@ Describe "Invoke-DeployRestPS function for $script:ModuleName" -Tags Build {
             Throw "Copy Failed"
         }
         Mock -CommandName 'New-Item' -MockWith {}
-        Mock -CommandName 'Write-Output' -MockWith {}
+        Mock -CommandName 'Write-Log' -MockWith {}
         {Invoke-DeployRestPS -LocalDir c:\temp\someDir} | Should -Throw
         Assert-MockCalled -CommandName 'Test-Path' -Times 3 -Exactly
         Assert-MockCalled -CommandName 'Copy-Item' -Times 15 -Exactly
         Assert-MockCalled -CommandName 'New-Item' -Times 8 -Exactly
-        Assert-MockCalled -CommandName 'Write-Output' -Times 13 -Exactly
+        Assert-MockCalled -CommandName 'Write-Log' -Times 13 -Exactly
     }
 }

@@ -8,11 +8,11 @@ Describe "Start-RestPSListener function for $script:ModuleName" -Tags Build {
     function Invoke-StartListener {}
     function Invoke-GetContext {}
     function Invoke-StreamOutput {}
-    function Write-Output {}
     function Invoke-GetBody {}
     function Invoke-AvailableRouteSet {}
     function Invoke-RequestRouter {}
     function Invoke-StopListener {}
+    function Write-Log {}
     It "Should return False if -WhatIf is used." {
         Start-RestPSListener -WhatIf | Should be $false
     }
@@ -32,13 +32,13 @@ Describe "Start-RestPSListener function for $script:ModuleName" -Tags Build {
         }
         Mock -CommandName 'Invoke-StreamOutput' -MockWith {}
         Mock -CommandName 'Invoke-GetBody' -MockWith {}
-        Mock -CommandName 'Write-Output' -MockWith {}
+        Mock -CommandName 'Write-Log' -MockWith {}
         Start-RestPSListener | Should be $null
-        Assert-MockCalled -CommandName 'Write-Output' -Times 3 -Exactly
         Assert-MockCalled -CommandName 'Invoke-GetContext' -Times 1 -Exactly
         Assert-MockCalled -CommandName 'Invoke-GetBody' -Times 1 -Exactly
         Assert-MockCalled -CommandName 'Invoke-StartListener' -Times 1 -Exactly
         Assert-MockCalled -CommandName 'Invoke-StreamOutput' -Times 1 -Exactly
+        Assert-MockCalled -CommandName 'Write-Log' -Times 14 -Exactly
         
     }     
     It "Should return 'null' if a message is streamed back to requestor." {
@@ -62,16 +62,15 @@ Describe "Start-RestPSListener function for $script:ModuleName" -Tags Build {
         Mock -CommandName 'Invoke-StreamOutput' -MockWith {
             $script:Status = $false
         }
-        Mock -CommandName 'Write-Output' -MockWith {}
+        Mock -CommandName 'Write-Log' -MockWith {}
         Mock -CommandName 'Invoke-GetBody' -MockWith {}
         Start-RestPSListener -RoutesFilePath "FakePath" | Should be $null
-        Assert-MockCalled -CommandName 'Write-Output' -Times 6 -Exactly
+        Assert-MockCalled -CommandName 'Write-Log' -Times 29 -Exactly
         Assert-MockCalled -CommandName 'Invoke-GetContext' -Times 2 -Exactly
         Assert-MockCalled -CommandName 'Invoke-GetBody' -Times 2 -Exactly
         Assert-MockCalled -CommandName 'Invoke-StartListener' -Times 2 -Exactly
         Assert-MockCalled -CommandName 'Invoke-StreamOutput' -Times 2 -Exactly        
-        Assert-MockCalled -CommandName 'Invoke-RequestRouter' -Times 1 -Exactly        
-        
+        Assert-MockCalled -CommandName 'Invoke-RequestRouter' -Times 1 -Exactly
     }
     It "Should return 'null' if a message is streamed back to requestor." {
         Mock -CommandName 'Invoke-StartListener' -MockWith {}
@@ -95,20 +94,17 @@ Describe "Start-RestPSListener function for $script:ModuleName" -Tags Build {
             $script:Status = $false
         }
         Mock -CommandName 'Invoke-GetBody' -MockWith {}
-        Mock -CommandName 'Write-Output' -MockWith {}
+        Mock -CommandName 'Write-Log' -MockWith {}
         Start-RestPSListener -RoutesFilePath "null" | Should be $null
-        Assert-MockCalled -CommandName 'Write-Output' -Times 9 -Exactly
+        Assert-MockCalled -CommandName 'Write-Log' -Times 44 -Exactly
         Assert-MockCalled -CommandName 'Invoke-GetContext' -Times 3 -Exactly
         Assert-MockCalled -CommandName 'Invoke-GetBody' -Times 3 -Exactly
         Assert-MockCalled -CommandName 'Invoke-StartListener' -Times 3 -Exactly
         Assert-MockCalled -CommandName 'Invoke-StreamOutput' -Times 3 -Exactly        
-        Assert-MockCalled -CommandName 'Invoke-RequestRouter' -Times 2 -Exactly        
-        
+        Assert-MockCalled -CommandName 'Invoke-RequestRouter' -Times 2 -Exactly
     }
     It "Should return 'null' if a message is streamed back to requestor." {
         function Invoke-ValidateClient {}
-        function Get-ClientCertInfo {}
-        Mock -CommandName 'Get-ClientCertInfo' -MockWith {}
         Mock -CommandName 'Invoke-ValidateClient' -MockWith {
             $false
         }
@@ -133,14 +129,13 @@ Describe "Start-RestPSListener function for $script:ModuleName" -Tags Build {
             $script:Status = $false
         }
         Mock -CommandName 'Invoke-GetBody' -MockWith {}
-        Mock -CommandName 'Write-Output' -MockWith {}
+        Mock -CommandName 'Write-Log' -MockWith {}
         Start-RestPSListener -RoutesFilePath C:\temp\customRoutes.ps1 -VerificationType VerifyRootCA -SSLThumbprint $Thumb -AppGuid $Guid  | Should be $null
-        Assert-MockCalled -CommandName 'Write-Output' -Times 12 -Exactly
+        Assert-MockCalled -CommandName 'Write-Log' -Times 57 -Exactly
         Assert-MockCalled -CommandName 'Invoke-GetContext' -Times 4 -Exactly
         Assert-MockCalled -CommandName 'Invoke-GetBody' -Times 4 -Exactly
         Assert-MockCalled -CommandName 'Invoke-StartListener' -Times 4 -Exactly
         Assert-MockCalled -CommandName 'Invoke-StreamOutput' -Times 4 -Exactly        
         Assert-MockCalled -CommandName 'Invoke-RequestRouter' -Times 2 -Exactly        
-        
     }       
 }

@@ -56,6 +56,7 @@ function Start-RestPSListener
         [ValidateSet("VerifyRootCA", "VerifySubject", "VerifyUserAuth","VerifyBasicAuth")]
         [Parameter()][String]$VerificationType,
         [Parameter()][String]$Logfile = "$env:SystemDrive/RestPS/RestPS.log",
+        [ValidateSet("ALL", "TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "CONSOLEONLY", "OFF")]
         [Parameter()][String]$LogLevel = "INFO"
     )
     # Set a few Flags

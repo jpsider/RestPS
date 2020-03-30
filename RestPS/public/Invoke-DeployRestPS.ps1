@@ -7,16 +7,19 @@ function Invoke-DeployRestPS
         A LocalDir is Optional.
     .PARAMETER SourceDir
         An install directory of the Module, if Get-Module will not find it, is Optional.
-	.EXAMPLE
+    .PARAMETER Logfile
+        Full path to a logfile for RestPS messages to be written to.
+    .EXAMPLE
         Invoke-DeployRestPS -LocalDir $env:SystemDrive/RestPS
-	.NOTES
+    .NOTES
         This will return a boolean.
     #>
     [CmdletBinding()]
     [OutputType([boolean])]
     param(
         [string]$LocalDir = "$env:SystemDrive/RestPS",
-        [string]$SourceDir = (Split-Path -Path (Get-Module -ListAvailable RestPS | Sort-Object -Property Version -Descending | Select-Object -First 1).path)
+        [string]$SourceDir = (Split-Path -Path (Get-Module -ListAvailable RestPS | Sort-Object -Property Version -Descending | Select-Object -First 1).path),
+	[String]$Logfile = "$env:SystemDrive/RestPS/RestPS.log"
     )
     try
     {

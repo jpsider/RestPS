@@ -9,6 +9,8 @@ function Invoke-DeployRestPS
         An install directory of the Module, if Get-Module will not find it, is Optional.
     .PARAMETER Logfile
         Full path to a logfile for RestPS messages to be written to.
+    .PARAMETER LogLevel
+        Level of verbosity of logging for the runtime environment. Default is 'INFO' See PowerLumber Module for details.
     .EXAMPLE
         Invoke-DeployRestPS -LocalDir $env:SystemDrive/RestPS
     .NOTES
@@ -19,7 +21,8 @@ function Invoke-DeployRestPS
     param(
         [string]$LocalDir = "$env:SystemDrive/RestPS",
         [string]$SourceDir = (Split-Path -Path (Get-Module -ListAvailable RestPS | Sort-Object -Property Version -Descending | Select-Object -First 1).path),
-	[String]$Logfile = "$env:SystemDrive/RestPS/RestPS.log"
+	[String]$Logfile = "$env:SystemDrive/RestPS/RestPS.log",
+	[String]$LogLevel = "INFO"
     )
     try
     {

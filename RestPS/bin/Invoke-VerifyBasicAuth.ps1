@@ -20,7 +20,7 @@ function Invoke-VerifyBasicAuth
 				$DecodedAuthString = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($AuthString))
 
 				# Compare the decoded authorisation header to the user record in $RestUserAuth one by one
-				foreach ($AllowedUser in $RestUserAuth) {	
+				foreach ($AllowedUser in $RestUserAuth) {
 					$AllowedUserName = $AllowedUser.UserName
 					$AllowedUserPassword = $AllowedUser.SystemAuthString
 
@@ -33,13 +33,13 @@ function Invoke-VerifyBasicAuth
 					else
 					{
 						$script:VerifyStatus = $false
-					}		
+					}
 				}
 
 			    # Checked all user records in $RestUserAuth and no record match
 			    If ($script:VerifyStatus -eq $false) {
 					Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyBasicAuth: Client did not pass Authorization type: $AuthType."
-            	}    	
+				}
 
         }
         else

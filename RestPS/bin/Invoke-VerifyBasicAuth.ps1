@@ -6,7 +6,7 @@ function Invoke-VerifyBasicAuth
 
 	if ($null -ne $RestUserAuth)
 	{
-        
+
         	# Get the AuthString from Client Headers
         	$ClientHeaders = $script:Request.Headers
         	$ClientHeadersAuth = $ClientHeaders.GetValues("Authorization")
@@ -39,8 +39,8 @@ function Invoke-VerifyBasicAuth
 			    # Checked all user records in $RestUserAuth and no record match
 			    If ($script:VerifyStatus -eq $false) {
 					Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyBasicAuth: Client did not pass Authorization type: $AuthType."
-            	}
-	    
+            	}    	
+
         }
         else
         {

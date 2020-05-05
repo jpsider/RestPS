@@ -6,7 +6,8 @@
     .NOTES
         This will return a json object
 #>
-
+[CmdletBinding()]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", '')]
 param(
     $RequestArgs
 )

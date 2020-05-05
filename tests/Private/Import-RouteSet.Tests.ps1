@@ -5,8 +5,8 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 . "$here\$sut"
 
 Describe "Imports Endpoint routes for $script:ModuleName" -Tags Build {
-    function Test-Path {}
-    function Get-Content {}
+    function Test-Path { }
+    function Get-Content { }
     It "Should not be null." {
         Mock -CommandName 'Test-Path' -MockWith {
             return $true
@@ -29,8 +29,8 @@ Describe "Imports Endpoint routes for $script:ModuleName" -Tags Build {
         }
         
         Import-RouteSet -RoutesFilePath '$env:systemdrive/RestPS/endpoints/routes.json' | Should be $null
-        Assert-MockCalled -CommandName 'Test-Path' -Times 1 -Exactly
-        Assert-MockCalled -CommandName 'Get-Content' -Times 1 -Exactly
+        Assert-MockCalled -CommandName 'Test-Path' -Times 1 -Exactly -Scope It
+        Assert-MockCalled -CommandName 'Get-Content' -Times 1 -Exactly -Scope It
     }
     It "Should not throw." {
         Mock -CommandName 'Test-Path' -MockWith {
@@ -52,17 +52,17 @@ Describe "Imports Endpoint routes for $script:ModuleName" -Tags Build {
             $JsonData = $data | ConvertTo-Json
             return $JsonData
         }
-        {Import-RouteSet -RoutesFilePath '$env:systemdrive/RestPS/endpoints/routes.json'} | Should not Throw
-        Assert-MockCalled -CommandName 'Test-Path' -Times 2 -Exactly
-        Assert-MockCalled -CommandName 'Get-Content' -Times 2 -Exactly
+        { Import-RouteSet -RoutesFilePath '$env:systemdrive/RestPS/endpoints/routes.json' } | Should not Throw
+        Assert-MockCalled -CommandName 'Test-Path' -Times 1 -Exactly -Scope It
+        Assert-MockCalled -CommandName 'Get-Content' -Times 1 -Exactly -Scope It
     }
     It "Should throw if the path is not valid." {
         Mock -CommandName 'Test-Path' -MockWith {
             return $false
         }
-        Mock -CommandName 'Get-Content' -MockWith {}
-        {Import-RouteSet -RoutesFilePath '$env:systemdrive/RestPS/endpoints/routes.json'} | Should Throw
-        Assert-MockCalled -CommandName 'Test-Path' -Times 3 -Exactly
-        Assert-MockCalled -CommandName 'Get-Content' -Times 2 -Exactly
+        Mock -CommandName 'Get-Content' -MockWith { }
+        { Import-RouteSet -RoutesFilePath '$env:systemdrive/RestPS/endpoints/routes.json' } | Should Throw
+        Assert-MockCalled -CommandName 'Test-Path' -Times 1 -Exactly -Scope It
+        Assert-MockCalled -CommandName 'Get-Content' -Times 0 -Exactly -Scope It
     }
 }

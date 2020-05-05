@@ -22,6 +22,7 @@ function Invoke-RequestRouter
     #>
     [CmdletBinding()]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingInvokeExpression", '')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", '')]
     [OutputType([boolean])]
     [OutputType([Hashtable])]
     param(
@@ -33,7 +34,7 @@ function Invoke-RequestRouter
     # Import Routes each pass, to include new routes.
     #Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-RequestRouter: Importing RouteSet"
     Import-RouteSet -RoutesFilePath $RoutesFilePath
-    $Route = ($Routes | Where-Object {$_.RequestType -eq $RequestType -and $_.RequestURL -eq $RequestURL})
+    $Route = ($Routes | Where-Object { $_.RequestType -eq $RequestType -and $_.RequestURL -eq $RequestURL })
 
     if ($null -ne $Route)
     {

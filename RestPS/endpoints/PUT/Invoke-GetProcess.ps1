@@ -6,7 +6,8 @@
     .NOTES
     	This will return data
 #>
-
+[CmdletBinding()]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", '')]
 param(
     $RequestArgs,
     $Body

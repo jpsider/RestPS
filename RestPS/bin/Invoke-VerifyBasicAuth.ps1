@@ -6,9 +6,6 @@ function Invoke-VerifyBasicAuth
 
     if ($null -ne $RestUserAuth)
     {
-        # Get the System AuthString for the Client Request
-        $UserToCheck = $script:Subject
-        $SystemAuthString = ($RestUserAuth | Where-Object { $_.UserName -eq "$UserToCheck" }).SystemAuthString
 
         # Get the AuthString from Client Headers
         $ClientHeaders = $script:Request.Headers
@@ -18,27 +15,35 @@ function Invoke-VerifyBasicAuth
 
         if ($null -ne $AuthString)
         {
-            if ($SystemAuthString -eq $AuthString)
-            {
-                Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyBasicAuth: Client Authorization type: $AuthType is Verified."
-                $script:VerifyStatus = $true
-            }
-            else
-            {
-                Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyBasicAuth: Client did not pass Authorization type: $AuthType."
-                $script:VerifyStatus = $false
-            }
+
+			# Decode the Authorization header
+			$DecodedAuthString = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($AuthString))
+
+			# Split the decoded auth string, and compare to the $RestUserAuth array
+			$RequestUserName, $RequestPass = $DecodedAuthString -split (":")
+			$AllowedUser = $RestUserAuth | Where-Object {($_.UserName -eq "$RequestUserName") -And ($_.SystemAuthString -eq "$RequestPass")}
+
+			if (($AllowedUser | Measure-Object).Count -eq 1) {
+				Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyBasicAuth: Client Authorization type: $AuthType is Verified."
+				$script:VerifyStatus = $true
+			}
+			else
+			{
+				Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyBasicAuth: Client did not pass Authorization type: $AuthType."
+				$script:VerifyStatus = $false
+			}
+
         }
         else
-        {
-            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyBasicAuth: No Authorization String found."
-            $script:VerifyStatus = $false
-        }
+		{
+			Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyBasicAuth: No Authorization String found."
+			$script:VerifyStatus = $false
+		}
+	}
+	else
+	{
+		Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyBasicAuth: No Authorization data available."
+		$script:VerifyStatus = $false
     }
-    else
-    {
-        Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyBasicAuth: No Authorization data available."
-        $script:VerifyStatus = $false
-    }
-    $script:VerifyStatus
+	$script:VerifyStatus
 }

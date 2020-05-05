@@ -4,7 +4,7 @@
     .EXAMPLE
         Invoke-GetProcess.ps1 -RequestArgs $RequestArgs -Body $Body
     .NOTES
-    	This will return data
+        This will return data
 #>
 [CmdletBinding()]
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", '')]

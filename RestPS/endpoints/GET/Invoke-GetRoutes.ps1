@@ -9,7 +9,8 @@
 [CmdletBinding()]
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", '')]
 param(
-    $RequestArgs
+    $RequestArgs,
+    $body
 )
 
 Import-RouteSet -RoutesFilePath $RoutesFilePath

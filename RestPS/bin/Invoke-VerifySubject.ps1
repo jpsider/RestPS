@@ -11,12 +11,12 @@ function Invoke-VerifySubject
             # Root CA Matched, Verifying the ACL list
             . $RestPSLocalRoot\bin\Get-RestAclList.ps1
             $RestACL = Get-RestAclList
-            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifySubject: ACL is:" $RestACL
+            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifySubject: ACL is: $RestACL"
             if ($null -ne $RestACL)
             {
                 $RawSubject = $script:ClientCert.Subject
                 $1, $script:Subject = $RawSubject.split("=")
-                Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifySubject: Subject name is" $script:Subject
+                Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifySubject: Subject name is $script:Subject"
                 if ($null -ne $script:Subject)
                 {
                     if ($RestACL.contains($script:Subject))

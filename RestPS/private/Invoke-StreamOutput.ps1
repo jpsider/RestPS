@@ -8,7 +8,7 @@ function Invoke-StreamOutput
 	.NOTES
         This will returns a stream of data.
     #>
-    
+
     # Setup a placeholder to deliver a response
     $script:Response = $script:context.Response
 
@@ -19,7 +19,6 @@ function Invoke-StreamOutput
         
         # Process the Return data to send Json message back.
         $message = $script:result | ConvertTo-Json
-
     }
     else
     {

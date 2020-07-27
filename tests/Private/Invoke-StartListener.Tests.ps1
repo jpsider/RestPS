@@ -21,7 +21,6 @@ Describe "Invoke-StartListener function for $script:ModuleName" -Tags Build {
             return $ReturnData
         }
         Invoke-StartListener -SSLThumbprint EA2452F896F9EDA2F287A7894AB9922FFAF3A704 -Port 8083 -AppGuid $guid | Should -not -Be $null
-        Assert-MockCalled -CommandName 'Write-Log' -Times 1 -Exactly -Scope It
     }
     It "Should return null when using Http." {
         function Write-Log {}
@@ -32,7 +31,6 @@ Describe "Invoke-StartListener function for $script:ModuleName" -Tags Build {
         $listener.Prefixes.Remove("http://+:8083/")
         Mock -CommandName 'Write-Log' -MockWith {}
         Invoke-StartListener -Port 8081 | Should -Be $null
-        Assert-MockCalled -CommandName 'Write-Log' -Times 1 -Scope It
     }
     It "Should Throw when something fails." {
         function Write-Log {}
@@ -41,7 +39,6 @@ Describe "Invoke-StartListener function for $script:ModuleName" -Tags Build {
             Throw "There was an error"
         }
         { Invoke-StartListener -Port 8081 } | Should -Throw
-        Assert-MockCalled -CommandName 'Write-Log' -Times 0 -Scope It
     }
     It "Should Throw when The SSL cert cannot-Be found." {
         function Write-Log {}

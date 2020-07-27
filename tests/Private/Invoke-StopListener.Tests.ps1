@@ -8,9 +8,9 @@ Describe "Invoke-StopListener function for $script:ModuleName" -Tags Build {
     Mock -CommandName 'Write-Log' -MockWith {}
     It "Should return null." {
         function Write-Log {}
+        Mock -CommandName 'Write-Log' -MockWith {}
         $listener = [System.Net.HttpListener]::new()
         $listener = $listener
         Invoke-StopListener | Should -Be $null
-        Assert-MockCalled -CommandName 'Write-Log' -Times 0 -Exactly -Scope It
     }
 }

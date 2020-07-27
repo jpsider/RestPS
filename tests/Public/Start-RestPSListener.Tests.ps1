@@ -5,18 +5,26 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 . "$here\$sut"
 
 Describe "Start-RestPSListener function for $script:ModuleName" -Tags Build {
-    function Invoke-StartListener {}
-    function Invoke-GetContext {}
-    function Invoke-StreamOutput {}
-    function Invoke-GetBody {}
-    function Invoke-AvailableRouteSet {}
-    function Invoke-RequestRouter {}
-    function Invoke-StopListener {}
-    function Write-Log {}
     It "Should return False if -WhatIf is used." {
+        function Invoke-StartListener {}
+        function Invoke-GetContext {}
+        function Invoke-StreamOutput {}
+        function Invoke-GetBody {}
+        function Invoke-AvailableRouteSet {}
+        function Invoke-RequestRouter {}
+        function Invoke-StopListener {}
+        function Write-Log {}
         Start-RestPSListener -WhatIf | Should -Be $false
     }
     It "Should return 'null' if the url is /EndPoint/Shutdown" {
+        function Invoke-StartListener {}
+        function Invoke-GetContext {}
+        function Invoke-StreamOutput {}
+        function Invoke-GetBody {}
+        function Invoke-AvailableRouteSet {}
+        function Invoke-RequestRouter {}
+        function Invoke-StopListener {}
+        function Write-Log {}
         Mock -CommandName 'Invoke-StartListener' -MockWith {}
         Mock -CommandName 'Invoke-GetContext' -MockWith {
             $script:Request = @{
@@ -37,6 +45,14 @@ Describe "Start-RestPSListener function for $script:ModuleName" -Tags Build {
         
     }     
     It "Should return 'null' if a message is streamed back to requestor." {
+        function Invoke-StartListener {}
+        function Invoke-GetContext {}
+        function Invoke-StreamOutput {}
+        function Invoke-GetBody {}
+        function Invoke-AvailableRouteSet {}
+        function Invoke-RequestRouter {}
+        function Invoke-StopListener {}
+        function Write-Log {}
         Mock -CommandName 'Invoke-StartListener' -MockWith {}
         Mock -CommandName 'Invoke-GetContext' -MockWith {
             $script:Request = @{
@@ -62,6 +78,14 @@ Describe "Start-RestPSListener function for $script:ModuleName" -Tags Build {
         Start-RestPSListener -RoutesFilePath "FakePath" | Should -Be $null
     }
     It "Should return 'null' if a message is streamed back to requestor." {
+        function Invoke-StartListener {}
+        function Invoke-GetContext {}
+        function Invoke-StreamOutput {}
+        function Invoke-GetBody {}
+        function Invoke-AvailableRouteSet {}
+        function Invoke-RequestRouter {}
+        function Invoke-StopListener {}
+        function Write-Log {}
         Mock -CommandName 'Invoke-StartListener' -MockWith {}
         Mock -CommandName 'Invoke-GetContext' -MockWith {
             $script:Request = @{
@@ -87,6 +111,14 @@ Describe "Start-RestPSListener function for $script:ModuleName" -Tags Build {
         Start-RestPSListener -RoutesFilePath "null" | Should -Be $null
     }
     It "Should return 'null' if a message is streamed back to requestor." {
+        function Invoke-StartListener {}
+        function Invoke-GetContext {}
+        function Invoke-StreamOutput {}
+        function Invoke-GetBody {}
+        function Invoke-AvailableRouteSet {}
+        function Invoke-RequestRouter {}
+        function Invoke-StopListener {}
+        function Write-Log {}
         function Invoke-ValidateClient {}
         Mock -CommandName 'Invoke-ValidateClient' -MockWith {
             $false

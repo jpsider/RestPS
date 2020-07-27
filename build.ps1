@@ -12,7 +12,7 @@ Write-Output "Starting build"
 Write-Output "  Install Dependent Modules"
 Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
 Install-Module InvokeBuild, PSDeploy, BuildHelpers, PSScriptAnalyzer, Coveralls, PowerLumber -force -Scope CurrentUser
-Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser
+Install-Module Pester -RequiredVersion 4.7.3 -Force -SkipPublisherCheck -Scope CurrentUser
 
 Write-Output "  Import Dependent Modules"
 Import-Module InvokeBuild, BuildHelpers, PSScriptAnalyzer

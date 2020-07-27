@@ -40,7 +40,7 @@ function Invoke-RequestRouter
     {
         # Process Request
         $RequestCommand = $Route.RequestCommand
-        
+
         # Grab non-default ResponseContentType for the route:
         $script:ResponseContentType = $Route.ResponseContentType
 

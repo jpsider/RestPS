@@ -14,6 +14,6 @@ describe "Get-ClientCertInfo function for $script:ModuleName" -Tags Build {
             }
         }
         $script:request = New-Object MockCertRequest
-        Get-ClientCertInfo | Should be $null
+        Get-ClientCertInfo | Should -Be $null
     }
 }

@@ -8,6 +8,6 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 #describe "Invoke-StreamOutput function for $script:ModuleName" -Tags Build {
 #describe "Invoke-StreamOutput function for $script:ModuleName" {
 #    It 'Should return Null if output is streamed' {
-#        Invoke-StreamOutput | Should be $null
+#        Invoke-StreamOutput | Should -Be $null
 #    }
 #}

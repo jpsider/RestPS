@@ -17,7 +17,9 @@ $script:Body = "Fakedata"
 Function Import-RouteSet { }
 Function Invoke-Expression { }
 Describe "Invoke-RequestRouter function for $script:ModuleName" -Tags Build {
-    It "Should return Invalid Command, if invoke expression fails." {
+    It "001 Should return Invalid Command, if invoke expression fails." {
+        $RoutesFilePath = "$env:systemdrive/RestPS/endpoints/routes.json"
+
         Mock -CommandName 'Import-RouteSet' -MockWith { }
         $Routes = @(
             @{
@@ -31,32 +33,55 @@ Describe "Invoke-RequestRouter function for $script:ModuleName" -Tags Build {
             return $null
         }
         Mock -CommandName 'Set-Location' -MockWith { }
-        Invoke-RequestRouter -RequestType "GET" -RequestURL "/proc" -RoutesFilePath $RoutesFilePath | Should be $null
+        Invoke-RequestRouter -RequestType "GET" -RequestURL "/proc" -RoutesFilePath $RoutesFilePath | Should -Be $null
     }
-    It "Should return No Matching Routes, if the URL is invalid." {
+    It "002 Should return No Matching Routes, if the URL is invalid." {
+        $RoutesFilePath = "$env:systemdrive/RestPS/endpoints/routes.json"
         Mock -CommandName 'Import-RouteSet' -MockWith {
             $Route = $null
         }
         Mock -CommandName 'Invoke-Expression' -MockWith {
             return $null
         }
-        Invoke-RequestRouter -RequestType "GET" -RequestURL "/FakeURL" -RoutesFilePath $RoutesFilePath | Should be $null
+        Invoke-RequestRouter -RequestType "GET" -RequestURL "/FakeURL" -RoutesFilePath $RoutesFilePath | Should -Be $null
     }
     It "Should return No Matching Routes, if the URL is invalid." {
+        $RoutesFilePath = "$env:systemdrive/RestPS/endpoints/routes.json"
+        Mock -CommandName 'Import-RouteSet' -MockWith { }
+        $Routes = @(
+            @{
+                'RequestType'    = 'GET'
+                'RequestURL'     = '/proc'
+                'RequestCommand' = 'get-process | select-object ProcessName'
+            }
+        )
+        $Routes = $Routes
         Mock -CommandName 'Invoke-Expression' -MockWith {
             return $null
         }
         Invoke-RequestRouter -RequestType "GET" -RequestURL "/FakeURL" -RoutesFilePath $RoutesFilePath 
-        $script:StatusDescription | Should be "Not Found"
+        $script:StatusDescription | Should -Be "Not Found"
     }
     It "Should return No Matching Routes, if the URL is invalid." {
+        $RoutesFilePath = "$env:systemdrive/RestPS/endpoints/routes.json"
+        Mock -CommandName 'Import-RouteSet' -MockWith { }
+        $Routes = @(
+            @{
+                'RequestType'    = 'GET'
+                'RequestURL'     = '/proc'
+                'RequestCommand' = 'get-process | select-object ProcessName'
+            }
+        )
+        $Routes = $Routes
         Mock -CommandName 'Invoke-Expression' -MockWith {
             return $null
         }
         Invoke-RequestRouter -RequestType "GET" -RequestURL "/FakeURL" -RoutesFilePath $RoutesFilePath 
-        $script:StatusCode | Should be 404
+        $script:StatusCode | Should -Be 404
     }
-    It "Should not be null, when routes are returned." {
+    It "Should not-Be null, when routes are returned." {
+        $RoutesFilePath = "$env:systemdrive/RestPS/endpoints/routes.json"
+        Mock -CommandName 'Import-RouteSet' -MockWith { }
         $tempDir = (Get-Location).Path
         $RestPSLocalRoot = $tempDir + "\RestPS" 
 
@@ -72,13 +97,15 @@ Describe "Invoke-RequestRouter function for $script:ModuleName" -Tags Build {
             return $null
         }
         Mock -CommandName 'Set-Location' -MockWith { }
-        Invoke-RequestRouter -RequestType "GET" -RequestURL "/endpoint/routes" -RoutesFilePath $RoutesFilePath | Should not be $null
+        Invoke-RequestRouter -RequestType "GET" -RequestURL "/endpoint/routes" -RoutesFilePath $RoutesFilePath | Should -not -Be $null
     }
     It "Should return True" {
+        $RoutesFilePath = "$env:systemdrive/RestPS/endpoints/routes.json"
+        Mock -CommandName 'Import-RouteSet' -MockWith { }
         Mock -CommandName 'Invoke-Expression' -MockWith {
             return 'True @{ProcessName=calc.exe}'
         }
         Mock -CommandName 'Set-Location' -MockWith { }
-        Invoke-RequestRouter -RequestType "GET" -RequestURL "/proc" -RoutesFilePath $RoutesFilePath | Should Be $true
+        Invoke-RequestRouter -RequestType "GET" -RequestURL "/proc" -RoutesFilePath $RoutesFilePath | Should -Be $true
     }
 }

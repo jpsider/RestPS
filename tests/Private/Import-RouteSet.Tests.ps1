@@ -7,7 +7,7 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 Describe "Imports Endpoint routes for $script:ModuleName" -Tags Build {
     function Test-Path { }
     function Get-Content { }
-    It "Should not be null." {
+    It "Should not -Be null." {
         Mock -CommandName 'Test-Path' -MockWith {
             return $true
         }
@@ -28,7 +28,7 @@ Describe "Imports Endpoint routes for $script:ModuleName" -Tags Build {
             return $JsonData
         }
         
-        Import-RouteSet -RoutesFilePath '$env:systemdrive/RestPS/endpoints/routes.json' | Should be $null
+        Import-RouteSet -RoutesFilePath '$env:systemdrive/RestPS/endpoints/routes.json' | Should -Be $null
         Assert-MockCalled -CommandName 'Test-Path' -Times 1 -Exactly -Scope It
         Assert-MockCalled -CommandName 'Get-Content' -Times 1 -Exactly -Scope It
     }
@@ -52,7 +52,7 @@ Describe "Imports Endpoint routes for $script:ModuleName" -Tags Build {
             $JsonData = $data | ConvertTo-Json
             return $JsonData
         }
-        { Import-RouteSet -RoutesFilePath '$env:systemdrive/RestPS/endpoints/routes.json' } | Should not Throw
+        { Import-RouteSet -RoutesFilePath '$env:systemdrive/RestPS/endpoints/routes.json' } | Should -not -Throw
         Assert-MockCalled -CommandName 'Test-Path' -Times 1 -Exactly -Scope It
         Assert-MockCalled -CommandName 'Get-Content' -Times 1 -Exactly -Scope It
     }
@@ -61,7 +61,7 @@ Describe "Imports Endpoint routes for $script:ModuleName" -Tags Build {
             return $false
         }
         Mock -CommandName 'Get-Content' -MockWith { }
-        { Import-RouteSet -RoutesFilePath '$env:systemdrive/RestPS/endpoints/routes.json' } | Should Throw
+        { Import-RouteSet -RoutesFilePath '$env:systemdrive/RestPS/endpoints/routes.json' } | Should -Throw
         Assert-MockCalled -CommandName 'Test-Path' -Times 1 -Exactly -Scope It
         Assert-MockCalled -CommandName 'Get-Content' -Times 0 -Exactly -Scope It
     }

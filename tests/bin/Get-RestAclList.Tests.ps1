@@ -6,6 +6,6 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 
 Describe "Routes Variable function for $script:ModuleName" -Tags Build {
     It "Should Return true." {
-        Get-RestAclList | Should not be $null
+        Get-RestAclList | Should -not -Be $null
     }
 }

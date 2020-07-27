@@ -9,31 +9,35 @@ function Write-Log {}
 
 Describe "Invoke-VerifyRootCA Variable function for $script:ModuleName" -Tags Build {
     It "Should Return false if no client certificate is found." {
+        function Get-ChildItem {}
+        function Write-Log {}   
         $script:ClientCert = $null
         Mock -CommandName 'Write-Log' -MockWith {}
-        Invoke-VerifyRootCA | Should be $false
-        Assert-MockCalled -CommandName 'Write-Log' -Times 1 -Exactly
+        Invoke-VerifyRootCA | Should -Be $false
     }
     It "Should Return False if no Server Thumbprint is found." {
-        $script:ClientCert = @{Thumbprint = "123456789"}
+        function Get-ChildItem {}
+        function Write-Log {}   
+        $script:ClientCert = @{Thumbprint = "123456789" }
         Mock -CommandName 'Write-Log' -MockWith {}
         $SSLThumbPrint = $null
-        Invoke-VerifyRootCA | Should be $false
-        Assert-MockCalled -CommandName 'Write-Log' -Times 2 -Exactly
+        Invoke-VerifyRootCA | Should -Be $false
     }
-    It "Should Return False if the local cert with the thumbprint cannot be found." {
+    It "Should Return False if the local cert with the thumbprint cannot -Be found." {
+        function Get-ChildItem {}
+        function Write-Log {}   
         $SSLThumbPrint = "123456"
-        $script:ClientCert = @{Thumbprint = "123456789"}
+        $script:ClientCert = @{Thumbprint = "123456789" }
         Mock -CommandName 'Write-Log' -MockWith {}
         Mock -CommandName 'Get-ChildItem' -MockWith {
             $ReturnData = $null
             return $ReturnData
         }
-        Invoke-VerifyRootCA | Should be $false
-        Assert-MockCalled -CommandName 'Get-ChildItem' -Times 1 -Exactly
-        Assert-MockCalled -CommandName 'Write-Log' -Times 3 -Exactly
+        Invoke-VerifyRootCA | Should -Be $false
     }
-    It "Should Return False if the Server Cert Identifier cannot be found." {
+    It "Should Return False if the Server Cert Identifier cannot -Be found." {
+        function Get-ChildItem {}
+        function Write-Log {}   
         $RawReturn = @{
             Thumbprint = "123456789"
             Extensions = @{
@@ -60,11 +64,11 @@ Describe "Invoke-VerifyRootCA Variable function for $script:ModuleName" -Tags Bu
             $ReturnData = $ReturnJson | convertfrom-json
             return $ReturnData
         }
-        Invoke-VerifyRootCA | Should be $false
-        Assert-MockCalled -CommandName 'Get-ChildItem' -Times 2 -Exactly
-        Assert-MockCalled -CommandName 'Write-Log' -Times 4 -Exactly
+        Invoke-VerifyRootCA | Should -Be $false
     }
-    It "Should Return False if the Client Cert Identifier cannot be found." {
+    It "Should Return False if the Client Cert Identifier cannot -Be found." {
+        function Get-ChildItem {}
+        function Write-Log {}   
         $RawReturn = @{
             Thumbprint = "123456789"
             Extensions = @{
@@ -91,11 +95,11 @@ Describe "Invoke-VerifyRootCA Variable function for $script:ModuleName" -Tags Bu
             $ReturnData = $ReturnJson | convertfrom-json
             return $ReturnData
         }
-        Invoke-VerifyRootCA | Should be $false
-        Assert-MockCalled -CommandName 'Get-ChildItem' -Times 3 -Exactly
-        Assert-MockCalled -CommandName 'Write-Log' -Times 5 -Exactly
+        Invoke-VerifyRootCA | Should -Be $false
     }
     It "Should Return False if the Certificate Identifiers do not match." {
+        function Get-ChildItem {}
+        function Write-Log {}   
         $RawReturn = @{
             Thumbprint = "123456789"
             Extensions = @{
@@ -123,11 +127,11 @@ Describe "Invoke-VerifyRootCA Variable function for $script:ModuleName" -Tags Bu
             $ReturnData = $ReturnJson | convertfrom-json
             return $ReturnData
         }
-        Invoke-VerifyRootCA | Should be $false
-        Assert-MockCalled -CommandName 'Get-ChildItem' -Times 4 -Exactly
-        Assert-MockCalled -CommandName 'Write-Log' -Times 6 -Exactly
+        Invoke-VerifyRootCA | Should -Be $false
     }
     It "Should Return True, when the Identifiers match." {
+        function Get-ChildItem {}
+        function Write-Log {}   
         $RawReturn = @{
             Thumbprint = "123456789"
             Extensions = @{
@@ -155,8 +159,6 @@ Describe "Invoke-VerifyRootCA Variable function for $script:ModuleName" -Tags Bu
             $ReturnData = $ReturnJson | convertfrom-json
             return $ReturnData
         }
-        Invoke-VerifyRootCA | Should be $true
-        Assert-MockCalled -CommandName 'Get-ChildItem' -Times 5 -Exactly
-        Assert-MockCalled -CommandName 'Write-Log' -Times 7 -Exactly
+        Invoke-VerifyRootCA | Should -Be $true
     }
 }

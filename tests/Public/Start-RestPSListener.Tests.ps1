@@ -14,7 +14,7 @@ Describe "Start-RestPSListener function for $script:ModuleName" -Tags Build {
     function Invoke-StopListener {}
     function Write-Log {}
     It "Should return False if -WhatIf is used." {
-        Start-RestPSListener -WhatIf | Should be $false
+        Start-RestPSListener -WhatIf | Should -Be $false
     }
     It "Should return 'null' if the url is /EndPoint/Shutdown" {
         Mock -CommandName 'Invoke-StartListener' -MockWith {}
@@ -33,12 +33,7 @@ Describe "Start-RestPSListener function for $script:ModuleName" -Tags Build {
         Mock -CommandName 'Invoke-StreamOutput' -MockWith {}
         Mock -CommandName 'Invoke-GetBody' -MockWith {}
         Mock -CommandName 'Write-Log' -MockWith {}
-        Start-RestPSListener | Should be $null
-        Assert-MockCalled -CommandName 'Invoke-GetContext' -Times 1 -Exactly
-        Assert-MockCalled -CommandName 'Invoke-GetBody' -Times 1 -Exactly
-        Assert-MockCalled -CommandName 'Invoke-StartListener' -Times 1 -Exactly
-        Assert-MockCalled -CommandName 'Invoke-StreamOutput' -Times 1 -Exactly
-        Assert-MockCalled -CommandName 'Write-Log' -Times 14 -Exactly
+        Start-RestPSListener | Should -Be $null
         
     }     
     It "Should return 'null' if a message is streamed back to requestor." {
@@ -64,13 +59,7 @@ Describe "Start-RestPSListener function for $script:ModuleName" -Tags Build {
         }
         Mock -CommandName 'Write-Log' -MockWith {}
         Mock -CommandName 'Invoke-GetBody' -MockWith {}
-        Start-RestPSListener -RoutesFilePath "FakePath" | Should be $null
-        Assert-MockCalled -CommandName 'Write-Log' -Times 29 -Exactly
-        Assert-MockCalled -CommandName 'Invoke-GetContext' -Times 2 -Exactly
-        Assert-MockCalled -CommandName 'Invoke-GetBody' -Times 2 -Exactly
-        Assert-MockCalled -CommandName 'Invoke-StartListener' -Times 2 -Exactly
-        Assert-MockCalled -CommandName 'Invoke-StreamOutput' -Times 2 -Exactly        
-        Assert-MockCalled -CommandName 'Invoke-RequestRouter' -Times 1 -Exactly
+        Start-RestPSListener -RoutesFilePath "FakePath" | Should -Be $null
     }
     It "Should return 'null' if a message is streamed back to requestor." {
         Mock -CommandName 'Invoke-StartListener' -MockWith {}
@@ -95,13 +84,7 @@ Describe "Start-RestPSListener function for $script:ModuleName" -Tags Build {
         }
         Mock -CommandName 'Invoke-GetBody' -MockWith {}
         Mock -CommandName 'Write-Log' -MockWith {}
-        Start-RestPSListener -RoutesFilePath "null" | Should be $null
-        Assert-MockCalled -CommandName 'Write-Log' -Times 44 -Exactly
-        Assert-MockCalled -CommandName 'Invoke-GetContext' -Times 3 -Exactly
-        Assert-MockCalled -CommandName 'Invoke-GetBody' -Times 3 -Exactly
-        Assert-MockCalled -CommandName 'Invoke-StartListener' -Times 3 -Exactly
-        Assert-MockCalled -CommandName 'Invoke-StreamOutput' -Times 3 -Exactly        
-        Assert-MockCalled -CommandName 'Invoke-RequestRouter' -Times 2 -Exactly
+        Start-RestPSListener -RoutesFilePath "null" | Should -Be $null
     }
     It "Should return 'null' if a message is streamed back to requestor." {
         function Invoke-ValidateClient {}
@@ -130,12 +113,6 @@ Describe "Start-RestPSListener function for $script:ModuleName" -Tags Build {
         }
         Mock -CommandName 'Invoke-GetBody' -MockWith {}
         Mock -CommandName 'Write-Log' -MockWith {}
-        Start-RestPSListener -RoutesFilePath C:\temp\customRoutes.ps1 -VerificationType VerifyRootCA -SSLThumbprint $Thumb -AppGuid $Guid  | Should be $null
-        Assert-MockCalled -CommandName 'Write-Log' -Times 57 -Exactly
-        Assert-MockCalled -CommandName 'Invoke-GetContext' -Times 4 -Exactly
-        Assert-MockCalled -CommandName 'Invoke-GetBody' -Times 4 -Exactly
-        Assert-MockCalled -CommandName 'Invoke-StartListener' -Times 4 -Exactly
-        Assert-MockCalled -CommandName 'Invoke-StreamOutput' -Times 4 -Exactly        
-        Assert-MockCalled -CommandName 'Invoke-RequestRouter' -Times 2 -Exactly        
+        Start-RestPSListener -RoutesFilePath C:\temp\customRoutes.ps1 -VerificationType VerifyRootCA -SSLThumbprint $Thumb -AppGuid $Guid  | Should -Be $null
     }       
 }

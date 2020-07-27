@@ -19,6 +19,6 @@ describe "Invoke-GetContext function for $script:ModuleName" -Tags Build {
             }
         }
         $listener = New-Object MockGetContext
-        Invoke-GetContext | Should be $null
+        Invoke-GetContext | Should -Be $null
     }
 }

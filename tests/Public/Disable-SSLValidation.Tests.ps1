@@ -5,7 +5,7 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 . "$here\$sut"
 
 Describe "Disable-SSLValidation function for $script:ModuleName" -Tags Build {
-    It "Should Return null." {
+    It "Should Return true." {
         Disable-SSLValidation | Should -be $true
     }
 }

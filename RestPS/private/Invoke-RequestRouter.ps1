@@ -36,6 +36,10 @@ function Invoke-RequestRouter
     Import-RouteSet -RoutesFilePath $RoutesFilePath
     $Route = ($Routes | Where-Object { $_.RequestType -eq $RequestType -and $_.RequestURL -eq $RequestURL })
 
+    # Set the value of the $script:StatusDescription and $script:StatusCode to null from previous runs.
+    $script:StatusDescription = $null
+    $script:StatusCode = $null
+
     if ($null -ne $Route)
     {
         # Process Request
@@ -63,16 +67,28 @@ function Invoke-RequestRouter
         {
             # Not a valid response
             #Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-RequestRouter: Bad Request (400)."
-            $script:StatusDescription = "Bad Request"
-            $script:StatusCode = 400
+            if ($null -eq $script:StatusDescription)
+            {
+                $script:StatusDescription = "Bad Request"
+            }
+            if ($null -eq $script:StatusCode)
+            {
+                $script:StatusCode = 400
+            }
         }
         else
         {
             # Valid response
             #Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-RequestRouter: Valid Response (200)."
             $script:result = $CommandReturn
-            $script:StatusDescription = "OK"
-            $script:StatusCode = 200
+            if ($null -eq $script:StatusDescription)
+            {
+                $script:StatusDescription = "OK"
+            }
+            if ($null -eq $script:StatusCode)
+            {
+                $script:StatusCode = 200
+            }
         }
     }
     else

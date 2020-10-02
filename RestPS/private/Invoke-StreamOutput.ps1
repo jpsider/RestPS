@@ -49,7 +49,7 @@ function Invoke-StreamOutput
         $gzipStream.Write($responseByteArray, 0, $responseByteArray.Length)
         $gzipStream.Close()
         $responseByteArray = $memoryStream.ToArray()
-        
+
         # Add some headers
         $Script:Response.SendChunked = $true
         $script:Response.AddHeader("Content-Encoding", "gzip");

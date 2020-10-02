@@ -6,7 +6,7 @@ function Invoke-StreamOutput
 	.EXAMPLE
         Invoke-StreamOutput
 	.NOTES
-        This will returns a stream of data.
+        This will returns a stream of data. And compress data if needed.
     #>
 
     # Setup a placeholder to deliver a response

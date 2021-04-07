@@ -8,10 +8,6 @@ function Invoke-StreamOutput
 	.NOTES
         This will returns a stream of data. And compress data if needed.
     #>
-    [CmdletBinding()]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingEmptyCatchBlock", '')]
-    [OutputType([boolean])]
-    [OutputType([Hashtable])]
     # Setup a placeholder to deliver a response
     $script:Response = $script:context.Response
 
@@ -65,6 +61,9 @@ function Invoke-StreamOutput
     Catch
     {
         # Do not compress output
+        $ErrorMessage = $_.Exception.Message
+        $FailedItem = $_.Exception.ItemName
+        "Invoke-DeployRestPS: $ErrorMessage $FailedItem" | Out-Null
     }
 
     $script:Response.ContentLength64 = $responseByteArray.length

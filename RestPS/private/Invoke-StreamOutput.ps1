@@ -31,30 +31,35 @@ function Invoke-StreamOutput
     $script:Response.StatusCode = $script:StatusCode
     $script:Response.StatusDescription = $script:StatusDescription
 
-
-
     $responseByteArray = [byte[]][System.Text.Encoding]::UTF8.GetBytes("$message")
-    if ($context.Request.Headers.Item('Accept-Encoding').Split(",").ToLowerInvariant() -contains "gzip")
+    try
     {
-        # This part is strictly speaking not entirely RFC compliant.
-        # it would need to handle qvalues as well:
-        # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding#:~:text=The%20Accept%2DEncoding%20request%20HTTP,the%20Content%2DEncoding%20response%20header.
+        if ($context.Request.Headers.Item('Accept-Encoding').Split(",").ToLowerInvariant() -contains "gzip")
+        {
+            # This part is strictly speaking not entirely RFC compliant.
+            # it would need to handle qvalues as well:
+            # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding#:~:text=The%20Accept%2DEncoding%20request%20HTTP,the%20Content%2DEncoding%20response%20header.
 
-        # Compress output
-        # https://stackoverflow.com/questions/7438217/c-sharp-httplistener-response-gzipstream
+            # Compress output
+            # https://stackoverflow.com/questions/7438217/c-sharp-httplistener-response-gzipstream
 
-        # compress responseByteArray and save back to responseByteArray
-        $memoryStream = [System.IO.MemoryStream]::new()
-        $gzipStream = [System.IO.Compression.GZipStream]::new($memoryStream, [System.IO.Compression.CompressionMode]::Compress, $true)
-        $gzipStream.Write($responseByteArray, 0, $responseByteArray.Length)
-        $gzipStream.Close()
-        $responseByteArray = $memoryStream.ToArray()
+            # compress responseByteArray and save back to responseByteArray
+            $memoryStream = [System.IO.MemoryStream]::new()
+            $gzipStream = [System.IO.Compression.GZipStream]::new($memoryStream, [System.IO.Compression.CompressionMode]::Compress, $true)
+            $gzipStream.Write($responseByteArray, 0, $responseByteArray.Length)
+            $gzipStream.Close()
+            $responseByteArray = $memoryStream.ToArray()
 
-        # Add some headers
-        $Script:Response.SendChunked = $true
-        $script:Response.AddHeader("Content-Encoding", "gzip");
+            # Add some headers
+            $Script:Response.SendChunked = $true
+            $script:Response.AddHeader("Content-Encoding", "gzip");
+        }
+        else
+        {
+            # Do not compress output
+        }
     }
-    else
+    Catch
     {
         # Do not compress output
     }

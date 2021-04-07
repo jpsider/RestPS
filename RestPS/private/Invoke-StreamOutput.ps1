@@ -8,7 +8,10 @@ function Invoke-StreamOutput
 	.NOTES
         This will returns a stream of data. And compress data if needed.
     #>
+    [CmdletBinding()]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingEmptyCatchBlock", '')]
+    [OutputType([boolean])]
+    [OutputType([Hashtable])]
     # Setup a placeholder to deliver a response
     $script:Response = $script:context.Response
 

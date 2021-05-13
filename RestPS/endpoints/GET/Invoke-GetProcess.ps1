@@ -32,8 +32,18 @@ if ($RequestArgs -like '*&*') {
     }
 }
 else {
-    $Property, $ProcessName = $RequestArgs.split("=")
-    $Message = Get-Process -Name $ProcessName | Select-Object ProcessName, Id, MainWindowTitle
+    $Property, $Value = $RequestArgs.split("=")
+    #$Message = Get-Process -Name $ProcessName | Select-Object ProcessName, Id, MainWindowTitle
+    if ($Property -eq 'pid')
+    {
+        Write-Verbose -Message "Lookup by pid"
+        $Message = Get-Process -Id $Value | Select-Object ProcessName, Id, MainWindowTitle
+    }
+    else
+    {
+        Write-Verbose -Message "Lookup by name"
+        $Message = Get-Process -Name $Value | Select-Object ProcessName, Id, MainWindowTitle
+    }
 }
 
 return $Message

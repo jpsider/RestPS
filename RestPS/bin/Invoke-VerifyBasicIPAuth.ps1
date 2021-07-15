@@ -3,7 +3,7 @@ function Invoke-VerifyBasicIPAuth
     # Basic Authentication
     . $RestPSLocalRoot\bin\Get-RestUserAuth.ps1
     $RestUserAuth = (Get-RestUserAuth).UserData
-    
+
     . $RestPSLocalRoot\bin\Get-RestIPAuth.ps1
     $RestIPAuth = (Get-RestIPAuth).UserIP
 
@@ -15,12 +15,12 @@ function Invoke-VerifyBasicIPAuth
         $RequesterIP = $script:Request.RemoteEndPoint
         $AuthType, $AuthString = $ClientHeadersAuth.split(" ")
         Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyBasicIPAuth: Auth type is: $AuthType, AuthString is: $AuthString"
-    
+
         if ($null -ne $AuthString)
         {
             # Decode the Authorization header
             $DecodedAuthString = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($AuthString))
-            
+
             $RequesterIP, $RequesterPort = $RequesterIP -split (":")
             Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyBasicIPAuth: Client IP: $RequesterIP"
 

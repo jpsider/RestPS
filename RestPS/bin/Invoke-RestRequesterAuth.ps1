@@ -6,7 +6,7 @@ function Invoke-RestRequesterAuth
 
     $RequesterIP = $script:Request.RemoteEndPoint
 
-    if ($RestIPAuth -ne $null)
+    if ($null -ne $RestIPAuth)
     {
         $RequesterIP, $RequesterPort = $RequesterIP -split (":")
 

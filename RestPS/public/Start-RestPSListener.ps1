@@ -1,7 +1,7 @@
 function Start-RestPSListener
 {
     <#
-	.DESCRIPTION
+    .DESCRIPTION
         Start a HTTP listener on a specified port.
     .PARAMETER Port
         A Port can be specified, but is not required, Default is 8080.
@@ -17,13 +17,15 @@ function Start-RestPSListener
             -"VerifySubject": Verifies the Root CA, and the Client is on a User provide ACL.
             -"VerifyUserAuth": Provides an option for Advanced Authentication, plus the RootCA,Subject Checks.
             -"VerifyBasicAuth": Provides an option for Basic Authentication.
+            -"VerifyIP": Provides client IP validation.
+            -"VerifyBasicIPAuth": Provides client IP validation and Basic Authentication.
     .PARAMETER RoutesFilePath
         A Custom Routes file can be specified, but is not required, default is included in the module.
     .PARAMETER Logfile
         Full path to a logfile for RestPS messages to be written to.
     .PARAMETER LogLevel
         Level of verbosity of logging for the runtime environment. Default is 'INFO' See PowerLumber Module for details.
-	.EXAMPLE
+    .EXAMPLE
         Start-RestPSListener
     .EXAMPLE
         Start-RestPSListener -Port 8081
@@ -37,8 +39,8 @@ function Start-RestPSListener
         Start-RestPSListener -RoutesFilePath $env:SystemDrive/RestPS/customRoutes.ps1
     .EXAMPLE
         Start-RestPSListener -RoutesFilePath $env:SystemDrive/RestPS/customRoutes.ps1 -VerificationType VerifyRootCA -SSLThumbprint $Thumb -AppGuid $Guid
-	.NOTES
-		No notes at this time.
+    .NOTES
+        No notes at this time.
     #>
     [CmdletBinding(
         SupportsShouldProcess = $true,
@@ -53,7 +55,7 @@ function Start-RestPSListener
         [Parameter()][String]$Port = 8080,
         [Parameter()][String]$SSLThumbprint,
         [Parameter()][String]$AppGuid = ((New-Guid).Guid),
-        [ValidateSet("VerifyRootCA", "VerifySubject", "VerifyUserAuth","VerifyBasicAuth")]
+        [ValidateSet("VerifyRootCA", "VerifySubject", "VerifyUserAuth","VerifyBasicAuth","VerifyIP","VerifyBasicIPAuth")]
         [Parameter()][String]$VerificationType,
         [Parameter()][String]$Logfile = "$env:SystemDrive/RestPS/RestPS.log",
         [ValidateSet("ALL", "TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "CONSOLEONLY", "OFF")]
@@ -98,9 +100,11 @@ function Start-RestPSListener
             # Request Handler Data
             Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Determining Method and URL"
             $RequestType = $script:Request.HttpMethod
+
             $RawRequestURL = $script:Request.RawUrl
             Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Start-RestPSListener: New Request - Method: $RequestType URL: $RawRequestURL"
             # Specific args will need to be parsed in the Route commands/scripts
+
             $RequestURL, $RequestArgs = $RawRequestURL.split("?")
 
             if ($script:ProcessRequest -eq $true)

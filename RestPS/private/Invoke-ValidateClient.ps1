@@ -62,7 +62,7 @@ function Invoke-ValidateClient
             . $RestPSLocalRoot\bin\Invoke-VerifyBasicAuth.ps1
             $script:VerifyStatus = Invoke-VerifyBasicAuth
         }
-        
+
         "VerifyIP"
         {
             # Source the File
@@ -70,7 +70,7 @@ function Invoke-ValidateClient
             . $RestPSLocalRoot\bin\Invoke-RestRequesterAuth.ps1
             $script:VerifyStatus = Invoke-RestRequesterAuth
         }
-        
+
         "VerifyBasicIPAuth"
         {
             # Source the File

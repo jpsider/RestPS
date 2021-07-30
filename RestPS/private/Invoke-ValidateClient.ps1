@@ -63,22 +63,6 @@ function Invoke-ValidateClient
             $script:VerifyStatus = Invoke-VerifyBasicAuth
         }
 
-        "VerifyIP"
-        {
-            # Source the File
-            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-ValidateClient: Validating IP"
-            . $RestPSLocalRoot\bin\Invoke-RestRequesterAuth.ps1
-            $script:VerifyStatus = Invoke-RestRequesterAuth
-        }
-
-        "VerifyBasicIPAuth"
-        {
-            # Source the File
-            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-ValidateClient: Validating Basic Auth with IP"
-            . $RestPSLocalRoot\bin\Invoke-VerifyBasicIPAuth.ps1
-            $script:VerifyStatus = Invoke-VerifyBasicIPAuth
-        }
-
         default
         {
             Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-ValidateClient: No Client Validation Selected."

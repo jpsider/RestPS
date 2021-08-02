@@ -5,7 +5,7 @@ function Invoke-ValidateIP
         This function provides several way to validate or authenticate a client base on acceptable IP's.
     .PARAMETER VerifyClientIP
         A VerifyClientIP is optional - Accepted values are:$false or $true
-            
+   
     .PARAMETER RestPSLocalRoot
         The RestPSLocalRoot is also optional, and defaults to "C:\RestPS"
     .EXAMPLE

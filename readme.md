@@ -44,8 +44,11 @@ When you start an Endpoint you can specify several different parameters:
     * VerifyRootCA - Verifies the Root Certificate Authority (CA) of the server and client certificate match.
     * VerifySubject - Verifies the RootCA, and the client is on a user provided Access Control List (ACL).
     * VerifyUserAuth - Provides an option for advanced authentication, plus the RootCA, subject checks.
+    * VerifyBasicAuth - Provides an option for Basic Authentication.
 * RoutesFilePath
   * A custom Routes file can be specified (highly recommended, but not required). A default file is included in the RestPS module and it expects the 'RestPSLocalRoot' to be C:\\RestPS.
+* VerifyClientIP
+  * Validate client IP authorization. (Default=$false) to enable set $true   
 
 ## Starting a HTTP RestPS Endpoint
 
@@ -198,6 +201,19 @@ Example Parameters for the 'VerifyUserAuth' VerificationType
         Port = 8080
         SSLThumbprint = $ServerCert.Thumbprint
         VerificationType = 'VerifyUserAuth'
+    }
+    Start-RestPSListener @ServerParams
+    
+An example function, `Get-VerifyBasicAuth`, is included with RestPS and basic authentcation with Client IP validation.
+
+Example Parameters for the 'VerifyBasicAuth' VerificationType
+
+    $ServerParams = @{
+        RoutesFilePath = 'C:\RestPS\endpoints\RestPSRoutes.json'
+        Port = 8080
+        SSLThumbprint = $ServerCert.Thumbprint
+        VerificationType = 'VerifyBasicAuth'
+        VerifyClientIP = $true
     }
     Start-RestPSListener @ServerParams
 

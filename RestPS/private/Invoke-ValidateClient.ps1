@@ -19,7 +19,7 @@ function Invoke-ValidateClient
     [CmdletBinding()]
     [OutputType([boolean])]
     param(
-        [ValidateSet("VerifyRootCA", "VerifySubject", "VerifyUserAuth","VerifyBasicAuth","VerifyIP","VerifyBasicIPAuth")]
+        [ValidateSet("VerifyRootCA", "VerifySubject", "VerifyUserAuth","VerifyBasicAuth")]
         [Parameter()][String]$VerificationType,
         [Parameter()][String]$RestPSLocalRoot = "c:\RestPS"
     )

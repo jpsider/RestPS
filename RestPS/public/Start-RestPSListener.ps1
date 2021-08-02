@@ -23,7 +23,7 @@ function Start-RestPSListener
         Full path to a logfile for RestPS messages to be written to.
     .PARAMETER LogLevel
         Level of verbosity of logging for the runtime environment. Default is 'INFO' See PowerLumber Module for details.
-    .PARAMETER VerifyInputIP
+    .PARAMETER VerifyClientIP
         Validate client IP authorization. (Default=$false) to enable set $true
     .EXAMPLE
         Start-RestPSListener
@@ -60,7 +60,7 @@ function Start-RestPSListener
         [Parameter()][String]$Logfile = "$env:SystemDrive/RestPS/RestPS.log",
         [ValidateSet("ALL", "TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "CONSOLEONLY", "OFF")]
         [Parameter()][String]$LogLevel = "INFO",
-        [Parameter()][Bool]$VerifyInputIP = $false
+        [Parameter()][Bool]$VerifyClientIP = $false
     )
     # Set a few Flags
     $script:Status = $true
@@ -83,22 +83,22 @@ function Start-RestPSListener
 
             # Perform Client Verification if SSLThumbprint is present and a Verification Method is specified.
             Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Determining VerificationType: '$VerificationType'"
-            if ($VerificationType -ne "" -or $VerifyInputIP -eq $true)
+            if ($VerificationType -ne "" -or $VerifyClientIP -eq $true)
             {
                 # Validate client IP authorization.
-                if ($VerifyInputIP -eq $true)
+                if ($VerifyClientIP -eq $true)
                 {
                     # Start validation of client IP's.
                     if($VerificationType -eq "")
                     {
                         Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Executing Invoke-ValidateIP Validate IP only"
-                        $script:ProcessRequest = (Invoke-ValidateIP -RestPSLocalRoot $RestPSLocalRoot -VerifyInputIP $VerifyInputIP)
+                        $script:ProcessRequest = (Invoke-ValidateIP -RestPSLocalRoot $RestPSLocalRoot -VerifyClientIP $VerifyClientIP)
                     }
                     # Validate client IP's and VerificationType.
                     else
                     {
                         Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Executing Invoke-ValidateIP Validate IP before Authentication"
-                        $script:ProcessRequest = (Invoke-ValidateIP -RestPSLocalRoot $RestPSLocalRoot -VerifyInputIP $VerifyInputIP)
+                        $script:ProcessRequest = (Invoke-ValidateIP -RestPSLocalRoot $RestPSLocalRoot -VerifyClientIP $VerifyClientIP)
                         # Determine if client IP validation was successful then start validation of VerificationType. 
                         if ($script:ProcessRequest -eq $true)
                         {

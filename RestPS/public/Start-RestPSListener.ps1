@@ -17,14 +17,14 @@ function Start-RestPSListener
             -"VerifySubject": Verifies the Root CA, and the Client is on a User provide ACL.
             -"VerifyUserAuth": Provides an option for Advanced Authentication, plus the RootCA,Subject Checks.
             -"VerifyBasicAuth": Provides an option for Basic Authentication.
-            -"VerifyIP": Provides client IP validation.
-            -"VerifyBasicIPAuth": Provides client IP validation and Basic Authentication.
     .PARAMETER RoutesFilePath
         A Custom Routes file can be specified, but is not required, default is included in the module.
     .PARAMETER Logfile
         Full path to a logfile for RestPS messages to be written to.
     .PARAMETER LogLevel
         Level of verbosity of logging for the runtime environment. Default is 'INFO' See PowerLumber Module for details.
+    .PARAMETER VerifyInputIP
+        Validate client IP authorization. (Default=$false) to enable set $true
     .EXAMPLE
         Start-RestPSListener
     .EXAMPLE
@@ -55,11 +55,12 @@ function Start-RestPSListener
         [Parameter()][String]$Port = 8080,
         [Parameter()][String]$SSLThumbprint,
         [Parameter()][String]$AppGuid = ((New-Guid).Guid),
-        [ValidateSet("VerifyRootCA", "VerifySubject", "VerifyUserAuth","VerifyBasicAuth","VerifyIP","VerifyBasicIPAuth")]
+        [ValidateSet("VerifyRootCA", "VerifySubject", "VerifyUserAuth","VerifyBasicAuth")]
         [Parameter()][String]$VerificationType,
         [Parameter()][String]$Logfile = "$env:SystemDrive/RestPS/RestPS.log",
         [ValidateSet("ALL", "TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "CONSOLEONLY", "OFF")]
-        [Parameter()][String]$LogLevel = "INFO"
+        [Parameter()][String]$LogLevel = "INFO",
+        [Parameter()][Bool]$VerifyInputIP = $false
     )
     # Set a few Flags
     $script:Status = $true
@@ -80,12 +81,38 @@ function Start-RestPSListener
             $script:ProcessRequest = $true
             $script:result = $null
 
-            # Perform Client Verification if SSLThumbprint is present and a Verification Method is specified
+            # Perform Client Verification if SSLThumbprint is present and a Verification Method is specified.
             Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Determining VerificationType: '$VerificationType'"
-            if ($VerificationType -ne "")
+            if ($VerificationType -ne "" -or $VerifyInputIP -eq $true)
             {
-                Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Executing Invoke-ValidateClient"
-                $script:ProcessRequest = (Invoke-ValidateClient -VerificationType $VerificationType -RestPSLocalRoot $RestPSLocalRoot)
+                # Validate client IP authorization.
+                if ($VerifyInputIP -eq $true)
+                {
+                    # Start validation of client IP's.
+                    if($VerificationType -eq "")
+                    {
+                        Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Executing Invoke-ValidateIP Validate IP only"
+                        $script:ProcessRequest = (Invoke-ValidateIP -RestPSLocalRoot $RestPSLocalRoot -VerifyInputIP $VerifyInputIP)
+                    }
+                    # Validate client IP's and VerificationType.
+                    else
+                    {
+                        Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Executing Invoke-ValidateIP Validate IP before Authentication"
+                        $script:ProcessRequest = (Invoke-ValidateIP -RestPSLocalRoot $RestPSLocalRoot -VerifyInputIP $VerifyInputIP)
+                        # Determine if client IP validation was successful then start validation of VerificationType. 
+                        if ($script:ProcessRequest -eq $true)
+                        {
+                            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Executing Invoke-ValidateIP Validate Authentication Type"
+                            $script:ProcessRequest = (Invoke-ValidateClient -VerificationType $VerificationType -RestPSLocalRoot $RestPSLocalRoot)
+                        }
+                    }
+                }
+                else
+                {
+                    # Validate only verification type.
+                    Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Executing Invoke-ValidateClient"
+                    $script:ProcessRequest = (Invoke-ValidateClient -VerificationType $VerificationType -RestPSLocalRoot $RestPSLocalRoot)
+                }
             }
             else
             {
@@ -100,11 +127,9 @@ function Start-RestPSListener
             # Request Handler Data
             Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Determining Method and URL"
             $RequestType = $script:Request.HttpMethod
-
             $RawRequestURL = $script:Request.RawUrl
             Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Start-RestPSListener: New Request - Method: $RequestType URL: $RawRequestURL"
             # Specific args will need to be parsed in the Route commands/scripts
-
             $RequestURL, $RequestArgs = $RawRequestURL.split("?")
 
             if ($script:ProcessRequest -eq $true)

@@ -26,6 +26,8 @@ function Invoke-ValidateIP
         if ($null -ne $RestIPAuth)
         {
             $RequesterIP, $RequesterPort = $RequesterIP -split (":")
+            # Need to get past fuzzer
+            $RequesterPort | Out-Null
             $RequesterStatus = $RestIPAuth | Where-Object {($_.IP -eq "$RequesterIP")}
             if (($RequesterStatus | Measure-Object).Count -eq 1)
             {

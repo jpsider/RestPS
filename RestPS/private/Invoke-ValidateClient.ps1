@@ -1,7 +1,7 @@
 function Invoke-ValidateClient
 {
     <#
-	.DESCRIPTION
+    .DESCRIPTION
         This function provides several way to validate or authenticate a client. A client
         could be a user or a computer.
     .PARAMETER VerificationType
@@ -11,9 +11,9 @@ function Invoke-ValidateClient
             -"VerifyUserAuth": Provides an option for Advanced Authentication, plus the RootCA,Subject Checks.
     .PARAMETER RestPSLocalRoot
         The RestPSLocalRoot is also optional, and defaults to "C:\RestPS"
-	.EXAMPLE
+    .EXAMPLE
         Invoke-ValidateClient -VerificationType VerifyRootCA -RestPSLocalRoot c:\RestPS
-	.NOTES
+    .NOTES
         This will return a boolean.
     #>
     [CmdletBinding()]

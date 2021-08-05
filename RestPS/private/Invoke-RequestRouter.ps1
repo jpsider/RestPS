@@ -1,8 +1,8 @@
 function Invoke-RequestRouter
 {
     <#
-	.DESCRIPTION
-		This function will attempt to run a Client specified command defined in the Endpoint Routes.
+    .DESCRIPTION
+	This function will attempt to run a Client specified command defined in the Endpoint Routes.
     .PARAMETER RequestType
         A RequestType is required.
     .PARAMETER RequestURL

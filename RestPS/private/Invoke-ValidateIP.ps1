@@ -13,11 +13,12 @@ function Invoke-ValidateIP
     [CmdletBinding()]
     [OutputType([boolean])]
     param(
+        [Parameter()][String]$RestPSLocalRoot = "c:\RestPS",
         [Parameter()][Bool]$VerifyClientIP
     )
     if ($VerifyClientIP -eq $true)
     {
-        . c:\restps\bin\Get-RestIPAuth.ps1
+        . $RestPSLocalRoot\bin\Get-RestIPAuth.ps1
         $RestIPAuth = (Get-RestIPAuth).UserIP
         $RequesterIP = $script:Request.RemoteEndPoint
         if ($null -ne $RestIPAuth)

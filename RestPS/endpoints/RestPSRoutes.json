@@ -20,6 +20,11 @@
     "RequestCommand": "c:/RestPS/endPoints/GET/Invoke-GetProcess.ps1"
   },
   {
+    "RequestType": "GET",
+    "RequestURL": "/process",
+    "RequestCommand": "c:/RestPS/endPoints/GET/Invoke-BasicChallenge.ps1"
+  },
+  {
     "RequestType": "PUT",
     "RequestURL": "/Service",
     "RequestCommand": "c:/RestPS/endPoints/PUT/Invoke-GetProcess.ps1"

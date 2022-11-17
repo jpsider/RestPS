@@ -36,9 +36,10 @@ function Invoke-RequestRouter
     Import-RouteSet -RoutesFilePath $RoutesFilePath
     $Route = ($Routes | Where-Object { $_.RequestType -eq $RequestType -and $_.RequestURL -eq $RequestURL })
 
-    # Set the value of the $script:StatusDescription and $script:StatusCode to null from previous runs.
+    # Set the value of the $script:StatusDescription and $script:StatusCode and $script:StatusHeaders to null from previous runs.
     $script:StatusDescription = $null
     $script:StatusCode = $null
+    $script:StatusHeaders = @{}
 
     if ($null -ne $Route)
     {

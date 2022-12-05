@@ -29,6 +29,7 @@ function Invoke-StreamOutput
     }
     $script:Response.StatusCode = $script:StatusCode
     $script:Response.StatusDescription = $script:StatusDescription
+    # Add headers to the response
     foreach ($head in $script:StatusHeaders.Keys)
     {
         $script:Response.AddHeader($head, $script:StatusHeaders[$head])

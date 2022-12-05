@@ -6,6 +6,8 @@
 #  NugetApiKey:
 #    secure: iR4vlP9ilby8LTXXncpzN5bwnE7pMBD5pHDDSfA7qnU+/N6RY1GSxMgb78gV104x
 
+# Those secure things are now stored in Appveyor
+
 # Allow WMF5 (i.e. PowerShellGallery functionality)
 os: WMF 5
 

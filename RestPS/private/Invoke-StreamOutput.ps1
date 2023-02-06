@@ -30,6 +30,12 @@ function Invoke-StreamOutput
     $script:Response.StatusCode = $script:StatusCode
     $script:Response.StatusDescription = $script:StatusDescription
 
+    # Add header data to the response
+    foreach ($head in $script:StatusHeaders.Keys)
+    {
+        $script:Response.AddHeader($head, $script:StatusHeaders[$head])
+    }
+
     $responseByteArray = [byte[]][System.Text.Encoding]::UTF8.GetBytes("$message")
     try
     {

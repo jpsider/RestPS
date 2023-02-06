@@ -30,8 +30,8 @@ Task UnitTests {
 
 Task Publish_Unit_Tests_Coverage {
     $TestResults = Invoke-Pester -Path Tests\*\* -CodeCoverage $ModuleName\*\* -PassThru -Tag Build -ExcludeTag Slow
-    $Coverage = Format-Coverage -PesterResults $TestResults -CoverallsApiToken $ENV:Coveralls_Key -BranchName $ENV:APPVEYOR_REPO_BRANCH
-    Publish-Coverage -Coverage $Coverage
+    #$Coverage = Format-Coverage -PesterResults $TestResults -CoverallsApiToken $ENV:Coveralls_Key -BranchName $ENV:APPVEYOR_REPO_BRANCH
+    #Publish-Coverage -Coverage $Coverage
 }
 
 Task FullTests {
@@ -57,14 +57,14 @@ Task CopyToOutput {
     $null = New-Item -Type Directory -Path $Destination -ErrorAction Ignore
 
     Get-ChildItem $source -File | 
-        where name -NotMatch "$ModuleName\.ps[dm]1" | 
-        Copy-Item -Destination $Destination -Force -PassThru | 
-        ForEach-Object { "  Create [.{0}]" -f $_.fullname.replace($PSScriptRoot, '')}
+    where name -NotMatch "$ModuleName\.ps[dm]1" | 
+    Copy-Item -Destination $Destination -Force -PassThru | 
+    ForEach-Object { "  Create [.{0}]" -f $_.fullname.replace($PSScriptRoot, '') }
 
     Get-ChildItem $source -Directory | 
-        where name -NotIn $imports | 
-        Copy-Item -Destination $Destination -Recurse -Force -PassThru | 
-        ForEach-Object { "  Create [.{0}]" -f $_.fullname.replace($PSScriptRoot, '')}
+    where name -NotIn $imports | 
+    Copy-Item -Destination $Destination -Recurse -Force -PassThru | 
+    ForEach-Object { "  Create [.{0}]" -f $_.fullname.replace($PSScriptRoot, '') }
 }
 
 Task BuildPSM1 -Inputs (Get-Item "$source\*\*.ps1") -Outputs $ModulePath {
@@ -103,12 +103,12 @@ Task BuildPSD1 -inputs (Get-ChildItem $Source -Recurse -File) -Outputs $Manifest
 
     $bumpVersionType = 'Patch'
 
-    $functions = Get-ChildItem "$ModuleName\Public\*.ps1" | Where-Object { $_.name -notmatch 'Tests'} | Select-Object -ExpandProperty basename      
+    $functions = Get-ChildItem "$ModuleName\Public\*.ps1" | Where-Object { $_.name -notmatch 'Tests' } | Select-Object -ExpandProperty basename      
 
     $oldFunctions = (Get-Metadata -Path $manifestPath -PropertyName 'FunctionsToExport')
 
-    $functions | Where {$_ -notin $oldFunctions } | % {$bumpVersionType = 'Minor'}
-    $oldFunctions | Where {$_ -notin $Functions } | % {$bumpVersionType = 'Major'}
+    $functions | Where { $_ -notin $oldFunctions } | % { $bumpVersionType = 'Minor' }
+    $oldFunctions | Where { $_ -notin $Functions } | % { $bumpVersionType = 'Major' }
 
     Set-ModuleFunctions -Name $ManifestPath -FunctionsToExport $functions
 

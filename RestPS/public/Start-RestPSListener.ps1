@@ -129,7 +129,7 @@ function Start-RestPSListener
             $RequestType = $script:Request.HttpMethod
             $RawRequestURL = $script:Request.RawUrl
             Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Start-RestPSListener: New Request - Method: $RequestType URL: $RawRequestURL"
-            # Specific args will need to be parsed in the Route commands/scripts
+            # Specific args will need to be parsed in the Route commands/scripts Added the ,2.
             $RequestURL, $RequestArgs = $RawRequestURL.split("?", 2)
 
             if ($script:ProcessRequest -eq $true)

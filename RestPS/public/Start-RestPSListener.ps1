@@ -55,7 +55,7 @@ function Start-RestPSListener
         [Parameter()][String]$Port = 8080,
         [Parameter()][String]$SSLThumbprint,
         [Parameter()][String]$AppGuid = ((New-Guid).Guid),
-        [ValidateSet("VerifyRootCA", "VerifySubject", "VerifyUserAuth","VerifyBasicAuth")]
+        [ValidateSet("VerifyRootCA", "VerifySubject", "VerifyUserAuth", "VerifyBasicAuth")]
         [Parameter()][String]$VerificationType,
         [Parameter()][String]$Logfile = "$env:SystemDrive/RestPS/RestPS.log",
         [ValidateSet("ALL", "TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "CONSOLEONLY", "OFF")]
@@ -89,7 +89,7 @@ function Start-RestPSListener
                 if ($VerifyClientIP -eq $true)
                 {
                     # Start validation of client IP's.
-                    if($VerificationType -eq "")
+                    if ($VerificationType -eq "")
                     {
                         Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Executing Invoke-ValidateIP Validate IP only"
                         $script:ProcessRequest = (Invoke-ValidateIP -RestPSLocalRoot $RestPSLocalRoot -VerifyClientIP $VerifyClientIP)
@@ -130,7 +130,7 @@ function Start-RestPSListener
             $RawRequestURL = $script:Request.RawUrl
             Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Start-RestPSListener: New Request - Method: $RequestType URL: $RawRequestURL"
             # Specific args will need to be parsed in the Route commands/scripts
-            $RequestURL, $RequestArgs = $RawRequestURL.split("?")
+            $RequestURL, $RequestArgs = $RawRequestURL.split("?", 2)
 
             if ($script:ProcessRequest -eq $true)
             {

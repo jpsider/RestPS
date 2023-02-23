@@ -21,7 +21,7 @@
   },
   {
     "RequestType": "GET",
-    "RequestURL": "/process",
+    "RequestURL": "/basicChallenge",
     "RequestCommand": "c:/RestPS/endPoints/GET/Invoke-BasicChallenge.ps1"
   },
   {

@@ -10,8 +10,13 @@ function Invoke-VerifyBasicAuth
         # Get the AuthString from Client Headers
         $ClientHeaders = $script:Request.Headers
         $ClientHeadersAuth = $ClientHeaders.GetValues("Authorization")
-        $AuthType, $AuthString = $ClientHeadersAuth.split(" ")
-        Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyBasicAuth: Auth type is: $AuthType, AuthString is: $AuthString"
+        $AuthString = $null
+
+        if ($null -ne $ClientHeadersAuth)
+        {
+            $AuthType, $AuthString = $ClientHeadersAuth.split(" ")
+            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-VerifyBasicAuth: Auth type is: $AuthType, AuthString is: $AuthString"
+        }
 
         if ($null -ne $AuthString)
         {

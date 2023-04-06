@@ -17,7 +17,7 @@ function Invoke-StreamOutput
         $script:Response.ContentType = 'application/json'
 
         # Process the Return data to send Json message back.
-        $message = $script:result | ConvertTo-Json
+        $message = $script:result | ConvertTo-Json -Depth 10
     }
     else
     {

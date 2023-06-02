@@ -11,6 +11,11 @@
   },
   {
     "RequestType": "GET",
+    "RequestURL": "/endpoint/shutdown",
+    "RequestCommand": "$script:result = 'Shutting down RESTPS Endpoint.'; $script:StatusCode = 200; $script:status = $false"
+  },
+  {
+    "RequestType": "GET",
     "RequestURL": "/endpoint/routes",
     "RequestCommand": "c:/RestPS/endPoints/GET/Invoke-GetRoutes.ps1"
   },

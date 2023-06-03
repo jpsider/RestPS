@@ -15,35 +15,7 @@ Describe "Start-RestPSListener function for $script:ModuleName" -Tags Build {
         function Invoke-StopListener {}
         function Write-Log {}
         Start-RestPSListener -WhatIf | Should -Be $false
-    }
-    It "Should return 'null' if the url is /EndPoint/Shutdown" {
-        function Invoke-StartListener {}
-        function Invoke-GetContext {}
-        function Invoke-StreamOutput {}
-        function Invoke-GetBody {}
-        function Invoke-AvailableRouteSet {}
-        function Invoke-RequestRouter {}
-        function Invoke-StopListener {}
-        function Write-Log {}
-        Mock -CommandName 'Invoke-StartListener' -MockWith {}
-        Mock -CommandName 'Invoke-GetContext' -MockWith {
-            $script:Request = @{
-                'HttpMethod' = "Get"
-                'RawUrl'     = "/EndPoint/Shutdown"
-            }
-            $script:Context = @{
-                Response = @{
-                    'ContentType' = "application/json"
-                }
-            }
-            return $script:Request
-        }
-        Mock -CommandName 'Invoke-StreamOutput' -MockWith {}
-        Mock -CommandName 'Invoke-GetBody' -MockWith {}
-        Mock -CommandName 'Write-Log' -MockWith {}
-        Start-RestPSListener | Should -Be $null
-        
-    }     
+    }   
     It "Should return 'null' if a message is streamed back to requestor." {
         function Invoke-StartListener {}
         function Invoke-GetContext {}

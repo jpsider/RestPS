@@ -1,5 +1,4 @@
-function Start-RestPSListener
-{
+function Start-RestPSListener {
     <#
     .DESCRIPTION
         Start a HTTP listener on a specified port.
@@ -65,15 +64,13 @@ function Start-RestPSListener
     # Set a few Flags
     $script:Status = $true
     $script:ValidateClient = $true
-    if ($pscmdlet.ShouldProcess("Starting .Net.HttpListener."))
-    {
+    if ($pscmdlet.ShouldProcess("Starting .Net.HttpListener.")) {
         $script:listener = New-Object System.Net.HttpListener
         Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Calling Invoke-StartListener"
         Invoke-StartListener -Port $Port -SSLThumbPrint $SSLThumbprint -AppGuid $AppGuid
         Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Finished Calling Invoke-StartListener"
         # Run until you send a GET request to an endpoint, that will set $script:status to $false
-        Do
-        {
+        Do {
             # Capture requests as they come in (not Asyncronous)
             # Routes can be configured to be Asyncronous in Nature.
             Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Captured incoming request"
@@ -83,39 +80,32 @@ function Start-RestPSListener
 
             # Perform Client Verification if SSLThumbprint is present and a Verification Method is specified.
             Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Determining VerificationType: '$VerificationType'"
-            if ($VerificationType -ne "" -or $VerifyClientIP -eq $true)
-            {
+            if ($VerificationType -ne "" -or $VerifyClientIP -eq $true) {
                 # Validate client IP authorization.
-                if ($VerifyClientIP -eq $true)
-                {
+                if ($VerifyClientIP -eq $true) {
                     # Start validation of client IP's.
-                    if ($VerificationType -eq "")
-                    {
+                    if ($VerificationType -eq "") {
                         Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Executing Invoke-ValidateIP Validate IP only"
                         $script:ProcessRequest = (Invoke-ValidateIP -RestPSLocalRoot $RestPSLocalRoot -VerifyClientIP $VerifyClientIP)
                     }
                     # Validate client IP's and VerificationType.
-                    else
-                    {
+                    else {
                         Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Executing Invoke-ValidateIP Validate IP before Authentication"
                         $script:ProcessRequest = (Invoke-ValidateIP -RestPSLocalRoot $RestPSLocalRoot -VerifyClientIP $VerifyClientIP)
                         # Determine if client IP validation was successful then start validation of VerificationType.
-                        if ($script:ProcessRequest -eq $true)
-                        {
+                        if ($script:ProcessRequest -eq $true) {
                             Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Executing Invoke-ValidateIP Validate Authentication Type"
                             $script:ProcessRequest = (Invoke-ValidateClient -VerificationType $VerificationType -RestPSLocalRoot $RestPSLocalRoot)
                         }
                     }
                 }
-                else
-                {
+                else {
                     # Validate only verification type.
                     Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Executing Invoke-ValidateClient"
                     $script:ProcessRequest = (Invoke-ValidateClient -VerificationType $VerificationType -RestPSLocalRoot $RestPSLocalRoot)
                 }
             }
-            else
-            {
+            else {
                 Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: NOT Executing Invoke-ValidateClient"
                 $script:ProcessRequest = $true
             }
@@ -123,6 +113,14 @@ function Start-RestPSListener
             # Determine if a Body was sent with the Client request
             Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Executing Invoke-GetBody"
             $script:Body = Invoke-GetBody
+
+            #If a file was involved, save it on a location specified in the config file. Error out if no location set or if anything is wrong with the file.
+            if ($script:Request.ContentType -eq 'application/x-www-form-urlencoded' -and $script:Request.HttpMethod -eq 'POST') {
+                $file = New-Object System.IO.FileStream $DestinationFilePath, CreateNew, Write
+                $script:Request.InputStream.CopyTo($file)
+                $file.Close()
+                $script:Request.InputStream.Close()
+            }
 
             # Request Handler Data
             Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Determining Method and URL"
@@ -132,15 +130,13 @@ function Start-RestPSListener
             # Specific args will need to be parsed in the Route commands/scripts Added the ,2.
             $RequestURL, $RequestArgs = $RawRequestURL.split("?", 2)
 
-            if ($script:ProcessRequest -eq $true)
-            {
+            if ($script:ProcessRequest -eq $true) {
                 # Attempt to process the Request.
                 Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Start-RestPSListener: Processing RequestType: $RequestType URL: $RequestURL Args: $RequestArgs"
                 $script:result = Invoke-RequestRouter -RequestType "$RequestType" -RequestURL "$RequestURL" -RoutesFilePath "$RoutesFilePath" -RequestArgs "$RequestArgs"
                 Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Start-RestPSListener: Finished request. StatusCode: $script:StatusCode StatusDesc: $Script:StatusDescription"
             }
-            else
-            {
+            else {
                 Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Start-RestPSListener: Unauthorized (401) NOT Processing RequestType: $RequestType URL: $RequestURL Args: $RequestArgs"
                 $script:StatusDescription = "Unauthorized"
                 $script:StatusCode = 401
@@ -155,8 +151,7 @@ function Start-RestPSListener
         Invoke-StopListener -Port $Port
         Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Listener Stopped."
     }
-    else
-    {
+    else {
         # -WhatIf was used.
         return $false
     }

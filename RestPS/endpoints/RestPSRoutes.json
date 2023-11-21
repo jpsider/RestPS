@@ -37,7 +37,8 @@
   {
     "RequestType": "POST",
     "RequestURL": "/data",
-    "RequestCommand": "c:/RestPS/endPoints/POST/Invoke-GetProcess.ps1"
+    "RequestCommand": "c:/RestPS/endPoints/POST/Invoke-GetProcess.ps1",
+    "RequestOutputPath": "c:/RestPS/files/"
   },
   {
     "RequestType": "DELETE",

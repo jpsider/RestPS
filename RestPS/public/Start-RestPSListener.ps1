@@ -114,14 +114,6 @@ function Start-RestPSListener {
             Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Executing Invoke-GetBody"
             $script:Body = Invoke-GetBody
 
-            #If a file was involved, save it on a location specified in the config file. Error out if no location set or if anything is wrong with the file.
-            if ($script:Request.ContentType -eq 'application/x-www-form-urlencoded' -and $script:Request.HttpMethod -eq 'POST') {
-                $file = New-Object System.IO.FileStream $DestinationFilePath, CreateNew, Write
-                $script:Request.InputStream.CopyTo($file)
-                $file.Close()
-                $script:Request.InputStream.Close()
-            }
-
             # Request Handler Data
             Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Determining Method and URL"
             $RequestType = $script:Request.HttpMethod
@@ -131,6 +123,32 @@ function Start-RestPSListener {
             $RequestURL, $RequestArgs = $RawRequestURL.split("?", 2)
 
             if ($script:ProcessRequest -eq $true) {
+                #If a file was involved, save it on a location specified in the config file. Error out if no location set or if anything is wrong with the file.
+                if ($script:Request.ContentType -eq 'application/x-www-form-urlencoded' -and $RequestType -eq 'POST') {
+                    if ($body) {
+                        #Import routeset to get the destination file path for this route
+                        Import-RouteSet -RoutesFilePath $RoutesFilePath
+                        $Route = ($Routes | Where-Object { $null -eq $_.RequestOutputPath -and $_.RequestURL -eq $RequestURL })
+                        $DestinationFilePath = $Route.RequestOutputPath
+                        if ($null -eq $DestinationFilePath -or $DestinationFilePath -eq '') {
+                            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Start-RestPSListener: Destination file path on the server not correctly retrieved (510): $RequestType URL: $RequestURL Args: $RequestArgs"
+                            $script:StatusDescription = "Not Extended"
+                            $script:StatusCode = 510
+                        }
+                        else {
+                            #Stream file given to the destination file path.
+                            $file = New-Object System.IO.FileStream $DestinationFilePath, CreateNew, Write
+                            $script:Request.InputStream.CopyTo($file)
+                            $file.Close()
+                            $script:Request.InputStream.Close()
+                        }
+                    }
+                    else {
+                        Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Start-RestPSListener: File not properly attached to the request (422) NOT Processing RequestType: $RequestType URL: $RequestURL Args: $RequestArgs"
+                        $script:StatusDescription = "Unprocessable Entity"
+                        $script:StatusCode = 422
+                    }
+                }
                 # Attempt to process the Request.
                 Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Start-RestPSListener: Processing RequestType: $RequestType URL: $RequestURL Args: $RequestArgs"
                 $script:result = Invoke-RequestRouter -RequestType "$RequestType" -RequestURL "$RequestURL" -RoutesFilePath "$RoutesFilePath" -RequestArgs "$RequestArgs"

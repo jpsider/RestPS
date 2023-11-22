@@ -127,9 +127,10 @@ function Start-RestPSListener {
                 if ($script:Request.ContentType -eq 'application/x-www-form-urlencoded' -and $RequestType -eq 'POST') {
                     if ($body) {
                         #Import routeset to get the destination file path for this route
-                        Import-RouteSet -RoutesFilePath $RoutesFilePath
-                        $Route = ($Routes | Where-Object { $null -eq $_.RequestOutputPath -and $_.RequestURL -eq $RequestURL })
+                        $script:Routes = Get-Content -Raw $RoutesFilePath | ConvertFrom-Json
+                        $Route = ($Routes | Where-Object { $null -ne $_.RequestOutputPath -and $_.RequestURL -eq $RequestURL })
                         $DestinationFilePath = $Route.RequestOutputPath
+                        Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Imported file destination for file uploads - $DestinationFilePath"
                         if ($null -eq $DestinationFilePath -or $DestinationFilePath -eq '') {
                             Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Start-RestPSListener: Destination file path on the server not correctly retrieved (510): $RequestType URL: $RequestURL Args: $RequestArgs"
                             $script:StatusDescription = "Not Extended"

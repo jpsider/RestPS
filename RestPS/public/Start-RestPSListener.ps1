@@ -53,7 +53,7 @@ function Start-RestPSListener
         [Parameter()][String]$RoutesFilePath = "$env:SystemDrive/RestPS/endpoints/RestPSRoutes.json",
         [Parameter()][String]$RestPSLocalRoot = "$env:SystemDrive/RestPS",
         [Parameter()][String]$Port = 8080,
-        [Parameter()][String]$SSLThumbprint,
+        [Parameter()][String]$SSLThumbprint="none",
         [Parameter()][String]$AppGuid = ((New-Guid).Guid),
         [ValidateSet("VerifyRootCA", "VerifySubject", "VerifyUserAuth", "VerifyBasicAuth")]
         [Parameter()][String]$VerificationType,

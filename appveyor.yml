@@ -7,12 +7,13 @@
 #    secure: iR4vlP9ilby8LTXXncpzN5bwnE7pMBD5pHDDSfA7qnU+/N6RY1GSxMgb78gV104x
 
 # Those secure things are now stored in Appveyor - You copy then in plain text, then hit the lock icon
+# copy the Actual API key - not the encryped key
 
 # Allow WMF5 (i.e. PowerShellGallery functionality)
 os: WMF 5
 
 # Skip on updates to the readme.
-# We can force this by adding [skip ci] or [ci skip] anywhere in commit message 
+# We can force this by adding [skip ci] or [ci skip] anywhere in commit message
 skip_commits:
   message: /updated (readme|doc).*|update (readme|doc).*s/
 

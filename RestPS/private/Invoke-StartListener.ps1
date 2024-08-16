@@ -23,25 +23,32 @@ function Invoke-StartListener
     )
     if ($SSLThumbprint)
     {
-        # Verify the Certificate with the Specified Thumbprint is available.
-        $CertificateListCount = ((Get-ChildItem -Path Cert:\LocalMachine -Recurse | Where-Object {$_.Thumbprint -eq "$SSLThumbprint"}) | Measure-Object).Count
-        if ($CertificateListCount -ne 0)
+        if ($SSLThumbprint -eq "None"){
+	        Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Invoke-StartListener: No SSL Thumbprint present"
+            $Prefix = "http://"
+  	    }
+	    else
         {
-            # SSL Thumbprint present, enabling SSL
-            netsh http delete sslcert ipport=0.0.0.0:$Port
-            netsh http add sslcert ipport=0.0.0.0:$Port certhash=$SSLThumbprint "appid={$AppGuid}"
-            $Prefix = "https://"
-        }
-        else
-        {
-            Throw "Invoke-StartListener: Could not find Matching Certificate in CertStore: Cert:\LocalMachine"
+	        # Verify the Certificate with the Specified Thumbprint is available.
+            $CertificateListCount = ((Get-ChildItem -Path Cert:\LocalMachine -Recurse | Where-Object {$_.Thumbprint -eq "$SSLThumbprint"}) | Measure-Object).Count
+            if ($CertificateListCount -ne 0)
+            {
+                # SSL Thumbprint present, enabling SSL
+                netsh http delete sslcert ipport=0.0.0.0:$Port
+                netsh http add sslcert ipport=0.0.0.0:$Port certhash=$SSLThumbprint "appid={$AppGuid}"
+                $Prefix = "https://"
+            }
+            else
+            {
+                Throw "Invoke-StartListener: Could not find Matching Certificate in CertStore: Cert:\LocalMachine"
+	        }
         }
     }
     else
     {
-        # No SSL Thumbprint present
-        Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Invoke-StartListener: No SSL Thumbprint present"
-        $Prefix = "http://"
+    	# parameter used but No SSL Thumbprint given
+        Throw "Invoke-StartListener: the SSLThumbPrint was used but no Thumbprint was given"
+
     }
     try
     {

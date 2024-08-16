@@ -30,7 +30,7 @@ Describe "Invoke-StartListener function for $script:ModuleName" -Tags Build {
         $listener.Prefixes.Remove("https://+:8083/")
         $listener.Prefixes.Remove("http://+:8083/")
         Mock -CommandName 'Write-Log' -MockWith {}
-        Invoke-StartListener -Port 8081 | Should -Be $null
+        Invoke-StartListener -Port 8081 -SSLThumbPrint "none" | Should -Be $null
     }
     It "Should Throw when something fails." {
         function Write-Log {}

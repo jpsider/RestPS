@@ -23,14 +23,15 @@ function Invoke-StartListener
     )
     if ($SSLThumbprint)
     {
-        if ($SSLThumbprint -eq "None"){
-	        Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Invoke-StartListener: No SSL Thumbprint present"
-            $Prefix = "http://"
-  	    }
-	    else
+        if ($SSLThumbprint -eq "none")
         {
-	        # Verify the Certificate with the Specified Thumbprint is available.
-            $CertificateListCount = ((Get-ChildItem -Path Cert:\LocalMachine -Recurse | Where-Object {$_.Thumbprint -eq "$SSLThumbprint"}) | Measure-Object).Count
+            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Invoke-StartListener: No SSL Thumbprint present"
+            $Prefix = "http://"
+        }
+        else
+        {
+            # Verify the Certificate with the Specified Thumbprint is available.
+            $CertificateListCount = ((Get-ChildItem -Path Cert:\LocalMachine -Recurse | Where-Object { $_.Thumbprint -eq "$SSLThumbprint" }) | Measure-Object).Count
             if ($CertificateListCount -ne 0)
             {
                 # SSL Thumbprint present, enabling SSL
@@ -41,12 +42,12 @@ function Invoke-StartListener
             else
             {
                 Throw "Invoke-StartListener: Could not find Matching Certificate in CertStore: Cert:\LocalMachine"
-	        }
+            }
         }
     }
     else
     {
-    	# parameter used but No SSL Thumbprint given
+        # parameter used but No SSL Thumbprint given
         Throw "Invoke-StartListener: the SSLThumbPrint was used but no Thumbprint was given"
 
     }

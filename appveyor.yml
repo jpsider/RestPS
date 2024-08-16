@@ -7,7 +7,7 @@
 #    secure: iR4vlP9ilby8LTXXncpzN5bwnE7pMBD5pHDDSfA7qnU+/N6RY1GSxMgb78gV104x
 
 # Those secure things are now stored in Appveyor - You copy then in plain text, then hit the lock icon
-# copy the Actual API key - not the encryped key
+# copy the Actual API key - not the encryped key - make sure you copy it correctly
 
 # Allow WMF5 (i.e. PowerShellGallery functionality)
 os: WMF 5

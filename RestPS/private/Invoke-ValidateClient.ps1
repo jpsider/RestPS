@@ -19,7 +19,7 @@ function Invoke-ValidateClient
     [CmdletBinding()]
     [OutputType([boolean])]
     param(
-        [ValidateSet("VerifyRootCA", "VerifySubject", "VerifyUserAuth","VerifyBasicAuth")]
+        [ValidateSet("VerifyRootCA", "VerifySubject", "VerifyUserAuth","VerifyBasicAuth","VerifyCA")]
         [Parameter()][String]$VerificationType,
         [Parameter()][String]$RestPSLocalRoot = "c:\RestPS"
     )
@@ -33,6 +33,14 @@ function Invoke-ValidateClient
             Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-ValidateClient: Validating Client CN: $script:SubjectName"
             . $RestPSLocalRoot\bin\Invoke-VerifyRootCA.ps1
             $script:VerifyStatus = Invoke-VerifyRootCA
+        }
+
+        "VerifyCA"
+		{
+            # Source the File
+            Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType INFO -Message "Invoke-ValidateClient: Validating Basic Auth"
+            . $RestPSLocalRoot\bin\Invoke-VerifyCa.ps1
+            $script:VerifyStatus = Invoke-VerifyCAList
         }
 
         "VerifySubject"

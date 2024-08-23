@@ -7,8 +7,10 @@ function Invoke-ValidateClient
     .PARAMETER VerificationType
         A VerificationType is optional - Accepted values are:
             -"VerifyRootCA": Verifies the Root CA of the Server and Client Cert Match.
+	     -"VerifyCA": Verifies the CA of the Client Cert is in a trusted list. Can also verify that the cert is valid and trusted by the server OS
             -"VerifySubject": Verifies the Root CA, and the Client is on a User provide ACL.
             -"VerifyUserAuth": Provides an option for Advanced Authentication, plus the RootCA,Subject Checks.
+	    -"VerifyBasicAuth": Provides an option for Basic Authentication.
     .PARAMETER RestPSLocalRoot
         The RestPSLocalRoot is also optional, and defaults to "C:\RestPS"
     .EXAMPLE

@@ -14,6 +14,8 @@ function Start-RestPSListener
     .PARAMETER VerificationType
         A VerificationType is optional - Accepted values are:
             -"VerifyRootCA": Verifies the Root CA of the Server and Client Cert Match.
+             -"VerifyCA": Verifies the CA of the Client Cert is in a trusted list. Can also verify that the cert is valid and trusted by the server OS
+            -"VerifySubject": Verifies the Root CA, and the Client is on a User provide ACL.
             -"VerifySubject": Verifies the Root CA, and the Client is on a User provide ACL.
             -"VerifyUserAuth": Provides an option for Advanced Authentication, plus the RootCA,Subject Checks.
             -"VerifyBasicAuth": Provides an option for Basic Authentication.
@@ -55,7 +57,7 @@ function Start-RestPSListener
         [Parameter()][String]$Port = 8080,
         [Parameter()][String]$SSLThumbprint="none",
         [Parameter()][String]$AppGuid = ((New-Guid).Guid),
-        [ValidateSet("VerifyRootCA", "VerifySubject", "VerifyUserAuth", "VerifyBasicAuth")]
+        [ValidateSet("VerifyRootCA", "VerifySubject", "VerifyUserAuth", "VerifyBasicAuth","VerifyCA")]
         [Parameter()][String]$VerificationType,
         [Parameter()][String]$Logfile = "$env:SystemDrive/RestPS/RestPS.log",
         [ValidateSet("ALL", "TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "CONSOLEONLY", "OFF")]

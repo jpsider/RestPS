@@ -151,6 +151,11 @@ function Start-RestPSListener
             Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Streaming response back to requestor."
             Invoke-StreamOutput
             Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Streaming response is complete."
+			# dispose any rawstream content
+			if ($script:RawBody)
+			{
+				$script:RawBody.Dispose()
+			}
         } while ($script:Status -eq $true)
         #Terminate the listener
         Write-Log -LogFile $Logfile -LogLevel $logLevel -MsgType TRACE -Message "Start-RestPSListener: Stopping Listener."

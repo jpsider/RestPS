@@ -3,8 +3,8 @@
 #environment:
 #  Coveralls_Key:
 #    secure: mOSiObC2c5LUU57K47frbcUotaYZC6ni0j/YxBHMrSMNxgsYzStPXxhwgXW6VJQy
-#  NugetApiKey:
-#    secure: iR4vlP9ilby8LTXXncpzN5bwnE7pMBD5pHDDSfA7qnU+/N6RY1GSxMgb78gV104x
+  NugetApiKey:
+    secure: t5+iBkl26CKkbEV9o36T4oQ+ghb2GNiLSpmm5xaNrjdU2fYEEIccWYMo2z6n1Juh
 
 # Those secure things are now stored in Appveyor - You copy then in plain text, then hit the lock icon
 # copy the Actual API key - not the encryped key - make sure you copy it correctly
